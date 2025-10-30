@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AARIA - The Future of Real Estate Intelligence</title>
-    <meta name="description" content="Meet Aaria - Your AI Real Estate Companion. Where AI meets Real Estate with Heart.">
+    <title>AARIA - Your Personal AI Real Estate Consultant | Find Your Dream Property</title>
+    <meta name="description" content="Meet Aaria - Your trusted AI companion for finding the perfect property. Free consultation, expert guidance, zero pressure.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --emerald: #0E9E6E;
             --emerald-dark: #0a7050;
+            --emerald-light: #10b981;
             --gold: #D4AF37;
+            --gold-light: #f4d03f;
             --beige: #F5F5DC;
             --dark: #1a1a1a;
             --text-light: #666;
+            --gray-bg: #f9fafb;
         }
 
         * {
@@ -30,26 +33,42 @@
             color: var(--dark);
             overflow-x: hidden;
             background: #ffffff;
+            width: 100%;
+            max-width: 100vw;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            overflow-x: hidden;
+            width: 100%;
+            scroll-behavior: smooth;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0 clamp(20px, 5vw, 40px);
+            padding: 0 max(20px, min(5vw, 40px));
+            width: 100%;
         }
 
-        /* Premium Navigation */
+        /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            padding: 15px 0;
+            padding: 12px 0;
             transition: all 0.3s ease;
             backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.95);
-            border-bottom: 1px solid rgba(14, 158, 110, 0.1);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid rgba(14, 158, 110, 0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.03);
+        }
+
+        nav.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
         }
 
         .nav-content {
@@ -59,9 +78,9 @@
         }
 
         .nav-logo {
-            font-size: clamp(1.4rem, 4vw, 1.8rem);
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+            font-weight: 900;
+            letter-spacing: 1.5px;
             background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -71,14 +90,15 @@
         .menu-toggle {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
+            z-index: 1001;
         }
 
         .menu-toggle span {
-            width: 25px;
-            height: 3px;
+            width: 24px;
+            height: 2.5px;
             background: var(--emerald);
             transition: all 0.3s ease;
             border-radius: 3px;
@@ -86,23 +106,25 @@
 
         .nav-links {
             display: flex;
-            gap: clamp(20px, 3vw, 40px);
+            gap: clamp(18px, 3vw, 35px);
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--dark);
-            font-weight: 500;
-            font-size: clamp(0.9rem, 2vw, 1rem);
+            font-weight: 600;
+            font-size: clamp(0.85rem, 1.8vw, 0.95rem);
             transition: all 0.3s ease;
             position: relative;
+            padding: 5px 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
@@ -110,8 +132,30 @@
             transition: width 0.3s ease;
         }
 
+        .nav-links a:hover {
+            color: var(--emerald);
+        }
+
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
+            color: white !important;
+            padding: 8px 20px !important;
+            border-radius: 50px;
+            font-size: clamp(0.85rem, 1.8vw, 0.9rem) !important;
+            box-shadow: 0 4px 15px rgba(14, 158, 110, 0.25);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 158, 110, 0.35);
+        }
+
+        .nav-cta::after {
+            display: none;
         }
 
         /* Hero Section */
@@ -121,71 +165,103 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            background: radial-gradient(circle at 20% 50%, rgba(14, 158, 110, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-            padding: clamp(100px, 15vh, 150px) 0 clamp(60px, 10vh, 100px);
+            background: radial-gradient(ellipse at 30% 40%, rgba(14, 158, 110, 0.05) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 60%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
+                        linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            padding: max(110px, 18vh) 0 max(60px, 10vh);
         }
 
         .hero-content {
             max-width: 100%;
             text-align: center;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: rgba(14, 158, 110, 0.08);
+            border: 1.5px solid rgba(14, 158, 110, 0.2);
+            border-radius: 50px;
+            color: var(--emerald-dark);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            font-weight: 700;
+            margin-bottom: max(20px, 3vh);
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero-badge .sparkle {
+            font-size: 1.1em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
         }
 
         .hero-content h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 12vw, 6rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 0.8s ease;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            color: var(--gold);
-            font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: clamp(2.2rem, 9vw, 5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: max(20px, 3vh);
+            color: var(--dark);
             animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        .hero-description {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        .hero-highlight {
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
             color: var(--text-light);
-            margin-bottom: 2.5rem;
-            line-height: 1.8;
-            max-width: 700px;
+            margin-bottom: max(30px, 5vh);
+            line-height: 1.7;
+            max-width: 680px;
             margin-left: auto;
             margin-right: auto;
-            animation: fadeInUp 0.8s ease 0.4s both;
+            animation: fadeInUp 0.8s ease 0.3s both;
+            font-weight: 400;
         }
 
         .cta-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
-            animation: fadeInUp 0.8s ease 0.6s both;
+            animation: fadeInUp 0.8s ease 0.5s both;
+            margin-bottom: max(35px, 6vh);
         }
 
-        .btn-primary, .btn-secondary {
-            padding: clamp(14px, 3vw, 18px) clamp(30px, 5vw, 45px);
+        .btn {
+            padding: clamp(13px, 2.8vw, 17px) clamp(28px, 5vw, 42px);
             border-radius: 50px;
-            font-weight: 600;
-            font-size: clamp(1rem, 2.5vw, 1.1rem);
+            font-weight: 700;
+            font-size: clamp(0.95rem, 2.2vw, 1.05rem);
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-block;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             text-align: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
             color: white;
-            box-shadow: 0 10px 30px rgba(14, 158, 110, 0.3);
+            box-shadow: 0 8px 25px rgba(14, 158, 110, 0.35);
             position: relative;
             overflow: hidden;
         }
@@ -197,8 +273,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.6s ease;
         }
 
         .btn-primary:hover::before {
@@ -207,114 +283,118 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(14, 158, 110, 0.4);
+            box-shadow: 0 12px 35px rgba(14, 158, 110, 0.45);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: white;
             color: var(--emerald);
             border: 2px solid var(--emerald);
+            box-shadow: 0 4px 15px rgba(14, 158, 110, 0.15);
         }
 
         .btn-secondary:hover {
             background: var(--emerald);
             color: white;
             transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(14, 158, 110, 0.3);
         }
 
-        /* Floating Stats */
-        .stats-container {
+        .trust-badges {
+            display: flex;
+            gap: clamp(18px, 4vw, 35px);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: max(30px, 5vh);
+            animation: fadeInUp 0.8s ease 0.7s both;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            font-weight: 600;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .trust-badge .icon {
+            color: var(--emerald);
+            font-size: 1.15em;
+            font-weight: 900;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            padding: max(35px, 6vh) 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: clamp(10px, 3vw, 20px);
-            margin-top: clamp(40px, 8vh, 60px);
-            max-width: 100%;
-            padding: 0 10px;
+            grid-template-columns: repeat(auto-fit, minmax(max(140px, 20%), 1fr));
+            gap: max(20px, 4vw);
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        @media (max-width: 480px) {
-            .stats-container {
-                gap: 8px;
-            }
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: clamp(20px, 4vw, 30px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        .stat-item {
             text-align: center;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .stat-card:nth-child(1) { animation-delay: 0s; }
-        .stat-card:nth-child(2) { animation-delay: 0.5s; }
-        .stat-card:nth-child(3) { animation-delay: 1s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            padding: 10px;
         }
 
         .stat-number {
-            font-size: clamp(2rem, 6vw, 3rem);
-            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 900;
             background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.2;
             display: block;
+            margin-bottom: 8px;
         }
 
         .stat-label {
             color: var(--text-light);
-            font-size: clamp(0.8rem, 2vw, 0.9rem);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 8px;
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            font-weight: 600;
+            line-height: 1.4;
         }
 
-        /* Trust Section */
-        .trust-section {
-            padding: clamp(50px, 10vh, 80px) 0;
-            background: var(--beige);
-        }
-
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: clamp(20px, 4vw, 40px);
-            text-align: center;
-        }
-
-        .trust-item h3 {
-            font-size: clamp(2rem, 6vw, 3rem);
-            font-weight: 800;
-            color: var(--emerald);
-            margin-bottom: 10px;
-        }
-
-        .trust-item p {
-            color: var(--text-light);
-            font-weight: 500;
-            font-size: clamp(0.9rem, 2vw, 1rem);
-        }
-
-        /* Section Styling */
+        /* Sections */
         .section {
-            padding: clamp(80px, 15vh, 150px) 0;
+            padding: max(70px, 12vh) 0;
         }
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.2rem, 7vw, 4rem);
-            margin-bottom: clamp(1.5rem, 3vh, 2rem);
+            font-size: clamp(2rem, 6.5vw, 3.5rem);
+            margin-bottom: max(12px, 2vh);
             color: var(--dark);
             line-height: 1.2;
             text-align: center;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            font-size: clamp(0.95rem, 2.3vw, 1.15rem);
+            max-width: 680px;
+            margin: 0 auto max(40px, 7vh);
+            line-height: 1.7;
+            font-weight: 400;
         }
 
         .gradient-text {
@@ -324,181 +404,241 @@
             background-clip: text;
         }
 
-        /* About Section */
-        .about-text {
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: var(--text-light);
-            line-height: 1.9;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
+        /* Benefits */
+        .benefits {
+            background: var(--gray-bg);
         }
 
-        .feature-list {
-            list-style: none;
-            margin-top: 3rem;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .feature-list li {
-            padding: clamp(15px, 3vw, 20px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            gap: clamp(15px, 3vw, 20px);
-            transition: all 0.3s ease;
-        }
-
-        .feature-list li:hover {
-            padding-left: clamp(20px, 4vw, 30px);
-            background: rgba(14, 158, 110, 0.02);
-        }
-
-        .feature-icon {
-            font-size: clamp(1.8rem, 5vw, 2rem);
-            min-width: clamp(50px, 10vw, 60px);
-            height: clamp(50px, 10vw, 60px);
-            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .feature-content h4 {
-            font-size: clamp(1.1rem, 3vw, 1.3rem);
-            margin-bottom: 5px;
-            color: var(--dark);
-        }
-
-        .feature-content p {
-            color: var(--text-light);
-            font-size: clamp(0.85rem, 2vw, 0.95rem);
-        }
-
-        /* Services Grid */
-        .services {
-            background: linear-gradient(180deg, #ffffff 0%, var(--beige) 100%);
-        }
-
-        .services-grid {
+        .benefits-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-            gap: clamp(20px, 4vw, 40px);
-            margin-top: clamp(40px, 8vh, 80px);
+            gap: max(22px, 4vw);
         }
 
-        .service-card {
+        .benefit-card {
             background: white;
-            border-radius: 25px;
-            padding: clamp(30px, 5vw, 50px) clamp(25px, 4vw, 40px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: max(28px, 5vw);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
             position: relative;
             overflow: hidden;
         }
 
-        .service-card::before {
+        .benefit-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
+            height: 4px;
             background: linear-gradient(90deg, var(--emerald) 0%, var(--gold) 100%);
             transform: scaleX(0);
-            transition: transform 0.5s ease;
+            transition: transform 0.4s ease;
         }
 
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        .benefit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+            border-color: rgba(14, 158, 110, 0.2);
         }
 
-        .service-card:hover::before {
+        .benefit-card:hover::before {
             transform: scaleX(1);
         }
 
-        .service-icon {
-            font-size: clamp(2.5rem, 8vw, 3.5rem);
-            margin-bottom: clamp(20px, 4vw, 30px);
+        .benefit-icon {
+            font-size: clamp(2.3rem, 6.5vw, 3.2rem);
+            margin-bottom: max(15px, 2.5vh);
             display: block;
+            line-height: 1;
         }
 
-        .service-card h3 {
-            font-size: clamp(1.3rem, 4vw, 1.8rem);
-            margin-bottom: 15px;
+        .benefit-card h3 {
+            font-size: clamp(1.15rem, 3.5vw, 1.45rem);
+            margin-bottom: 12px;
             color: var(--dark);
+            font-weight: 700;
+            line-height: 1.3;
         }
 
-        .service-card p {
+        .benefit-card p {
             color: var(--text-light);
-            line-height: 1.8;
-            margin-bottom: 20px;
-            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+            line-height: 1.7;
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
         }
 
-        /* Process Timeline - Mobile Optimized */
-        .process {
-            background: var(--dark);
-            color: white;
+        /* How It Works */
+        .how-it-works {
+            background: white;
         }
 
-        .timeline {
-            max-width: 900px;
-            margin: clamp(40px, 8vh, 80px) auto 0;
+        .steps-container {
+            max-width: 950px;
+            margin: max(40px, 7vh) auto 0;
         }
 
-        .timeline-item {
+        .step-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: max(18px, 3.5vw);
+            margin-bottom: max(35px, 6vh);
             position: relative;
-            padding-left: clamp(60px, 12vw, 100px);
-            margin-bottom: clamp(40px, 8vh, 80px);
+            align-items: start;
         }
 
-        .timeline-number {
+        .step-item::before {
+            content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            width: clamp(50px, 10vw, 70px);
-            height: clamp(50px, 10vw, 70px);
+            left: max(23px, 4.5vw);
+            top: max(58px, 9vh);
+            width: 2px;
+            height: calc(100% + max(15px, 3vh));
+            background: linear-gradient(180deg, rgba(14, 158, 110, 0.4) 0%, rgba(14, 158, 110, 0.1) 100%);
+        }
+
+        .step-item:last-child::before {
+            display: none;
+        }
+
+        .step-number {
+            width: max(48px, 9vw);
+            height: max(48px, 9vw);
+            max-width: 65px;
+            max-height: 65px;
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.15rem, 3.5vw, 1.6rem);
+            font-weight: 900;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 6px 20px rgba(14, 158, 110, 0.3);
+        }
+
+        .step-content h3 {
+            font-size: clamp(1.15rem, 3.5vw, 1.6rem);
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .step-content p {
+            color: var(--text-light);
+            line-height: 1.75;
+            font-size: clamp(0.9rem, 2.2vw, 1.02rem);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: linear-gradient(180deg, #ffffff 0%, var(--gray-bg) 100%);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: max(22px, 4vw);
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: max(28px, 5vw);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .quote-icon {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            color: var(--emerald);
+            opacity: 0.15;
+            position: absolute;
+            top: 18px;
+            right: 25px;
+            line-height: 1;
+            font-family: Georgia, serif;
+        }
+
+        .rating {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 15px;
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+        }
+
+        .star {
+            color: var(--gold);
+        }
+
+        .testimonial-text {
+            color: var(--dark);
+            line-height: 1.75;
+            margin-bottom: max(18px, 3vh);
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .author-avatar {
+            width: max(46px, 9vw);
+            height: max(46px, 9vw);
+            max-width: 55px;
+            max-height: 55px;
             background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: white;
             font-weight: 800;
-            box-shadow: 0 0 0 clamp(5px, 1vw, 8px) var(--dark), 0 0 20px rgba(14, 158, 110, 0.5);
+            flex-shrink: 0;
         }
 
-        .timeline-content {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: clamp(25px, 5vw, 40px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .author-info h4 {
+            color: var(--dark);
+            font-size: clamp(0.95rem, 2.3vw, 1.05rem);
+            margin-bottom: 3px;
+            font-weight: 700;
         }
 
-        .timeline-content h3 {
-            font-size: clamp(1.3rem, 4vw, 2rem);
-            margin-bottom: 15px;
-            color: var(--gold);
+        .author-info p {
+            color: var(--text-light);
+            font-size: clamp(0.8rem, 1.9vw, 0.88rem);
         }
 
-        .timeline-content p {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
-            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: clamp(0.75rem, 1.7vw, 0.82rem);
+            color: var(--emerald);
+            font-weight: 600;
+            margin-top: 5px;
         }
 
         /* CTA Section */
         .cta-section {
-            padding: clamp(80px, 15vh, 150px) 0;
+            padding: max(70px, 13vh) 0;
             background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
             color: white;
             text-align: center;
@@ -509,11 +649,22 @@
         .cta-section::before {
             content: '';
             position: absolute;
-            top: -30%;
-            right: -30%;
-            width: clamp(300px, 60vw, 600px);
-            height: clamp(300px, 60vw, 600px);
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            top: -40%;
+            right: -35%;
+            width: clamp(280px, 55vw, 550px);
+            height: clamp(280px, 55vw, 550px);
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -25%;
+            width: clamp(250px, 50vw, 500px);
+            height: clamp(250px, 50vw, 500px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
             border-radius: 50%;
         }
 
@@ -524,107 +675,199 @@
 
         .cta-content h2 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 7vw, 4rem);
-            margin-bottom: 2rem;
+            font-size: clamp(1.9rem, 6.5vw, 3.5rem);
+            margin-bottom: max(18px, 3vh);
             line-height: 1.2;
+            font-weight: 800;
         }
 
         .cta-content p {
-            font-size: clamp(1rem, 3vw, 1.3rem);
-            margin-bottom: 2.5rem;
-            opacity: 0.9;
-            max-width: 700px;
+            font-size: clamp(0.95rem, 2.6vw, 1.2rem);
+            margin-bottom: max(30px, 5vh);
+            opacity: 0.95;
+            max-width: 680px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.65;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: max(30px, 5vh);
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--emerald);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn-white:hover {
+            background: var(--beige);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline-white {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            box-shadow: none;
+        }
+
+        .btn-outline-white:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-3px);
+        }
+
+        .cta-features {
+            display: flex;
+            gap: max(18px, 4vw);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .cta-feature .icon {
+            font-size: 1.2em;
         }
 
         /* Footer */
         footer {
             background: var(--dark);
             color: white;
-            padding: clamp(50px, 10vh, 80px) 0 clamp(30px, 5vh, 40px);
+            padding: max(50px, 9vh) 0 max(25px, 4vh);
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: clamp(30px, 6vw, 60px);
-            margin-bottom: clamp(40px, 8vh, 60px);
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+            gap: max(28px, 5vw);
+            margin-bottom: max(35px, 6vh);
+        }
+
+        .footer-brand {
+            grid-column: 1 / -1;
+        }
+
+        @media (min-width: 768px) {
+            .footer-brand {
+                grid-column: span 2;
+            }
         }
 
         .footer-logo {
-            font-size: clamp(2rem, 5vw, 2.5rem);
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+            font-weight: 900;
+            letter-spacing: 1.5px;
             background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .footer-tagline {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: clamp(1rem, 2.5vw, 1.1rem);
-            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: clamp(0.95rem, 2.3vw, 1.08rem);
+            margin-bottom: 15px;
+            line-height: 1.6;
         }
 
-        .footer-social {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .social-icon {
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .social-icon:hover {
-            background: var(--emerald);
-            transform: translateY(-3px);
+        .footer-description {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: clamp(0.85rem, 2vw, 0.92rem);
+            line-height: 1.6;
+            max-width: 350px;
         }
 
         .footer-section h4 {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             color: var(--gold);
-            font-size: clamp(1.1rem, 3vw, 1.2rem);
+            font-size: clamp(1.05rem, 2.6vw, 1.15rem);
+            font-weight: 700;
         }
 
         .footer-section a {
             display: block;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.65);
             text-decoration: none;
-            margin-bottom: 12px;
+            margin-bottom: 11px;
             transition: all 0.3s ease;
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-size: clamp(0.87rem, 2.1vw, 0.95rem);
         }
 
         .footer-section a:hover {
-            color: var(--emerald);
-            padding-left: 5px;
+            color: var(--emerald-light);
+            padding-left: 6px;
+        }
+
+        .seller-cta-footer {
+            margin-top: max(30px, 5vh);
+            padding-top: max(30px, 5vh);
+            border-top: 2px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+            background: rgba(212, 175, 55, 0.05);
+            padding: max(28px, 5vh) max(20px, 4vw);
+            border-radius: 15px;
+            margin-bottom: max(30px, 5vh);
+        }
+
+        .seller-cta-footer p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 18px;
+            font-size: clamp(0.95rem, 2.3vw, 1.05rem);
+            font-weight: 600;
+        }
+
+        .btn-seller {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: var(--dark);
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.35s ease;
+            font-size: clamp(0.95rem, 2.3vw, 1.02rem);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-seller:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
         }
 
         .footer-bottom {
-            padding-top: clamp(30px, 5vh, 40px);
+            padding-top: max(28px, 5vh);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            color: rgba(255, 255, 255, 0.45);
+            font-size: clamp(0.82rem, 1.9vw, 0.9rem);
+        }
+
+        .footer-bottom p {
+            margin-bottom: 8px;
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(25px);
             }
             to {
                 opacity: 1;
@@ -640,18 +883,19 @@
 
             .nav-links {
                 position: fixed;
-                top: 70px;
+                top: 60px;
                 right: -100%;
-                width: 70%;
-                max-width: 300px;
-                height: calc(100vh - 70px);
+                width: 75%;
+                max-width: 320px;
+                height: calc(100vh - 60px);
                 background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
+                backdrop-filter: blur(30px);
                 flex-direction: column;
-                padding: 40px 30px;
-                gap: 30px;
-                box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+                padding: 35px 25px;
+                gap: 25px;
+                box-shadow: -8px 0 40px rgba(0,0,0,0.15);
                 transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                align-items: flex-start;
             }
 
             .nav-links.active {
@@ -659,11 +903,19 @@
             }
 
             .nav-links a {
-                font-size: 1.1rem;
+                font-size: 1.05rem;
+                padding: 8px 0;
+                width: 100%;
+            }
+
+            .nav-cta {
+                width: 100%;
+                text-align: center;
+                padding: 12px 24px !important;
             }
 
             .menu-toggle.active span:nth-child(1) {
-                transform: rotate(45deg) translate(7px, 7px);
+                transform: rotate(45deg) translate(6px, 6px);
             }
 
             .menu-toggle.active span:nth-child(2) {
@@ -671,43 +923,90 @@
             }
 
             .menu-toggle.active span:nth-child(3) {
-                transform: rotate(-45deg) translate(7px, -7px);
+                transform: rotate(-45deg) translate(6px, -6px);
             }
+        }
 
-            .cta-group {
+        /* Enhanced Mobile Optimization */
+        @media (max-width: 640px) {
+            .cta-group,
+            .cta-buttons {
                 flex-direction: column;
                 align-items: stretch;
             }
 
-            .btn-primary, .btn-secondary {
+            .btn {
                 width: 100%;
-                max-width: 300px;
+                max-width: 320px;
                 margin: 0 auto;
             }
-        }
 
-        /* Tablet Optimization */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .services-grid {
+            .trust-badges {
+                gap: 12px;
+            }
+
+            .trust-badge {
+                font-size: 0.78rem;
+                padding: 7px 13px;
+            }
+
+            .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .stat-item:last-child {
+                grid-column: 1 / -1;
             }
         }
 
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
+        /* Prevent horizontal overflow */
+        @media (max-width: 480px) {
+            * {
+                max-width: 100%;
+            }
+
+            .hero-content h1,
+            .section-title {
+                word-break: break-word;
+                hyphens: auto;
+            }
+
+            .benefits-grid,
+            .testimonial-grid,
+            .steps-container {
+                width: 100%;
+            }
+
+            .step-item {
+                gap: 15px;
+            }
+
+            .step-item::before {
+                left: 22px;
+            }
         }
 
-        /* Loading Animation */
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -723,10 +1022,10 @@
                     <span></span>
                 </div>
                 <ul class="nav-links" id="navLinks">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#process">How It Works</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#why-aaria">Why Aaria</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Reviews</a></li>
+                    <li><a href="#get-started" class="nav-cta">Get Started Free</a></li>
                 </ul>
             </div>
         </div>
@@ -736,172 +1035,224 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>AARIA</h1>
-                <div class="hero-subtitle">Smart Deals. Human Touch.</div>
-                <p class="hero-description">
-                    The future of real estate is here. Meet Aaria — your AI-powered property consultant who combines cutting-edge intelligence with genuine human empathy.
+                <div class="hero-badge">
+                    <span class="sparkle">✨</span>
+                    <span>100% Free AI Property Consultation</span>
+                </div>
+                <h1>
+                    Find Your Dream Property<br>
+                    with <span class="hero-highlight">Aaria</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Your personal AI real estate consultant who understands your needs, filters the noise, and helps you make confident property decisions. Zero pressure, just expert guidance.
                 </p>
                 <div class="cta-group">
-                    <a href="#contact" class="btn-primary">Experience Aaria</a>
-                    <a href="#about" class="btn-secondary">Learn More</a>
+                    <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20find%20a%20property" class="btn btn-primary">
+                        💬 Chat with Aaria Free
+                    </a>
+                    <a href="#how-it-works" class="btn btn-secondary">
+                        See How It Works
+                    </a>
                 </div>
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <span class="stat-number">24/7</span>
-                        <span class="stat-label">Available</span>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <span class="icon">✓</span>
+                        <span>100% Free</span>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-number">95%</span>
-                        <span class="stat-label">Response</span>
+                    <div class="trust-badge">
+                        <span class="icon">✓</span>
+                        <span>No Hidden Charges</span>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-number">3x</span>
-                        <span class="stat-label">Faster</span>
+                    <div class="trust-badge">
+                        <span class="icon">✓</span>
+                        <span>Zero Pressure</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Trust Section -->
-    <section class="trust-section">
+    <!-- Stats Bar -->
+    <section class="stats-bar">
         <div class="container">
-            <div class="trust-grid">
-                <div class="trust-item fade-in">
-                    <h3>500+</h3>
-                    <p>Properties</p>
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <span class="stat-number">1000+</span>
+                    <span class="stat-label">Happy Buyers</span>
                 </div>
-                <div class="trust-item fade-in">
-                    <h3>1000+</h3>
-                    <p>Clients</p>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Properties Matched</span>
                 </div>
-                <div class="trust-item fade-in">
-                    <h3>98%</h3>
-                    <p>Satisfaction</p>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Satisfaction Rate</span>
                 </div>
-                <div class="trust-item fade-in">
-                    <h3>₹50Cr+</h3>
-                    <p>Deals Closed</p>
+                <div class="stat-item fade-in">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Always Available</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="section" id="about">
+    <!-- Benefits Section -->
+    <section class="section benefits" id="why-aaria">
         <div class="container">
             <h2 class="section-title fade-in">
-                Where <span class="gradient-text">Intelligence</span><br>
-                Meets <span class="gradient-text">Empathy</span>
+                Why Choose <span class="gradient-text">Aaria</span>?
             </h2>
-            <p class="about-text fade-in">
-                Aaria (आरिया) — meaning "noble, pure, intelligent, and graceful" — is not just another AI assistant. She's your next-generation property consultant who listens deeply, learns continuously, and closes deals with emotional intelligence.
+            <p class="section-subtitle fade-in">
+                Property buying shouldn't be stressful. Aaria makes it simple, transparent, and actually enjoyable.
             </p>
-            <ul class="feature-list">
-                <li class="fade-in">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-content">
-                        <h4>Emotionally Intelligent</h4>
-                        <p>Understands your needs beyond words</p>
-                    </div>
-                </li>
-                <li class="fade-in">
-                    <div class="feature-icon">🧠</div>
-                    <div class="feature-content">
-                        <h4>Always Learning</h4>
-                        <p>Gets smarter with every conversation</p>
-                    </div>
-                </li>
-                <li class="fade-in">
-                    <div class="feature-icon">💎</div>
-                    <div class="feature-content">
-                        <h4>Premium Experience</h4>
-                        <p>Professional, polished, persuasive</p>
-                    </div>
-                </li>
-                <li class="fade-in">
-                    <div class="feature-icon">🌟</div>
-                    <div class="feature-content">
-                        <h4>Trusted Advisor</h4>
-                        <p>Your consultant, not a salesperson</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Services -->
-    <section class="section services" id="services">
-        <div class="container">
-            <h2 class="section-title fade-in">The <span class="gradient-text">Aaria</span> Ecosystem</h2>
-            <div class="services-grid">
-                <div class="service-card fade-in">
-                    <span class="service-icon">💬</span>
-                    <h3>WhatsApp Intelligence</h3>
-                    <p>Seamless follow-ups with brochures, maps, pricing, and personalized recommendations.</p>
+            <div class="benefits-grid">
+                <div class="benefit-card fade-in">
+                    <span class="benefit-icon">🎯</span>
+                    <h3>Truly Understands You</h3>
+                    <p>Tell Aaria your budget, lifestyle, and dreams. She remembers everything and finds properties that genuinely match your vision.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <span class="service-icon">📊</span>
-                    <h3>Smart CRM</h3>
-                    <p>Intelligent lead classification and automated next-action recommendations.</p>
+                <div class="benefit-card fade-in">
+                    <span class="benefit-icon">🔍</span>
+                    <h3>Filters Out the Noise</h3>
+                    <p>No more scrolling through hundreds of irrelevant listings. Aaria shows you only properties that actually fit your requirements.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <span class="service-icon">🧠</span>
-                    <h3>AI Insights</h3>
-                    <p>Data-driven analytics for pricing, trends, and strategic marketing moves.</p>
+                <div class="benefit-card fade-in">
+                    <span class="benefit-icon">💰</span>
+                    <h3>Completely Free Forever</h3>
+                    <p>Zero consultation fees. No commissions from you. No surprises. Aaria is your trusted advisor at absolutely no cost.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <span class="service-icon">🎯</span>
-                    <h3>Lead Nurturing</h3>
-                    <p>Automated yet personal follow-ups that keep prospects engaged.</p>
+                <div class="benefit-card fade-in">
+                    <span class="benefit-icon">⚡</span>
+                    <h3>Responds in Seconds</h3>
+                    <p>Questions at 2 AM? Aaria is always awake. Get instant property details, market insights, and answers anytime, anywhere.</p>
                 </div>
-                <div class="service-card fade-in">
-                    <span class="service-icon">📈</span>
-                    <h3>Performance Tracking</h3>
-                    <p>Real-time dashboards with conversion metrics and improvement insights.</p>
+                <div class="benefit-card fade-in">
+                    <span class="benefit-icon">🤝</span>
+                    <h3>Zero Pressure Zone</h3>
+                    <p>Unlike pushy agents, Aaria never rushes you. Take your time, ask questions, compare options. Buy when YOU'RE ready.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <span class="benefit-icon">📊</span>
+                    <h3>Smart Market Insights</h3>
+                    <p>Get real data on price trends, neighborhood growth, ROI projections — everything you need to invest confidently.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Process -->
-    <section class="section process" id="process">
+    <!-- How It Works -->
+    <section class="section how-it-works" id="how-it-works">
         <div class="container">
-            <h2 class="section-title fade-in">How <span class="gradient-text">Aaria</span> Works</h2>
-            <div class="timeline">
-                <div class="timeline-item fade-in">
-                    <div class="timeline-number">1</div>
-                    <div class="timeline-content">
-                        <h3>Instant Connection</h3>
-                        <p>The moment a lead comes in through your website, social media, or referral, Aaria springs into action — no delays, no missed opportunities.</p>
+            <h2 class="section-title fade-in">
+                How <span class="gradient-text">Aaria</span> Helps You
+            </h2>
+            <p class="section-subtitle fade-in">
+                Finding your perfect property is simpler than ordering food online
+            </p>
+            <div class="steps-container">
+                <div class="step-item fade-in">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Tell Aaria What You Want</h3>
+                        <p>Share your budget, preferred locations, property type, size, and any special needs. Chat naturally — Aaria understands conversational language perfectly.</p>
                     </div>
                 </div>
-                <div class="timeline-item fade-in">
-                    <div class="timeline-number">2</div>
-                    <div class="timeline-content">
-                        <h3>Intelligent Discovery</h3>
-                        <p>Aaria asks the right questions to understand budget, preferences, investment goals, and timeline — all while building genuine rapport.</p>
+                <div class="step-item fade-in">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Get Perfect Property Matches</h3>
+                        <p>Within minutes, Aaria analyzes thousands of listings and sends you only the best matches — complete with photos, pricing, location maps, and detailed info via WhatsApp.</p>
                     </div>
                 </div>
-                <div class="timeline-item fade-in">
-                    <div class="timeline-number">3</div>
-                    <div class="timeline-content">
-                        <h3>Smart Nurturing</h3>
-                        <p>Personalized follow-ups via WhatsApp and calls, sharing relevant property details, market insights, and answering questions 24/7.</p>
+                <div class="step-item fade-in">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Ask Questions Anytime</h3>
+                        <p>Have doubts? Need legal clarity? Want neighborhood insights? Aaria answers everything 24/7. No question is too small or too late.</p>
                     </div>
                 </div>
-                <div class="timeline-item fade-in">
-                    <div class="timeline-number">4</div>
-                    <div class="timeline-content">
-                        <h3>Expert Closing</h3>
-                        <p>When the lead is ready, Aaria seamlessly connects them with your human team for site visits, negotiations, and paperwork.</p>
+                <div class="step-item fade-in">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Visit & Close the Deal</h3>
+                        <p>Ready to see a property? Aaria arranges site visits with our expert team who guide you through negotiations, paperwork, and ensure a smooth, transparent purchase.</p>
                     </div>
                 </div>
-                <div class="timeline-item fade-in">
-                    <div class="timeline-number">5</div>
-                    <div class="timeline-content">
-                        <h3>Continuous Evolution</h3>
-                        <p>Every interaction makes Aaria smarter — learning from feedback to refine her approach and improve conversion rates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in">
+                Real Stories from <span class="gradient-text">Real Buyers</span>
+            </h2>
+            <p class="section-subtitle fade-in">
+                Join 1000+ happy property owners who found their dream homes with Aaria
+            </p>
+            <div class="testimonial-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="quote-icon">"</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-text">
+                        "I was tired of agents showing me overpriced plots. Aaria understood my ₹15L budget perfectly and found me a plot in a developing area. Best investment decision ever!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">R</div>
+                        <div class="author-info">
+                            <h4>Rajesh Kumar</h4>
+                            <p>Software Engineer, Kanpur</p>
+                            <span class="verified-badge">✓ Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="quote-icon">"</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-text">
+                        "As an NRI, buying property in India was scary. Aaria sent me videos, documents, even virtual tours at midnight Dubai time. Made everything transparent and easy."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">P</div>
+                        <div class="author-info">
+                            <h4>Priya Sharma</h4>
+                            <p>Marketing Manager, Dubai</p>
+                            <span class="verified-badge">✓ Verified Buyer</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="quote-icon">"</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="testimonial-text">
+                        "No fake urgency, no pressure tactics. Aaria gave me market data, price comparisons, and let me decide. Took 3 months to choose, and she was patient throughout!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <h4>Amit Verma</h4>
+                            <p>Business Owner, Lucknow</p>
+                            <span class="verified-badge">✓ Verified Buyer</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -909,20 +1260,35 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section" id="contact">
+    <section class="cta-section" id="get-started">
         <div class="container">
             <div class="cta-content">
-                <h2 class="fade-in">Ready to Transform Your Real Estate Business?</h2>
+                <h2 class="fade-in">Ready to Find Your Perfect Property?</h2>
                 <p class="fade-in">
-                    Join the future of property sales. Let Aaria handle leads while you focus on closing deals and growing your business.
+                    Join 1000+ smart buyers who found their dream properties with Aaria. Start chatting now — no registration, no fees, no obligations.
                 </p>
-                <div class="cta-group">
-                    <a href="mailto:contact@aaria.ai" class="btn-primary">Get Started Today</a>
-                    <a href="#about" class="btn-secondary" style="border-color: white; color: white;">Watch Demo</a>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20buy%20a%20property" class="btn btn-white">
+                        💬 Start Free Consultation
+                    </a>
+                    <a href="tel:+919876543210" class="btn btn-outline-white">
+                        📞 Call Aaria Now
+                    </a>
                 </div>
-                <p style="margin-top: 40px; font-size: clamp(1rem, 2.5vw, 1.1rem); opacity: 0.9;">
-                    <strong>Starting in Kanpur</strong> • Expanding across North India
-                </p>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <span class="icon">✓</span>
+                        <span>Instant Response</span>
+                    </div>
+                    <div class="cta-feature">
+                        <span class="icon">✓</span>
+                        <span>100% Free Service</span>
+                    </div>
+                    <div class="cta-feature">
+                        <span class="icon">✓</span>
+                        <span>Expert Guidance</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -931,53 +1297,72 @@
     <footer>
         <div class="container">
             <div class="footer-grid">
-                <div>
+                <div class="footer-brand">
                     <div class="footer-logo">AARIA</div>
-                    <p class="footer-tagline">Smart Deals. Human Touch.</p>
-                    <div class="footer-social">
-                        <div class="social-icon">📧</div>
-                        <div class="social-icon">💬</div>
-                        <div class="social-icon">📱</div>
-                        <div class="social-icon">🌐</div>
-                    </div>
+                    <p class="footer-tagline">Your Trusted AI Property Consultant</p>
+                    <p class="footer-description">
+                        Making property buying simple, transparent, and stress-free for every Indian family.
+                    </p>
                 </div>
                 <div class="footer-section">
-                    <h4>Company</h4>
-                    <a href="#about">About Us</a>
-                    <a href="#services">Services</a>
-                    <a href="#process">How It Works</a>
-                    <a href="#contact">Contact</a>
+                    <h4>For Buyers</h4>
+                    <a href="#why-aaria">Why Choose Aaria</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#testimonials">Success Stories</a>
+                    <a href="#get-started">Get Started Free</a>
                 </div>
                 <div class="footer-section">
-                    <h4>Solutions</h4>
-                    <a href="#">For Developers</a>
-                    <a href="#">For Agents</a>
-                    <a href="#">For Buyers</a>
-                    <a href="#">Partnerships</a>
+                    <h4>Quick Links</h4>
+                    <a href="#">Browse Properties</a>
+                    <a href="#">Investment Guide</a>
+                    <a href="#">Location Insights</a>
+                    <a href="#">FAQs</a>
                 </div>
                 <div class="footer-section">
-                    <h4>Contact</h4>
-                    <a href="mailto:contact@aaria.ai">contact@aaria.ai</a>
-                    <a href="#">Kanpur, UP</a>
-                    <a href="#">Careers</a>
-                    <a href="#">Support</a>
+                    <h4>Contact Us</h4>
+                    <a href="https://wa.me/919876543210">WhatsApp Chat</a>
+                    <a href="tel:+919876543210">Call: +91 98765 43210</a>
+                    <a href="mailto:buyers@aaria.ai">buyers@aaria.ai</a>
+                    <a href="#">Kanpur, Uttar Pradesh</a>
                 </div>
             </div>
+
+            <!-- Prominent Seller CTA -->
+            <div class="seller-cta-footer">
+    <p>🏢 Are you a Property Seller, Builder, or Developer?</p>
+    <a href="./seller.html" class="btn-seller" target="_blank" rel="noopener noreferrer">
+        List Your Properties with Aaria →
+    </a>
+</div>
+
             <div class="footer-bottom">
-                <p><strong>AARIA</strong> — Where Emotion + Automation = Conversion</p>
-                <p style="margin-top: 10px;">&copy; 2025 AARIA. All rights reserved. Crafted with intelligence and empathy.</p>
+                <p><strong>AARIA</strong> — Smart Deals. Human Touch.</p>
+                <p>&copy; 2025 AARIA. All rights reserved. Powered by AI, driven by empathy.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
+        const body = document.body;
 
-        menuToggle.addEventListener('click', () => {
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             menuToggle.classList.toggle('active');
             navLinks.classList.toggle('active');
+            body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
         });
 
         // Close menu when clicking on links
@@ -985,21 +1370,25 @@
             link.addEventListener('click', () => {
                 menuToggle.classList.remove('active');
                 navLinks.classList.remove('active');
+                body.style.overflow = '';
             });
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+            if (navLinks.classList.contains('active') && 
+                !menuToggle.contains(e.target) && 
+                !navLinks.contains(e.target)) {
                 menuToggle.classList.remove('active');
                 navLinks.classList.remove('active');
+                body.style.overflow = '';
             }
         });
 
         // Intersection Observer for fade-in animations
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -1020,7 +1409,7 @@
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    const offsetTop = target.offsetTop - 80;
+                    const offsetTop = target.offsetTop - 70;
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
@@ -1029,8 +1418,28 @@
             });
         });
 
-        // Prevent horizontal scroll issues on mobile
+        // Prevent horizontal scroll
         document.body.style.overflowX = 'hidden';
+        
+        // Performance optimization - lazy load images if added
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
     </script>
 </body>
 </html>
