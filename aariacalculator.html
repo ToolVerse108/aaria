@@ -1,91 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AARIA • Plot Investment ROI + IRR + Indexation (CII)</title>
-<!-- Minimal reset + theme -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AARIA's Ultimate Plot Investment ROI Calculator — Corrected</title>
 <style>
-  :root{
-    --pri:#2a5298;--pri2:#667eea;--ok:#27ae60;--bad:#e74c3c;--mut:#6b7280;--bg:#f6f7fb
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;min-height:100vh}
+  .container{max-width:1400px;margin:0 auto;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+  .header{background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);color:#fff;padding:30px;text-align:center}
+  .header h1{font-size:2.2em;margin-bottom:6px;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+  .main-content{padding:24px}
+  .tabs{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;padding:0 24px}
+  .tab{padding:10px 18px;background:#e7eaf3;border:none;border-radius:10px;cursor:pointer;font-weight:600;transition:all .2s;font-size:14px}
+  .tab:hover{transform:translateY(-2px)}
+  .tab.active{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+  .section{background:#f8f9fa;padding:20px;border-radius:14px;box-shadow:0 4px 6px rgba(0,0,0,.06);margin-bottom:16px}
+  .section h2{color:#2a5298;margin-bottom:14px;font-size:1.15em;border-bottom:3px solid #667eea;padding-bottom:6px}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .form-group label{display:block;margin-bottom:6px;color:#333;font-weight:600;font-size:13px}
+  .form-group input,.form-group select{width:100%;padding:11px;border:2px solid #e3e6ee;border-radius:10px;font-size:15px;transition:border-color .2s,box-shadow .2s;background:#fff}
+  .form-group input:focus,.form-group select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
+  .helper-text{font-size:12px;color:#666;margin-top:4px;font-style:italic}
+  .calculated-field{background:#e8f4f8;padding:10px;border-radius:10px;margin-top:8px;font-weight:700;color:#2a5298}
+  .btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:14px 24px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s;width:100%;margin-top:10px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,.3)}
+  .results{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);padding:24px;border-radius:16px;margin-top:18px}
+  .results h2{color:#1e3c72;text-align:center;margin-bottom:22px;font-size:1.6em}
+  .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:18px}
+  .result-card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,.08);text-align:center;transition:transform .15s}
+  .result-card:hover{transform:translateY(-3px)}
+  .result-card h3{color:#666;font-size:.85em;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+  .result-card .value{color:#2a5298;font-size:1.5em;font-weight:800;word-break:break-word}
+  .result-card.positive .value{color:#27ae60}
+  .result-card.negative .value{color:#e74c3c}
+  .chart-container{margin:14px 0;padding:16px;background:#fff;border-radius:12px}
+  .progress-bar{width:100%;height:36px;background:#e9edf5;border-radius:18px;overflow:hidden;margin:8px 0}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);transition:width .8s ease;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+  .timeline{margin:20px 0;padding:16px;background:#fff;border-radius:12px}
+  .timeline-item{display:flex;margin-bottom:12px;padding:12px;background:#f8f9fa;border-radius:10px;border-left:4px solid #667eea}
+  .timeline-year{font-weight:800;color:#2a5298;min-width:90px;font-size:15px}
+  .comparison-table{width:100%;margin:14px 0;background:#fff;border-radius:12px;overflow:hidden}
+  .comparison-table table{width:100%;border-collapse:collapse}
+  .comparison-table th{background:#2a5298;color:#fff;padding:12px;text-align:left;font-weight:700}
+  .comparison-table td{padding:11px 12px;border-bottom:1px solid #e6eaf2}
+  .insight-box{background:#fff3cd;border-left:5px solid #ffc107;padding:16px;margin:14px 0;border-radius:10px}
+  .insight-box.success{background:#d4edda;border-left-color:#28a745}
+  .insight-box.danger{background:#f8d7da;border-left-color:#dc3545}
+  .def-link{display:inline-block;margin:0 0 10px 0;font-size:14px;font-weight:700;color:#2a5298;cursor:pointer;text-decoration:underline}
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:999}
+  .modal-content{max-width:900px;width:100%;max-height:85vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:20px}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .modal-title{font-weight:900;color:#2a5298;font-size:18px}
+  .close-btn{background:#e9edf5;border:none;border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer}
+  .defs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .def-card{border:1px solid #e6eaf2;border-radius:10px;padding:12px;background:#fafbff}
+  .def-card h4{margin-bottom:6px;color:#1e3c72}
+  @media (max-width:768px){
+    .header h1{font-size:1.7em}
+    .results-grid{grid-template-columns:1fr}
   }
-  *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2) fixed;min-height:100vh;padding:18px}
-  .container{max-width:1200px;margin:auto;background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden}
-  .header{background:linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;padding:28px;text-align:center}
-  .header h1{margin:0 0 6px;font-size:2rem}
-  .sub{opacity:.9}
-  .wrap{padding:24px}
-  .grid{display:grid;gap:16px}
-  @media(min-width:900px){.grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  .card{background:#f8f9fb;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
-  h2.section{font-size:1.1rem;color:var(--pri);margin:0 0 10px;border-bottom:3px solid var(--pri2);padding-bottom:8px}
-  label{font-weight:600;font-size:.9rem;color:#111}
-  input,select{width:100%;padding:10px 12px;border:2px solid #e5e7eb;border-radius:10px;font-size:0.95rem;outline:0;transition:.2s}
-  input:focus,select:focus{border-color:var(--pri2);box-shadow:0 0 0 3px rgba(102,126,234,.15)}
-  .hint{font-size:.75rem;color:#555;margin-top:6px}
-  .inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .pill{display:inline-flex;align-items:center;gap:6px;background:#eef2ff;color:#1d4ed8;border-radius:999px;padding:6px 10px;font-size:.8rem}
-  .btn{cursor:pointer;border:0;border-radius:12px;padding:14px 22px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:700}
-  .btn:active{transform:translateY(1px)}
-  .results{background:linear-gradient(135deg,#f5f7fa,#c3cfe2);border-radius:14px;padding:18px;margin-top:16px}
-  .kpis{display:grid;gap:14px}
-  @media(min-width:900px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
-  .kpi{background:#fff;border-radius:12px;padding:14px;border:1px solid #e5e7eb;text-align:center}
-  .kpi h4{margin:0 0 6px;color:#6b7280;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase}
-  .kpi .v{font-size:1.5rem;font-weight:800;color:var(--pri)}
-  .kpi.pos .v{color:var(--ok)} .kpi.neg .v{color:var(--bad)}
-  .progress{height:36px;background:#e5e7eb;border-radius:18px;overflow:hidden}
-  .fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;transition:width .8s}
-  .timeline{background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:16px}
-  .row{display:flex;gap:10px;padding:10px 8px;border-bottom:1px dashed #e5e7eb;font-size:.9rem}
-  .row:last-child{border-bottom:0}
-  .row > div{flex:1}
-  .badge{padding:3px 8px;border-radius:999px;font-size:.75rem}
-  .b-ok{background:#e8f8ee;color:#14532d}.b-bad{background:#fde8e8;color:#7f1d1d}.b-warn{background:#fff7ed;color:#7c2d12}
-  .insights{display:grid;gap:14px}
-  @media(min-width:900px){.insights{grid-template-columns:1fr 1fr}}
-  .ins{border-left:6px solid #10b981;background:#ecfeff;border-radius:12px;padding:14px}
-  .ins h3{margin:0 0 8px;color:#064e3b}
-  .risk{border-left:6px solid #ef4444;background:#fff1f2}
-  .risk h3{color:#7f1d1d}
-  .tiny-actions{display:flex;gap:12px;justify-content:flex-end;align-items:center;margin-top:10px}
-  .icon-btn{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:8px;cursor:pointer;display:inline-flex}
-  .icon-btn svg{width:18px;height:18px}
-  .footnote{font-size:.8rem;color:var(--mut);margin-top:8px}
-  /* modal */
-  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
-  .modal .box{background:#fff;max-width:900px;width:100%;border-radius:14px;max-height:80vh;overflow:auto;padding:18px}
-  .box h3{margin:0 0 10px;color:var(--pri)}
-  .def{padding:10px 0;border-bottom:1px dashed #e5e7eb}
-  .tag{font-weight:700}
 </style>
-<!-- html2canvas + jsPDF (for client-side PDF) -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>✅ AARIA • Plot Investment ROI & IRR Calculator</h1>
-      <div class="sub">Market-standard math • CII Indexation • Monthly IRR • Aaria’s Smart Suggestions (Style B)</div>
-    </div>
+<div class="container">
+  <div class="header">
+    <h1>✅ AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
+    <p>Your market-standard, India-ready plot investment analyzer</p>
+  </div>
 
-    <div class="wrap">
-      <!-- BASIC -->
-      <div class="card">
-        <h2 class="section">🏗️ Plot & Purchase (Market-standard)</h2>
-        <div class="grid cols-3">
-          <div>
+  <div class="tabs">
+    <button class="tab active" data-tab="basic">📋 Basic Inputs</button>
+    <button class="tab" data-tab="holding">💰 Holding Costs</button>
+    <button class="tab" data-tab="growth">📈 Growth Forecast</button>
+    <button class="tab" data-tab="exit">🎯 Exit Strategy</button>
+    <button class="tab" data-tab="risk">⚠️ Risk Analysis</button>
+  </div>
+
+  <div class="main-content">
+    <!-- BASIC -->
+    <div id="basic" class="tab-content active">
+      <div class="section">
+        <h2>🏗️ Plot Details</h2>
+        <div class="form-grid">
+          <div class="form-group">
             <label>Purchase Price (₹)</label>
-            <input id="purchasePrice" type="number" value="1500000" />
-            <div class="hint">Agreement value of land (land generally has no GST).</div>
+            <input type="number" id="purchasePrice" value="5000000" />
+            <div class="helper-text">Sale deed value / agreement value</div>
           </div>
-          <div>
+          <div class="form-group">
             <label>Plot Size</label>
-            <input id="plotSize" type="number" value="1000" />
-            <div class="hint">Enter numeric size.</div>
+            <input type="number" id="plotSize" value="1000" />
           </div>
-          <div>
+          <div class="form-group">
             <label>Unit</label>
             <select id="plotUnit">
               <option value="sqft" selected>Square Feet</option>
@@ -93,607 +103,790 @@
               <option value="sqmeter">Square Meters</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Circle Rate (₹ per unit)</label>
+            <input type="number" id="circleRate" value="4500"/>
+            <div class="helper-text">Govt. minimum (guidance) value</div>
+          </div>
+        </div>
+        <div class="calculated-field">
+          Price per unit: ₹<span id="pricePerUnit">0</span> |
+          <span id="circleRateComparison"></span>
+        </div>
+      </div>
 
-          <div>
-            <label>State (Stamp Duty %)</label>
+      <div class="section">
+        <h2>💰 Purchase Costs & Registration</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>State (Stamp Duty)</label>
             <select id="state">
-              <option value="UP|7">Uttar Pradesh (≈7%)</option>
-              <option value="MH|6">Maharashtra (≈6%)</option>
-              <option value="DL|6">Delhi (≈6%)</option>
-              <option value="KA|5">Karnataka (≈5%)</option>
-              <option value="TN|7">Tamil Nadu (≈7%)</option>
-              <option value="RJ|6">Rajasthan (≈6%)</option>
-              <option value="GJ|4.9">Gujarat (≈4.9%)</option>
-              <option value="HR|7">Haryana (≈7%)</option>
-              <option value="MP|7.5">Madhya Pradesh (≈7.5%)</option>
-              <option value="PB|7">Punjab (≈7%)</option>
+              <option value="up">Uttar Pradesh (7%)</option>
+              <option value="mh">Maharashtra (5.5%)</option>
+              <option value="dl">Delhi (6%)</option>
+              <option value="ka">Karnataka (5%)</option>
+              <option value="tn">Tamil Nadu (7%)</option>
+              <option value="rj">Rajasthan (5.5%)</option>
+              <option value="gj">Gujarat (4.9%)</option>
+              <option value="hr">Haryana (6.5%)</option>
+              <option value="mp">Madhya Pradesh (7.5%)</option>
+              <option value="pb">Punjab (7%)</option>
             </select>
-            <div class="hint">You can override % below if needed.</div>
           </div>
-          <div>
-            <label>Stamp Duty (%)</label>
-            <input id="stampPct" type="number" step="0.1" value="7" />
-          </div>
-          <div>
+          <div class="form-group">
             <label>Registration Cost (₹)</label>
-            <input id="registrationCost" type="number" value="10000" />
+            <input type="number" id="registrationCost" value="10000"/>
+            <div class="helper-text">Often ~1% (varies)</div>
           </div>
-
-          <div>
-            <label>Brokerage to Buy (%)</label>
-            <input id="brokerageBuyPct" type="number" value="1.0" step="0.1" />
-          </div>
-          <div>
-            <label>Legal/Consultancy at Purchase (₹)</label>
-            <input id="legalPurchase" type="number" value="15000" />
-          </div>
-          <div>
-            <label>Misc Purchase Costs (₹)</label>
-            <input id="miscPurchase" type="number" value="5000" />
-          </div>
-
-          <div class="inline">
-            <input id="gstApplicable" type="checkbox" />
-            <label for="gstApplicable">GST applicable? (generally No for land)</label>
-          </div>
-          <div>
-            <label>GST on Purchase (%)</label>
-            <input id="gstPct" type="number" value="12" step="0.1" />
-            <div class="hint">Used only if GST box checked.</div>
-          </div>
-          <div class="inline">
-            <span class="pill" id="ppu">Price/Unit: —</span>
-            <button class="btn" id="defsBtn" type="button">📘 Term Definitions</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- LOAN -->
-      <div class="card">
-        <h2 class="section">🏦 Loan (optional)</h2>
-        <div class="grid cols-3">
-          <div>
-            <label>Using Loan?</label>
-            <select id="useLoan">
-              <option value="no" selected>No (Cash)</option>
-              <option value="yes">Yes (Home/Loan)</option>
+          <div class="form-group">
+            <label>GST Applicable?</label>
+            <select id="gstApplicable">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes (on under-construction)</option>
             </select>
           </div>
-          <div>
-            <label>Loan Amount (₹)</label>
-            <input id="loanAmount" type="number" value="900000" />
-            <div class="hint">Typically ≤80% of value.</div>
+          <div class="form-group">
+            <label>Brokerage (%)</label>
+            <input type="number" id="brokerage" value="1" step="0.1" min="0" max="5"/>
           </div>
-          <div>
-            <label>Interest Rate (% p.a.)</label>
-            <input id="interestRate" type="number" value="9.0" step="0.1" />
+          <div class="form-group">
+            <label>Lawyer/Consultancy Fees (₹)</label>
+            <input type="number" id="lawyerFees" value="25000"/>
           </div>
-          <div>
-            <label>Loan Tenure (years)</label>
-            <input id="loanTenure" type="number" value="10" />
+          <div class="form-group">
+            <label>Other Misc Costs (₹)</label>
+            <input type="number" id="miscCosts" value="10000"/>
+            <div class="helper-text">Site visits, documentation, etc.</div>
           </div>
-          <div>
-            <label>Processing Fee (% of loan)</label>
-            <input id="processingPct" type="number" value="0.5" step="0.1" />
+        </div>
+        <div class="calculated-field">
+          Stamp Duty: ₹<span id="stampDutyCalc">0</span> |
+          Brokerage: ₹<span id="brokerageCalc">0</span> |
+          <strong>Total Upfront Cash (w/o loan): ₹<span id="totalUpfrontPreview">0</span></strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOLDING -->
+    <div id="holding" class="tab-content">
+      <div class="section">
+        <h2>🏦 Loan Details</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Taking Loan?</label>
+            <select id="loanTaken">
+              <option value="no" selected>No (Cash Purchase)</option>
+              <option value="yes">Yes (Home/Plot Loan)</option>
+            </select>
           </div>
-          <div class="inline">
-            <span class="pill" id="emiShow">EMI: —</span>
-            <span class="pill" id="intShow">Total Interest (till sale): —</span>
+        </div>
+        <div id="loanFields" style="display:none;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Loan Amount (₹)</label>
+              <input type="number" id="loanAmount" value="3000000"/>
+              <div class="helper-text">Usually ≤ 80% of value</div>
+            </div>
+            <div class="form-group">
+              <label>Interest Rate (% p.a.)</label>
+              <input type="number" id="interestRate" value="9.5" step="0.1"/>
+            </div>
+            <div class="form-group">
+              <label>Loan Tenure (years)</label>
+              <input type="number" id="loanTenure" value="10" min="1" max="30"/>
+            </div>
+            <div class="form-group">
+              <label>Processing Fee (%)</label>
+              <input type="number" id="processingFeePercent" value="0.5" step="0.1"/>
+            </div>
+          </div>
+          <div class="calculated-field">
+            Monthly EMI: ₹<span id="emiCalc">0</span> |
+            Total Interest (till sale): ₹<span id="totalInterestCalc">0</span> |
+            Processing Fee: ₹<span id="processingFeeCalc">0</span> |
+            Remaining Loan at Sale: ₹<span id="loanBalanceAtSale">0</span>
           </div>
         </div>
       </div>
 
-      <!-- HOLDING -->
-      <div class="card">
-        <h2 class="section">📅 Holding & Ongoing</h2>
-        <div class="grid cols-3">
-          <div>
+      <div class="section">
+        <h2>📅 Annual Holding Costs</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Annual Property Tax (₹)</label>
+            <input type="number" id="propertyTax" value="5000"/>
+          </div>
+          <div class="form-group">
+            <label>Annual Maintenance (₹)</label>
+            <input type="number" id="maintenance" value="12000"/>
+          </div>
+          <div class="form-group">
+            <label>Inflation Rate for Costs (%)</label>
+            <input type="number" id="inflationRate" value="6" step="0.1"/>
+          </div>
+          <div class="form-group">
+            <label>Opportunity Cost (% p.a.)</label>
+            <input type="number" id="opportunityCost" value="0" step="0.1"/>
+            <div class="helper-text">Info only; not used in ROI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROWTH -->
+    <div id="growth" class="tab-content">
+      <div class="section">
+        <h2>📈 Market Growth Projections</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Forecasted Growth Rate (% p.a.)</label>
+            <input type="number" id="forecastedGrowth" value="10" step="0.5"/>
+          </div>
+          <div class="form-group">
+            <label>Growth Model</label>
+            <select id="growthModel">
+              <option value="compound" selected>Compound (standard)</option>
+              <option value="linear">Linear (conservative)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Market Cycle Multiplier</label>
+            <select id="marketCycle">
+              <option value="0.9">Soft Market</option>
+              <option value="1" selected>Neutral</option>
+              <option value="1.1">Rising Market</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Infra/Legal/Demand Multiplier (combined)</label>
+            <select id="combinedMultiplier">
+              <option value="0.95">Below Average</option>
+              <option value="1" selected>Average</option>
+              <option value="1.05">Above Average</option>
+              <option value="1.1">Strong Drivers</option>
+            </select>
+            <div class="helper-text">Applies to growth, capped to market-realistic band</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXIT -->
+    <div id="exit" class="tab-content">
+      <div class="section">
+        <h2>🎯 Exit Planning & Timeline</h2>
+        <div class="form-grid">
+          <div class="form-group">
             <label>Holding Period (years)</label>
-            <input id="holdingYears" type="number" value="5" />
+            <input type="number" id="holdingPeriod" value="5" min="1" max="30"/>
           </div>
-          <div>
-            <label>Property Tax / year (₹)</label>
-            <input id="propTax" type="number" value="3000" />
+          <div class="form-group">
+            <label>Exit Strategy</label>
+            <select id="exitStrategy">
+              <option value="normal" selected>Normal Market Sale</option>
+              <option value="quick">Quick Sale (−10%)</option>
+              <option value="distress">Distress (−20%)</option>
+              <option value="premium">Premium (+5%)</option>
+            </select>
           </div>
-          <div>
-            <label>Maintenance / year (₹)</label>
-            <input id="maint" type="number" value="6000" />
+          <div class="form-group">
+            <label>Capital Gains Tax Scenario</label>
+            <select id="capitalGainsTax">
+              <option value="20" selected>Long Term (≥ 24 months): 20%</option>
+              <option value="30">Short Term (&lt; 24 months): 30% (slab approx)</option>
+              <option value="0">Reinvest (Sec 54F assumed): 0%</option>
+            </select>
           </div>
-          <div>
-            <label>Cost Escalation (Inflation) %</label>
-            <input id="inflationPct" type="number" value="5" step="0.1" />
-          </div>
-          <div>
-            <label>Expected Market Growth (% p.a.)</label>
-            <input id="growthPct" type="number" value="10" step="0.1" />
-          </div>
-          <div>
-            <label>Exit Selling Costs (% of sale)</label>
-            <input id="sellCostPct" type="number" value="2" step="0.1" />
-          </div>
-        </div>
-      </div>
-
-      <!-- INDEXATION (CII) -->
-      <div class="card">
-        <h2 class="section">🧮 Capital Gains & Indexation (CII) — Mode B (Manual FY CII)</h2>
-        <div class="grid cols-3">
-          <div>
-            <label>Financial Year of Purchase (CII)</label>
-            <input id="ciiPurchase" type="number" placeholder="e.g. 348" />
-            <div class="hint">Enter official CII for purchase FY.</div>
-          </div>
-          <div>
-            <label>Financial Year of Sale (CII)</label>
-            <input id="ciiSale" type="number" placeholder="e.g. 360" />
-            <div class="hint">Enter official CII for sale FY.</div>
-          </div>
-          <div>
-            <label>Buyer’s Income Tax Slab (%) for STCG</label>
-            <input id="stcgSlab" type="number" value="30" step="1" />
-          </div>
-          <div class="inline">
-            <input id="includeCostsInCOA" type="checkbox" checked />
-            <label for="includeCostsInCOA">Include stamp duty, registration & purchase-brokerage in Cost of Acquisition (COA)</label>
-          </div>
-        </div>
-        <div class="hint">LTCG applies if holding &gt; 24 months. LTCG tax assumed @20% with indexation. STCG taxed at slab.</div>
-      </div>
-
-      <!-- OPTIONAL RENT (kept simple) -->
-      <div class="card">
-        <h2 class="section">🏠 Optional Rent (if any while holding)</h2>
-        <div class="grid cols-3">
-          <div>
-            <label>Monthly Rent (₹)</label>
-            <input id="rentMonthly" type="number" value="0" />
-          </div>
-          <div>
-            <label>Vacancy (% of year)</label>
-            <input id="vacancyPct" type="number" value="10" step="1" />
-          </div>
-          <div>
-            <label>Annual Rent Growth (%)</label>
-            <input id="rentGrowthPct" type="number" value="4" step="0.5" />
+          <div class="form-group">
+            <label>Selling Costs (%)</label>
+            <input type="number" id="sellingCosts" value="2" step="0.5"/>
+            <div class="helper-text">Brokerage, legal fees at time of sale</div>
           </div>
         </div>
       </div>
 
-      <!-- ACTION -->
-      <div class="inline" style="justify-content:space-between;margin:10px 0 6px">
-        <div class="inline">
-          <span class="pill">Market standard math</span>
-          <span class="pill">CII Indexation (Manual)</span>
-          <span class="pill">Monthly IRR</span>
+      <div class="section">
+        <h2>🏗️ Optional: Construction & Rent</h2>
+        <div class="form-group">
+          <label>Plan to Construct & Rent?</label>
+          <select id="planConstruct">
+            <option value="no" selected>No - Sell Plot As-Is</option>
+            <option value="yes">Yes - Build & Rent Out</option>
+          </select>
         </div>
-        <button class="btn" id="calcBtn">🚀 Calculate</button>
+        <div id="constructionFields" style="display:none;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Construction Cost (₹ per sq ft)</label>
+              <input type="number" id="constructionCostPerSqft" value="1500"/>
+            </div>
+            <div class="form-group">
+              <label>Built-up Area (sq ft)</label>
+              <input type="number" id="builtupArea" value="1500"/>
+            </div>
+            <div class="form-group">
+              <label>Expected Monthly Rent (₹)</label>
+              <input type="number" id="monthlyRent" value="25000"/>
+            </div>
+            <div class="form-group">
+              <label>Vacancy Rate (% of year)</label>
+              <input type="number" id="vacancyRate" value="10" step="1"/>
+            </div>
+            <div class="form-group">
+              <label>Annual Property Maintenance for Rental (₹)</label>
+              <input type="number" id="rentalMaintenance" value="30000"/>
+            </div>
+            <div class="form-group">
+              <label>Rent Growth Rate (% p.a.)</label>
+              <input type="number" id="rentGrowth" value="5" step="0.5"/>
+            </div>
+          </div>
+          <div class="calculated-field">
+            Total Construction Cost: ₹<span id="totalConstructionCost">0</span> |
+            Year-1 Net Rent: ₹<span id="annualRent">0</span> |
+            Rental Yield (Yr-1): <span id="rentalYield">0</span>%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RISK -->
+    <div id="risk" class="tab-content">
+      <div class="section">
+        <h2>⚠️ Simple Risk Toggles (applied in growth multiplier)</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Sales Velocity</label>
+            <select id="salesVelocity">
+              <option value="0.98">Slow</option>
+              <option value="1" selected>Moderate</option>
+              <option value="1.02">Fast</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Documentation Grade</label>
+            <select id="docGrade">
+              <option value="0.98">Issues</option>
+              <option value="1" selected>Standard</option>
+              <option value="1.02">Premium</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Macro Environment</label>
+            <select id="macro">
+              <option value="0.98">Weak</option>
+              <option value="1" selected>Neutral</option>
+              <option value="1.02">Strong</option>
+            </select>
+          </div>
+        </div>
+        <div class="helper-text">These nudge the combined multiplier subtly to prevent unrealistic projections.</div>
+      </div>
+    </div>
+
+    <button class="btn" id="calcBtn">🚀 Calculate Complete Investment Analysis</button>
+    <div class="def-link" id="openDefs">📘 Definitions of all terms</div>
+
+    <!-- RESULTS -->
+    <div id="resultsSection" class="results" style="display:none;">
+      <h2>📊 Complete Investment Analysis Report</h2>
+
+      <div class="results-grid">
+        <div class="result-card">
+          <h3>Total Upfront Cash</h3>
+          <div class="value" id="totalUpfrontCash">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Down payment + purchase costs (+ processing fee if loan)</div>
+        </div>
+        <div class="result-card">
+          <h3>Total Investment</h3>
+          <div class="value" id="totalInvestment">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">All cash outflows over holding</div>
+        </div>
+        <div class="result-card positive">
+          <h3>Expected Sale Value</h3>
+          <div class="value" id="expectedValue">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">After <span id="yearsHeld">5</span> years</div>
+        </div>
+        <div class="result-card">
+          <h3>Capital Gain (for tax)</h3>
+          <div class="value" id="capitalGainForTax">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Sale − eligible costs − selling expenses</div>
+        </div>
+        <div class="result-card">
+          <h3>Capital Gains Tax</h3>
+          <div class="value" id="taxAmount">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Approx as per selection</div>
+        </div>
+        <div class="result-card">
+          <h3>Net Sale Proceeds</h3>
+          <div class="value" id="netSaleProceeds">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">After selling costs, tax & loan payoff</div>
+        </div>
+        <div class="result-card">
+          <h3>Net Profit</h3>
+          <div class="value" id="netProfit">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Proceeds − Total Investment</div>
+        </div>
+        <div class="result-card">
+          <h3>ROI</h3>
+          <div class="value" id="roiPercent">0%</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Return on Investment</div>
+        </div>
+        <div class="result-card">
+          <h3>CAGR</h3>
+          <div class="value" id="cagr">0%</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Annualised (cash-on-cash)</div>
+        </div>
+        <div class="result-card">
+          <h3>Profit per Sq Ft</h3>
+          <div class="value" id="profitPerSqft">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Unit economics</div>
+        </div>
       </div>
 
-      <!-- RESULTS -->
-      <div id="results" class="results" style="display:none">
-        <h2 class="section" style="border:0;padding:0;margin:0 0 12px;color:#1e3c72;font-size:1.3rem">📊 Investment Summary</h2>
-        <div class="kpis">
-          <div class="kpi"><h4>Total Upfront Cost</h4><div class="v" id="k_upfront">—</div><div class="footnote">Cash paid at purchase (incl. duties, fees)</div></div>
-          <div class="kpi"><h4>Total Cash Invested</h4><div class="v" id="k_totalinv">—</div><div class="footnote">All negative cash flows till sale</div></div>
-          <div class="kpi"><h4>Expected Sale Value</h4><div class="v" id="k_sale">—</div><div class="footnote">Market growth compounded</div></div>
-          <div class="kpi"><h4>Loan Payoff @ Exit</h4><div class="v" id="k_payoff">—</div><div class="footnote">Remaining principal at sale</div></div>
+      <div class="chart-container">
+        <h3 style="margin-bottom:10px;">📈 Overall Investment Performance Score</h3>
+        <div class="progress-bar"><div class="progress-fill" id="performanceScore" style="width:0%">0%</div></div>
+        <div id="performanceText" style="margin-top:8px;text-align:center;color:#555;font-size:14px;"></div>
+      </div>
 
-          <div class="kpi"><h4>Gross Profit (pre-tax)</h4><div class="v" id="k_gross">—</div></div>
-          <div class="kpi"><h4>Capital Gains Tax</h4><div class="v" id="k_tax">—</div><div class="footnote" id="k_taxmode">—</div></div>
-          <div class="kpi"><h4>Net Profit</h4><div class="v" id="k_net">—</div></div>
-          <div class="kpi"><h4>ROI</h4><div class="v" id="k_roi">—</div><div class="footnote">Net / Total Cash Invested</div></div>
+      <div class="timeline">
+        <h3 style="margin-bottom:12px;color:#2a5298;">📅 Year-wise Value Projection</h3>
+        <div id="yearlyBreakdown"></div>
+      </div>
 
-          <div class="kpi"><h4>CAGR (simple)</h4><div class="v" id="k_cagr">—</div></div>
-          <div class="kpi"><h4>IRR (monthly)</h4><div class="v" id="k_irr">—</div><div class="footnote">Based on full cashflow timeline</div></div>
-          <div class="kpi"><h4>Profit per Sq Ft</h4><div class="v" id="k_pps">—</div></div>
-          <div class="kpi"><h4>Performance Score</h4><div class="v" id="k_score">—</div></div>
+      <div class="comparison-table">
+        <h3 style="padding:14px;color:#2a5298;background:#f8f9fa;">📊 Benchmark Comparison</h3>
+        <table>
+          <thead>
+            <tr><th>Investment Type</th><th>Returns (CAGR)</th><th>Comparison</th></tr>
+          </thead>
+          <tbody id="comparisonTable"></tbody>
+        </table>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+        <div class="insight-box success">
+          <h3>✅ Top Investment Strengths</h3>
+          <ul id="proslist"></ul>
         </div>
-
-        <div style="margin:14px 0">
-          <div class="progress"><div id="scoreBar" class="fill" style="width:0%">0%</div></div>
+        <div class="insight-box danger">
+          <h3>⚠️ Key Risk Factors</h3>
+          <ul id="conslist"></ul>
         </div>
-
-        <!-- IRR timeline table -->
-        <div class="timeline" id="timeline">
-          <div class="inline" style="justify-content:space-between;align-items:center">
-            <h3 style="margin:0;color:var(--pri)">📅 Monthly Cash Flow Timeline (IRR)</h3>
-            <span class="badge b-warn" id="monthsInfo">— months</span>
-          </div>
-          <div class="row" style="font-weight:700;background:#f8fafc">
-            <div>Month</div><div>Cash Flow (₹)</div><div>Reason</div><div>Running Balance (₹)</div>
-          </div>
-          <div id="flowRows"></div>
-        </div>
-
-        <!-- Insights (Style B) -->
-        <div class="insights" style="margin-top:14px">
-          <div class="ins">
-            <h3>✅ Aaria’s Suggestions</h3>
-            <ul id="prosList" style="margin:0 0 0 18px;line-height:1.8"></ul>
-          </div>
-          <div class="ins risk">
-            <h3>⚠️ Key Risks / Watch-outs</h3>
-            <ul id="consList" style="margin:0 0 0 18px;line-height:1.8"></ul>
-          </div>
-        </div>
-
-        <!-- Share / PDF -->
-        <div class="tiny-actions">
-          <button class="icon-btn" id="shareBtn" title="Share summary">
-            <!-- share icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
-              <polyline points="16 6 12 2 8 6"/>
-              <line x1="12" y1="2" x2="12" y2="15"/>
-            </svg>
-          </button>
-          <button class="icon-btn" id="pdfBtn" title="Download PDF report">
-            <!-- download icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-          </button>
-        </div>
-        <div class="footnote">PDF method: client-side generation with html2canvas + jsPDF. Your clients can view & you (or they) can download.</div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- DEFINITIONS MODAL -->
-  <div id="defs" class="modal" role="dialog" aria-modal="true" aria-label="Term Definitions">
-    <div class="box">
-      <div class="inline" style="justify-content:space-between;align-items:center">
-        <h3>📘 Definitions (market-standard)</h3>
-        <button class="icon-btn" id="defsClose" title="Close">✖️</button>
-      </div>
-      <div class="def"><span class="tag">Total Upfront Cost:</span> Purchase price + stamp duty + registration + purchase-brokerage + legal + misc + (GST if chosen) + loan processing fee (if any).</div>
-      <div class="def"><span class="tag">Total Cash Invested:</span> Sum of all negative cash flows from start until sale (upfront outflows, EMIs paid till sale, property tax, maintenance, other costs), net of any positive inflows before sale (e.g., rent).</div>
-      <div class="def"><span class="tag">Expected Sale Value:</span> Purchase price compounded by expected annual market growth over the holding period.</div>
-      <div class="def"><span class="tag">Loan Payoff @ Exit:</span> Remaining principal outstanding at the time of sale that must be repaid from sale proceeds.</div>
-      <div class="def"><span class="tag">Gross Profit (pre-tax):</span> Sale proceeds (after selling costs) − total upfront cost (COA items) − NOT including holding/interest. Used only to compute capital gains.</div>
-      <div class="def"><span class="tag">Capital Gains Tax:</span> If held &gt;24 months → LTCG @20% with indexation (COA × CII<sub>sale</sub>/CII<sub>purchase</sub>). Else STCG taxed at slab %.</div>
-      <div class="def"><span class="tag">Net Profit:</span> Final net cash from sale (after selling costs, tax and loan payoff) + net cash flows during holding − total cash invested.</div>
-      <div class="def"><span class="tag">ROI:</span> Net Profit ÷ Total Cash Invested.</div>
-      <div class="def"><span class="tag">CAGR (simple):</span> \[(Final Net Proceeds ÷ Total Cash Invested)^(1/years) − 1\].</div>
-      <div class="def"><span class="tag">IRR (monthly):</span> Internal rate of return from the full monthly cash flow timeline (EMIs, holding costs, rent, final sale).</div>
-      <div class="def"><span class="tag">Profit per Sq Ft:</span> Net Profit ÷ plot size (in sq ft).</div>
+<!-- Definitions Modal -->
+<div class="modal" id="defsModal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="defsTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="defsTitle">📘 Definitions (Tap to learn each term)</div>
+      <button class="close-btn" id="closeDefs">Close</button>
+    </div>
+    <div class="defs-grid" id="defsGrid">
+      <!-- definitions injected by JS -->
     </div>
   </div>
+</div>
 
 <script>
-(function(){
-  const el = id => document.getElementById(id);
-  const fmt = n => '₹' + (isFinite(n)? Math.round(n).toLocaleString('en-IN'): '—');
-  const pct = n => (isFinite(n)? n.toFixed(2)+'%':'—');
+/* ---------- Helpers ---------- */
+const fmt = (n, maxDigits=0)=> isFinite(n) ? n.toLocaleString('en-IN',{maximumFractionDigits:maxDigits}) : '0';
+const el = id => document.getElementById(id);
+const getNum = id => parseFloat(el(id).value)||0;
 
-  // UI WIRING
-  el('state').addEventListener('change',()=>{
-    const v=el('state').value.split('|')[1]; el('stampPct').value=Number(v||'7');
+const STAMP = {up:.07,mh:.055,dl:.06,ka:.05,tn:.07,rj:.055,gj:.049,hr:.065,mp:.075,pb:.07};
+
+function unitToSqft(value, unit){
+  if(unit==='sqyard') return value*9;
+  if(unit==='sqmeter') return value*10.76391041671;
+  return value;
+}
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    el(t.dataset.tab).classList.add('active');
+    liveUpdates();
   });
+});
 
-  // Modal
-  el('defsBtn').onclick = ()=> el('defs').style.display='flex';
-  el('defsClose').onclick = ()=> el('defs').style.display='none';
-  el('defs').addEventListener('click',e=>{ if(e.target===el('defs')) el('defs').style.display='none' });
+/* ---------- Show/Hide groups ---------- */
+function toggleLoanFields(){
+  const show = el('loanTaken').value==='yes';
+  el('loanFields').style.display = show ? 'block' : 'none';
+}
+function toggleConstructionFields(){
+  const show = el('planConstruct').value==='yes';
+  el('constructionFields').style.display = show ? 'block' : 'none';
+}
 
-  // Utilities
-  function toSqft(size,unit){
-    if(unit==='sqyard') return size*9;
-    if(unit==='sqmeter') return size*10.7639;
-    return size;
-  }
-  function emi(p,annualRate,months){
-    const r=(annualRate/100)/12;
-    if(r===0) return p/months;
-    return p*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);
-  }
-  function irr(cashflows, guess=0.01){
-    // monthly IRR (Newton-Raphson)
-    let rate=guess, iter=0;
-    while(iter++<80){
-      let f=0, df=0;
-      for(let t=0;t<cashflows.length;t++){
-        const cf=cashflows[t];
-        const den=Math.pow(1+rate,t);
-        f += cf/den;
-        df += -t*cf/ (den*(1+rate));
-      }
-      const newRate = rate - f/df;
-      if(!isFinite(newRate)) break;
-      if(Math.abs(newRate-rate)<1e-7) return rate;
-      rate=newRate;
+/* ---------- Live previews ---------- */
+function liveUpdates(){
+  const purchasePrice = getNum('purchasePrice');
+  const plotSize = getNum('plotSize')||1;
+  const circleRate = getNum('circleRate');
+  const plotUnit = el('plotUnit').value;
+
+  const pricePerUnit = purchasePrice/plotSize;
+  el('pricePerUnit').textContent = fmt(pricePerUnit);
+
+  const cmpPct = circleRate>0 ? ((pricePerUnit/circleRate)-1)*100 : 0;
+  el('circleRateComparison').innerHTML = circleRate>0
+    ? (cmpPct>0
+      ? `<span style="color:#dc3545;">Above circle rate by ${cmpPct.toFixed(1)}%</span>`
+      : `<span style="color:#27ae60;">Below circle rate by ${Math.abs(cmpPct).toFixed(1)}%</span>`)
+    : '';
+
+  const state = el('state').value;
+  const stampDuty = purchasePrice*(STAMP[state]||0);
+  el('stampDutyCalc').textContent = fmt(stampDuty);
+
+  const brokerage = getNum('brokerage');
+  const brokerageCost = purchasePrice*(brokerage/100);
+  el('brokerageCalc').textContent = fmt(brokerageCost);
+
+  const registrationCost = getNum('registrationCost');
+  const lawyerFees = getNum('lawyerFees');
+  const miscCosts = getNum('miscCosts');
+  const gst = el('gstApplicable').value==='yes' ? purchasePrice*0.12 : 0;
+
+  // Upfront cash (no loan): purchase price + all purchase costs
+  const upfrontNoLoan = purchasePrice + stampDuty + registrationCost + gst + brokerageCost + lawyerFees + miscCosts;
+  el('totalUpfrontPreview').textContent = fmt(upfrontNoLoan);
+
+  // Loan live preview
+  if(el('loanTaken').value==='yes'){
+    const loanAmount = getNum('loanAmount');
+    const r = (getNum('interestRate')/100)/12;
+    const n = Math.max(1,getNum('loanTenure')*12);
+    const emi = r>0 ? loanAmount * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1) : loanAmount/n;
+    el('emiCalc').textContent = fmt(emi);
+
+    // Assume holding period for preview
+    const holdYrs = Math.max(1,getNum('holdingPeriod'));
+    const m = Math.min(holdYrs*12,n);
+
+    let balance = loanAmount, totalInt=0;
+    for(let i=0;i<m;i++){
+      const interest = balance*r;
+      const principal = emi - interest;
+      totalInt += interest;
+      balance -= principal;
     }
-    return NaN;
-  }
-
-  // Core calculation
-  function calculate(){
-    // Inputs
-    const purchasePrice = +el('purchasePrice').value||0;
-    const plotSize = +el('plotSize').value||1;
-    const plotUnit = el('plotUnit').value;
-    const stampPct = (+el('stampPct').value||0)/100;
-    const registrationCost = +el('registrationCost').value||0;
-    const brokerageBuyPct = (+el('brokerageBuyPct').value||0)/100;
-    const legalPurchase = +el('legalPurchase').value||0;
-    const miscPurchase = +el('miscPurchase').value||0;
-    const gstApplicable = el('gstApplicable').checked;
-    const gstPct = (+el('gstPct').value||0)/100;
-
-    const useLoan = el('useLoan').value==='yes';
-    const loanAmount = +el('loanAmount').value||0;
-    const interestRate = +el('interestRate').value||0;
-    const loanTenure = +el('loanTenure').value||0;
-    const processingPct = (+el('processingPct').value||0)/100;
-
-    const holdingYears = +el('holdingYears').value||0;
-    const propTax = +el('propTax').value||0;
-    const maint = +el('maint').value||0;
-    const inflationPct = (+el('inflationPct').value||0)/100;
-    const growthPct = (+el('growthPct').value||0)/100;
-    const sellCostPct = (+el('sellCostPct').value||0)/100;
-
-    const ciiPurchase = +el('ciiPurchase').value||0;
-    const ciiSale = +el('ciiSale').value||0;
-    const includeCOA = el('includeCostsInCOA').checked;
-    const stcgSlab = (+el('stcgSlab').value||0)/100;
-
-    const rentMonthly0 = +el('rentMonthly').value||0;
-    const vacancyPct = (+el('vacancyPct').value||0)/100;
-    const rentGrowthPct = (+el('rentGrowthPct').value||0)/100;
-
-    // Price per unit
-    const ppu = purchasePrice / (plotSize||1);
-    el('ppu').textContent = `Price/Unit: ${fmt(ppu).replace('₹','₹ ')}`;
-
-    // Upfront components
-    const stampDuty = purchasePrice*stampPct;
-    const brokerageBuy = purchasePrice*brokerageBuyPct;
-    const gst = gstApplicable ? purchasePrice*gstPct : 0;
-    const processingFee = useLoan ? loanAmount*processingPct : 0;
-
-    const totalUpfront = purchasePrice + stampDuty + registrationCost + brokerageBuy + legalPurchase + miscPurchase + gst + processingFee;
-    el('k_upfront').textContent = fmt(totalUpfront);
-
-    // Expected Sale Value (compounded growth)
-    const expectedSale = purchasePrice * Math.pow(1+growthPct, holdingYears);
-    el('k_sale').textContent = fmt(expectedSale);
-
-    // Loan math (EMIs)
-    const months = Math.round(holdingYears*12);
-    el('monthsInfo').textContent = `${months} months`;
-    let emiVal=0, totalInterestPaid=0, principalOutstanding=0;
-
-    if(useLoan){
-      const totalMonths = loanTenure*12;
-      emiVal = emi(loanAmount, interestRate, totalMonths);
-      el('emiShow').textContent = `EMI: ${fmt(emiVal)}`;
-      // Amortize month-by-month until sale
-      let bal = loanAmount;
-      const r = (interestRate/100)/12;
-      for(let m=1;m<=Math.min(months,totalMonths);m++){
-        const interest = bal*r;
-        const principal = Math.min(emiVal - interest, bal);
-        totalInterestPaid += interest;
-        bal -= principal;
-      }
-      principalOutstanding = Math.max(0,bal);
-      el('intShow').textContent = `Interest till sale: ${fmt(totalInterestPaid)}`;
-    } else {
-      el('emiShow').textContent = 'EMI: —';
-      el('intShow').textContent = 'Interest till sale: —';
-    }
-    el('k_payoff').textContent = fmt(principalOutstanding);
-
-    // Selling costs and proceeds
-    const sellingCost = expectedSale*sellCostPct;
-    const netSaleBeforeLoanTax = expectedSale - sellingCost;
-
-    // CAPITAL GAINS (market standard)
-    // COA (for cap gains) = purchase price + (stamp, regn, purchase brokerage if opted)
-    let coa = purchasePrice;
-    if(includeCOA){ coa += stampDuty + registrationCost + brokerageBuy; }
-    let isLTCG = (holdingYears*12) > 24; // strictly >24 months
-    let capGainTax=0, taxMode='—';
-    let indexedCOA = coa;
-
-    if(isLTCG){
-      if(ciiPurchase>0 && ciiSale>0){
-        indexedCOA = coa * (ciiSale/ciiPurchase);
-      }
-      const LTCG = Math.max(0, (expectedSale - sellingCost) - indexedCOA);
-      capGainTax = 0.20 * LTCG;
-      taxMode = `LTCG @20% with indexation (COA indexed ${ciiPurchase||'?'}→${ciiSale||'?'})`;
-    } else {
-      const STCG = Math.max(0, (expectedSale - sellingCost) - coa);
-      capGainTax = stcgSlab * STCG;
-      taxMode = `STCG @${(stcgSlab*100).toFixed(0)}% (held ≤24 months)`;
-    }
-    el('k_tax').textContent = fmt(capGainTax);
-    el('k_taxmode').textContent = taxMode;
-
-    // Gross Profit (pre-tax) for display (not used for IRR/ROI directly)
-    const grossProfit = (expectedSale - sellingCost) - coa;
-    el('k_gross').textContent = fmt(grossProfit);
-
-    // Build monthly cash flow timeline (IRR A)
-    const flows=[]; const rows=[];
-    const pushRow=(m,cf,why,rb)=>{
-      const r=document.createElement('div'); r.className='row';
-      const d1=document.createElement('div'); d1.textContent=m;
-      const d2=document.createElement('div'); d2.textContent=fmt(cf);
-      const d3=document.createElement('div'); d3.textContent=why;
-      const d4=document.createElement('div'); d4.textContent=fmt(rb);
-      r.append(d1,d2,d3,d4); rows.push(r);
-    };
-    // Month 0 upfront outflow (cash actually paid by investor at start)
-    // If loan used, upfront cash outflow excludes the financed portion of purchase price.
-    const upfrontCash =
-      (purchasePrice - (useLoan? loanAmount:0)) +
-      stampDuty + registrationCost + brokerageBuy + legalPurchase + miscPurchase + gst + processingFee;
-    let running = -upfrontCash;
-    flows.push(-upfrontCash); pushRow(0, -upfrontCash, 'Upfront cash paid', running);
-
-    // Monthly: EMI (if loan), Property tax + Maintenance (inflated yearly), Rent inflow (after vacancy, growth yearly)
-    let annualPT = propTax, annualMT = maint, annualRent = (rentMonthly0*12)*(1 - vacancyPct);
-    for(let m=1;m<=months;m++){
-      const startOfYear = (m-1)%12===0 && m>1;
-      if(startOfYear){
-        annualPT *= (1+inflationPct);
-        annualMT *= (1+inflationPct);
-        annualRent *= (1+rentGrowthPct);
-      }
-      const monthlyPT = annualPT/12;
-      const monthlyMT = annualMT/12;
-      let monthCF = -(monthlyPT + monthlyMT);
-      let why = 'Property tax + Maintenance';
-      if(useLoan){
-        monthCF -= emiVal;
-        why += ' + EMI';
-      }
-      // rent inflow
-      const monthlyRent = annualRent/12;
-      if(monthlyRent>0){
-        monthCF += monthlyRent;
-        why += ' − Rent (inflow)';
-      }
-      flows.push(monthCF); running += monthCF; pushRow(m, monthCF, why, running);
-    }
-
-    // Exit month cash: +net sale − loan payoff − cap gains tax
-    const finalCash = netSaleBeforeLoanTax - principalOutstanding - capGainTax;
-    flows.push(finalCash); running += finalCash; pushRow(months+1, finalCash, 'Sale − costs − loan payoff − tax', running);
-
-    // Totals for ROI etc.
-    const totalNeg = flows.filter(x=>x<0).reduce((a,b)=>a+b,0);
-    const totalPos = flows.filter(x=>x>0).reduce((a,b)=>a+b,0);
-    const totalCashInvested = -totalNeg; // positive number
-    const netProfit = totalPos - totalCashInvested;
-
-    // ROI / CAGR
-    const roi = totalCashInvested>0 ? (netProfit/totalCashInvested)*100 : NaN;
-    const finalProceeds = totalPos; // total inflows across holding
-    const years = holdingYears;
-    const cagr = (totalCashInvested>0 && years>0) ? (Math.pow(finalProceeds/totalCashInvested, 1/years)-1)*100 : NaN;
-
-    // IRR monthly -> annualized
-    const mirr = irr(flows, 0.01);
-    const airr = isFinite(mirr) ? (Math.pow(1+mirr,12)-1)*100 : NaN;
-
-    // Profit per sqft
-    const sqft = toSqft(plotSize, plotUnit);
-    const pps = (sqft>0)? netProfit/sqft : NaN;
-
-    // Performance score (friendly)
-    let score = 50;
-    if(isFinite(airr)){
-      if(airr>18) score+=25; else if(airr>14) score+=18; else if(airr>10) score+=10; else if(airr<6) score-=10;
-    } else if(isFinite(cagr)){
-      if(cagr>15) score+=18; else if(cagr>12) score+=12; else if(cagr<8) score-=8;
-    }
-    if(netProfit<0) score-=15;
-    score = Math.max(0,Math.min(100,score));
-
-    // Paint KPIs
-    el('k_totalinv').textContent = fmt(totalCashInvested);
-    el('k_net').textContent = fmt(netProfit);
-    el('k_roi').textContent = isFinite(roi)? pct(roi):'—';
-    el('k_cagr').textContent = isFinite(cagr)? pct(cagr):'—';
-    el('k_irr').textContent = isFinite(airr)? pct(airr):'—';
-    el('k_pps').textContent = isFinite(pps)? fmt(pps).replace('₹','₹ '):'—';
-    el('k_score').textContent = score.toFixed(0)+'/100';
-    const sb = el('scoreBar'); sb.style.width = score+'%'; sb.textContent = score.toFixed(0)+'%';
-
-    // Positive/negative coloring
-    const netBox = el('k_net').parentElement; netBox.classList.remove('pos','neg');
-    if(netProfit>=0) netBox.classList.add('pos'); else netBox.classList.add('neg');
-
-    // Render timeline rows
-    const holder = el('flowRows'); holder.innerHTML=''; rows.forEach(r=>holder.appendChild(r));
-
-    // Aaria Insights (Style B: crisp, actionable)
-    const pros=[], cons=[];
-    if(isFinite(airr) && airr>=12) pros.push(`Healthy IRR of ${airr.toFixed(1)}% p.a. beats fixed-income alternatives.`);
-    if(growthPct*100>=10) pros.push(`Expected market CAGR ${(growthPct*100).toFixed(1)}% supports appreciation.`);
-    if(includeCOA && isLTCG) pros.push(`Indexation reduces taxable gains; indexed COA ≈ ${fmt(indexedCOA)}.`);
-    if(brokerageBuyPct<=0.01) pros.push(`Low purchase brokerage (${(brokerageBuyPct*100).toFixed(1)}%) keeps entry cost tight.`);
-    if(sellingCost<=expectedSale*0.02) pros.push(`Lean exit cost (${(sellCostPct*100).toFixed(1)}%).`);
-
-    if(isFinite(airr) && airr<8) cons.push(`IRR only ${isFinite(airr)?airr.toFixed(1):'—'}% p.a.; consider price negotiation or longer horizon.`);
-    if(totalInterestPaid>0 && totalInterestPaid>0.3*purchasePrice) cons.push(`High interest burden till sale (≈ ${fmt(totalInterestPaid)}).`);
-    if(sellCostPct>0.025) cons.push(`Selling costs on the higher side (${(sellCostPct*100).toFixed(1)}%).`);
-    if(!isLTCG) cons.push(`Holding ≤24 months triggers STCG @ ${(stcgSlab*100).toFixed(0)}%.`);
-    if(netProfit<0) cons.push(`Net loss projected. Revisit entry price, growth, or loan mix.`);
-
-    // Ensure at least 3 each
-    while(pros.length<3) pros.push('Land is a finite asset; long-term supply scarcity supports prices.');
-    while(cons.length<3) cons.push('Real estate is illiquid; emergency exit may need discounts.');
-
-    el('prosList').innerHTML = pros.slice(0,4).map(x=>`<li>${x}</li>`).join('');
-    el('consList').innerHTML = cons.slice(0,4).map(x=>`<li>${x}</li>`).join('');
-
-    // Show results
-    el('results').style.display='block';
-
-    // Return some values for sharing/PDF
-    return {flows, months, airr, cagr, roi, totalCashInvested, netProfit, expectedSale};
+    el('totalInterestCalc').textContent = fmt(totalInt);
+    const procFee = loanAmount*(getNum('processingFeePercent')/100);
+    el('processingFeeCalc').textContent = fmt(procFee);
+    el('loanBalanceAtSale').textContent = fmt(Math.max(0,balance));
   }
 
-  // Share
-  el('shareBtn').onclick = async ()=>{
-    const text = document.title + ' — quick summary generated by AARIA.';
-    const url = location.href;
-    if(navigator.share){
-      try{ await navigator.share({title:document.title,text, url}); }catch{}
-    }else{
-      navigator.clipboard.writeText(url).then(()=>{
-        alert('Link copied to clipboard!');
-      });
+  // Construction live preview
+  if(el('planConstruct').value==='yes'){
+    const cc = getNum('constructionCostPerSqft');
+    const bua = getNum('builtupArea');
+    const totalCC = cc*bua;
+    const monthlyRent = getNum('monthlyRent');
+    const vacancy = getNum('vacancyRate');
+    const annualRent = monthlyRent*12*(1 - vacancy/100);
+    const rentalYield = (annualRent / Math.max(1,(purchasePrice+totalCC))) * 100;
+    el('totalConstructionCost').textContent = fmt(totalCC);
+    el('annualRent').textContent = fmt(annualRent);
+    el('rentalYield').textContent = rentalYield.toFixed(2);
+  }
+
+  toggleLoanFields();
+  toggleConstructionFields();
+}
+
+/* ---------- Core Calculation ---------- */
+function calculate(){
+  const purchasePrice = getNum('purchasePrice');
+  const plotSize = getNum('plotSize')||1;
+  const plotUnit = el('plotUnit').value;
+  const plotSizeSqft = unitToSqft(plotSize, plotUnit);
+
+  const registrationCost = getNum('registrationCost');
+  const lawyerFees = getNum('lawyerFees');
+  const miscCosts = getNum('miscCosts');
+  const brokeragePct = getNum('brokerage');
+
+  const state = el('state').value;
+  const stampDuty = purchasePrice*(STAMP[state]||0);
+  const gst = el('gstApplicable').value==='yes' ? purchasePrice*0.12 : 0;
+  const brokerageCost = purchasePrice*(brokeragePct/100);
+
+  // Optional construction (treated as "improvement" for tax + increases cash invested)
+  const planConstruct = el('planConstruct').value==='yes';
+  const totalConstructionCost = planConstruct ? getNum('constructionCostPerSqft')*getNum('builtupArea') : 0;
+
+  // Loan
+  const loanTaken = el('loanTaken').value==='yes';
+  const loanAmount = loanTaken ? getNum('loanAmount') : 0;
+  const interestRate = loanTaken ? getNum('interestRate') : 0;
+  const loanTenure = loanTaken ? getNum('loanTenure') : 0;
+  const processingFee = loanTaken ? loanAmount*(getNum('processingFeePercent')/100) : 0;
+
+  // Holding & exit
+  const propertyTax = getNum('propertyTax');
+  const maintenance = getNum('maintenance');
+  const inflationRate = getNum('inflationRate');
+  const holdingPeriod = Math.max(1,getNum('holdingPeriod'));
+  const exitStrategy = el('exitStrategy').value;
+  const capitalGainsTaxRate = parseFloat(el('capitalGainsTax').value)||0;
+  const sellingCostsPct = getNum('sellingCosts');
+
+  // Growth (market-standard with bounded multipliers)
+  const baseGrowth = getNum('forecastedGrowth')/100;               // as decimal
+  const marketCycle = parseFloat(el('marketCycle').value)||1;
+  const combinedMultiplierBase = parseFloat(el('combinedMultiplier').value)||1;
+  const riskNudges = (parseFloat(el('salesVelocity').value)||1) * (parseFloat(el('docGrade').value)||1) * (parseFloat(el('macro').value)||1);
+  // multiply but keep within 0.8x .. 1.3x to avoid unrealistic compounding
+  const combinedMultiplier = Math.min(1.3, Math.max(0.8, combinedMultiplierBase * riskNudges));
+  let adjGrowth = baseGrowth * combinedMultiplier * marketCycle;
+  // cap annual growth between -20% and +25% for realism
+  adjGrowth = Math.min(0.25, Math.max(-0.20, adjGrowth));
+
+  const growthModel = el('growthModel').value;
+
+  // Expected value path
+  let expectedValue = purchasePrice;
+  const yearlyValues = [];
+  if(growthModel==='linear'){
+    expectedValue = purchasePrice * (1 + adjGrowth*holdingPeriod);
+    for(let i=1;i<=holdingPeriod;i++){
+      yearlyValues.push({year:i, value: purchasePrice*(1 + adjGrowth*i)});
     }
-  };
-
-  // PDF
-  el('pdfBtn').onclick = async ()=>{
-    const anchor = document.querySelector('.container');
-    const { jsPDF } = window.jspdf || {};
-    if(!jsPDF){ alert('PDF library not loaded yet. Please try again in a moment.'); return; }
-
-    // Make a quick calc to ensure results visible
-    if(el('results').style.display==='none') calculate();
-
-    const canvas = await html2canvas(anchor,{scale:2, useCORS:true, background:'#ffffff'});
-    const img = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p','pt','a4');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgWidth = pageWidth;
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-
-    let y = 0;
-    while(y < imgHeight){
-      pdf.addImage(img, 'PNG', 0, -y, imgWidth, imgHeight);
-      y += pageHeight;
-      if(y < imgHeight) pdf.addPage();
+  }else{
+    expectedValue = purchasePrice * Math.pow(1+adjGrowth, holdingPeriod);
+    for(let i=1;i<=holdingPeriod;i++){
+      yearlyValues.push({year:i, value: purchasePrice*Math.pow(1+adjGrowth, i)});
     }
-    pdf.save('AARIA_Plot_ROI_Report.pdf');
-  };
+  }
 
-  // Recalc button
-  el('calcBtn').onclick = calculate;
+  // Exit strategy adjustments
+  if(exitStrategy==='quick') expectedValue *= 0.90;
+  else if(exitStrategy==='distress') expectedValue *= 0.80;
+  else if(exitStrategy==='premium') expectedValue *= 1.05;
 
-  // Light live updates of a few indicators
-  ['purchasePrice','plotSize','plotUnit'].forEach(id=>{
-    el(id).addEventListener('input',()=>{
-      const purchasePrice=+el('purchasePrice').value||0;
-      const size=+el('plotSize').value||1;
-      const unit=el('plotUnit').value;
-      const ppu=purchasePrice/(size||1);
-      el('ppu').textContent=`Price/Unit: ${fmt(ppu).replace('₹','₹ ')}`;
-    });
+  // Selling costs
+  const sellingExpense = expectedValue * (sellingCostsPct/100);
+
+  /* ====== CAPITAL GAINS (for tax) ======
+     Capital Gain ≈ Sale Price − (Eligible Acquisition & Improvement Costs) − Selling Expense
+     Eligible costs: purchase price + stamp duty + registration + brokerage + lawyer + misc + GST + construction (if any)
+     (We do not subtract holding costs/interest here for tax calculation.)
+  */
+  const acquisitionForTax = purchasePrice + stampDuty + registrationCost + brokerageCost + lawyerFees + miscCosts + gst + totalConstructionCost;
+  const capitalGainForTax = expectedValue - sellingExpense - acquisitionForTax;
+  const taxAmount = capitalGainForTax>0 ? capitalGainForTax*(capitalGainsTaxRate/100) : 0;
+
+  /* ====== LOAN AMORTIZATION ====== */
+  let totalInterestPaid = 0, loanBalance = 0, emi=0;
+  if(loanTaken){
+    const r = (interestRate/100)/12;
+    const n = Math.max(1, loanTenure*12);
+    emi = r>0 ? loanAmount * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1) : loanAmount/n;
+    const m = Math.min(holdingPeriod*12, n);
+    loanBalance = loanAmount;
+    for(let i=0;i<m;i++){
+      const interest = loanBalance*r;
+      const principal = emi - interest;
+      totalInterestPaid += interest;
+      loanBalance -= principal;
+    }
+    loanBalance = Math.max(0, loanBalance);
+  }
+
+  /* ====== CASH INVESTED (MARKET-STANDARD) ======
+     Total Upfront Cash:
+       If loan: down payment + stamp + registration + GST + brokerage + lawyer + misc + processing fee + (construction if done upfront)
+       If no loan: purchase price + all the above costs (+ construction)
+     Total Holding Costs:
+       Property tax + maintenance escalated for each year
+     Total Interest Paid (till sale) is included in Total Investment (cash outflow)
+     Opportunity cost is NOT included (only informational)
+  */
+  const downPayment = loanTaken ? Math.max(0, purchasePrice - loanAmount) : purchasePrice;
+  const upfrontPurchaseCosts = stampDuty + registrationCost + gst + brokerageCost + lawyerFees + miscCosts;
+  const upfrontConstruction = planConstruct ? totalConstructionCost : 0;
+  const totalUpfrontCash = downPayment + upfrontPurchaseCosts + (loanTaken ? processingFee : 0) + upfrontConstruction;
+
+  // Holding costs (inflation escalated)
+  let totalHoldingCost = 0;
+  for(let y=1;y<=holdingPeriod;y++){
+    totalHoldingCost += (propertyTax + maintenance) * Math.pow(1 + (getNum('inflationRate')/100), y-1);
+  }
+
+  // Rental income (optional, offsets holding; simple model with growth)
+  let totalRentNet = 0;
+  if(planConstruct){
+    const monthlyRent = getNum('monthlyRent');
+    const vacancy = getNum('vacancyRate');
+    const rentGrowth = getNum('rentGrowth')/100;
+    const annualMaintRent = getNum('rentalMaintenance');
+    let yearRent = monthlyRent*12*(1 - vacancy/100) - annualMaintRent;
+    for(let y=1;y<=holdingPeriod;y++){
+      totalRentNet += yearRent;
+      yearRent *= (1 + rentGrowth);
+    }
+  }
+
+  // Total cash invested over holding (cash outflow minus rent inflow)
+  const totalInvestment = totalUpfrontCash + totalHoldingCost + totalInterestPaid - totalRentNet;
+
+  /* ====== NET SALE PROCEEDS (to investor) ======
+     Proceeds after: selling costs, tax, and loan payoff (if any)
+  */
+  const netSaleProceeds = expectedValue - sellingExpense - taxAmount - (loanTaken ? loanBalance : 0);
+
+  /* ====== RESULTS ====== */
+  const netProfit = netSaleProceeds - totalInvestment;
+  const roiPercent = totalInvestment>0 ? (netProfit/totalInvestment)*100 : 0;
+  const cagr = (totalInvestment>0 && holdingPeriod>0)
+    ? (Math.pow(netSaleProceeds/totalInvestment, 1/holdingPeriod) - 1)*100
+    : 0;
+  const profitPerSqft = plotSizeSqft>0 ? netProfit/plotSizeSqft : 0;
+
+  // UI bind
+  el('totalUpfrontCash').textContent = '₹'+fmt(totalUpfrontCash);
+  el('totalInvestment').textContent  = '₹'+fmt(totalInvestment);
+  el('expectedValue').textContent    = '₹'+fmt(expectedValue);
+  el('yearsHeld').textContent        = holdingPeriod;
+  el('capitalGainForTax').textContent= '₹'+fmt(capitalGainForTax);
+  el('taxAmount').textContent        = '₹'+fmt(taxAmount);
+  el('netSaleProceeds').textContent  = '₹'+fmt(netSaleProceeds);
+  el('netProfit').textContent        = '₹'+fmt(netProfit);
+  el('roiPercent').textContent       = (isFinite(roiPercent)?roiPercent:0).toFixed(2)+'%';
+  el('cagr').textContent             = (isFinite(cagr)?cagr:0).toFixed(2)+'%';
+  el('profitPerSqft').textContent    = '₹'+fmt(profitPerSqft);
+
+  // Performance score (simple)
+  const perf = Math.min(100, Math.max(0, 50 + ((cagr-10)*3)));
+  const pf = el('performanceScore');
+  pf.style.width = perf.toFixed(0)+'%';
+  pf.textContent = perf.toFixed(0)+'%';
+  el('performanceText').textContent =
+    perf>=85?'Outstanding 🌟':
+    perf>=70?'Excellent 👍':
+    perf>=55?'Good 😊':
+    perf>=40?'Average 😐':'Below Expectations 😟';
+
+  // Yearly breakdown
+  let yHTML = '';
+  yearlyValues.forEach(v=>{
+    const growthPct = ((v.value/purchasePrice)-1)*100;
+    yHTML += `
+      <div class="timeline-item">
+        <div class="timeline-year">Year ${v.year}</div>
+        <div style="flex:1">
+          <div style="font-size:1.1em;font-weight:800;color:#2a5298;">₹${fmt(v.value)}</div>
+          <div style="color:#27ae60;margin-top:4px;">${growthPct>=0?'+':''}${growthPct.toFixed(1)}% from purchase</div>
+        </div>
+      </div>
+    `;
   });
-})();
+  el('yearlyBreakdown').innerHTML = yHTML;
+
+  // Comparison table (illustrative)
+  const cagrVal = isFinite(cagr)?cagr:0;
+  const comps = [
+    {type:'Your Plot Investment', cagr:cagrVal, key:true},
+    {type:'Gold (long-term)', cagr:9},
+    {type:'Fixed Deposit', cagr:6.5},
+    {type:'Nifty 50 (LT avg)', cagr:12},
+    {type:'RE (India avg)', cagr:8.5}
+  ];
+  el('comparisonTable').innerHTML = comps.map(row=>{
+    const comp = row.key ? '—' :
+      (cagrVal>row.cagr
+        ? `<span style="color:#27ae60;">Better by ${(cagrVal-row.cagr).toFixed(1)}%</span>`
+        : `<span style="color:#e74c3c;">Lower by ${(row.cagr-cagrVal).toFixed(1)}%</span>`);
+    return `<tr>
+      <td style="font-weight:${row.key?'800':'500'}">${row.type}</td>
+      <td style="font-weight:800">${row.cagr.toFixed(2)}%</td>
+      <td>${comp}</td>
+    </tr>`;
+  }).join('');
+
+  // Pros/Cons quick list
+  const pros=[], cons=[];
+  if(cagrVal>12) pros.push('Strong annualised return (CAGR) vs common benchmarks');
+  if(roiPercent>60) pros.push('Healthy cash-on-cash ROI over holding period');
+  if(totalRentNet>0) pros.push('Rental inflow offsets holding/interest costs');
+  if(planConstruct && totalConstructionCost>0) pros.push('Improvement adds value and tax basis');
+
+  if(cagrVal<8) cons.push('Projected CAGR near/below real estate averages');
+  if(totalInterestPaid>0 && roiPercent<12) cons.push('Loan interest burden pressurises returns');
+  if(sellingExpense/expectedValue>0.03) cons.push('High exit costs reduce net proceeds');
+  if(capitalGainForTax<=0) cons.push('Low/negative capital gain after eligible costs & selling');
+
+  el('proslist').innerHTML = pros.slice(0,3).map(p=>`<li>${p}</li>`).join('') || '<li>Real estate offers inflation hedge</li>';
+  el('conslist').innerHTML = cons.slice(0,3).map(c=>`<li>${c}</li>`).join('') || '<li>Real estate is relatively illiquid</li>';
+
+  // Color cues
+  const cards = document.querySelectorAll('.result-card');
+  cards.forEach(c=>c.classList.remove('positive','negative'));
+  const netProfitCard = el('netProfit').closest('.result-card');
+  if(netProfit>0) netProfitCard.classList.add('positive'); else netProfitCard.classList.add('negative');
+}
+
+/* ---------- Definitions Modal ---------- */
+const DEFINITIONS = [
+  {t:'Total Upfront Cash', d:'All cash you pay at purchase. If loan: Down payment + stamp duty + registration + GST (if any) + brokerage + lawyer + misc + processing fee + construction (if built upfront). If no loan: Purchase price + these costs (+ construction).'},
+  {t:'Total Investment', d:'Total cash outflows over the holding period: Total Upfront Cash + inflation-adjusted property tax & maintenance + loan interest paid (till sale) − total net rent received (if any).'},
+  {t:'Expected Sale Value', d:'Projected sale price after your holding period, based on your growth settings and exit strategy (quick/premium, etc.).'},
+  {t:'Selling Costs', d:'Costs paid at sale (brokerage, legal, etc.) as a % of sale price.'},
+  {t:'Capital Gain (for tax)', d:'Sale price − eligible acquisition & improvement costs (purchase price, stamp duty, registration, brokerage, lawyer, misc, GST, construction) − selling expenses. Used only to estimate capital gains tax.'},
+  {t:'Capital Gains Tax', d:'Estimated tax on capital gain based on your selected scenario (LT 20%, ST 30% approximate, or reinvest @ 0%). Indexation is not modelled here.'},
+  {t:'Net Sale Proceeds', d:'Money you actually take home at sale after: selling costs, capital gains tax, and paying off any remaining loan balance.'},
+  {t:'Net Profit', d:'Net Sale Proceeds − Total Investment (all the cash you put in over time).'},
+  {t:'ROI', d:'Return on Investment = Net Profit ÷ Total Investment.'},
+  {t:'CAGR', d:'Annualised cash-on-cash return ≈ [(Net Sale Proceeds ÷ Total Investment)^(1/years)] − 1.'},
+  {t:'Profit per Sq Ft', d:'Net Profit ÷ plot area (in square feet).'},
+  {t:'Price per Unit', d:'Purchase price ÷ plot size (in your selected unit).'},
+  {t:'Circle Rate', d:'Government-notified minimum value per unit for stamp duty purposes; varies by locality.'}
+];
+
+function buildDefs(){
+  el('defsGrid').innerHTML = DEFINITIONS.map(def=>`
+    <div class="def-card">
+      <h4>${def.t}</h4>
+      <p style="font-size:14px;line-height:1.55;color:#333">${def.d}</p>
+    </div>
+  `).join('');
+}
+function openDefs(){ el('defsModal').style.display='flex'; }
+function closeDefs(){ el('defsModal').style.display='none'; }
+
+/* ---------- Events ---------- */
+['purchasePrice','plotSize','circleRate','plotUnit','state','registrationCost','gstApplicable','brokerage','lawyerFees','miscCosts',
+ 'loanTaken','loanAmount','interestRate','loanTenure','processingFeePercent','propertyTax','maintenance','inflationRate',
+ 'forecastedGrowth','growthModel','marketCycle','combinedMultiplier','salesVelocity','docGrade','macro',
+ 'holdingPeriod','exitStrategy','capitalGainsTax','sellingCosts','planConstruct','constructionCostPerSqft','builtupArea','monthlyRent','vacancyRate','rentalMaintenance','rentGrowth'
+].forEach(id=>{
+  const node = el(id);
+  if(node){ node.addEventListener('input', liveUpdates); node.addEventListener('change', liveUpdates); }
+});
+
+el('calcBtn').addEventListener('click', ()=>{
+  calculate();
+  el('resultsSection').style.display='block';
+  el('resultsSection').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+el('openDefs').addEventListener('click', ()=>{ buildDefs(); openDefs(); });
+el('closeDefs').addEventListener('click', closeDefs);
+window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDefs(); });
+el('defsModal').addEventListener('click', (e)=>{ if(e.target.id==='defsModal') closeDefs(); });
+
+/* ---------- Init ---------- */
+window.onload = () => { liveUpdates(); };
 </script>
 </body>
 </html>
