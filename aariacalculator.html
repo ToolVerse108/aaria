@@ -1,816 +1,892 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AARIA's Ultimate Plot Investment ROI Calculator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 30px;
-        }
-        
-        .section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .section h2 {
-            color: #2a5298;
-            margin-bottom: 20px;
-            font-size: 1.5em;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-        
-        .results {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 30px;
-            border-radius: 15px;
-            margin-top: 20px;
-        }
-        
-        .results h2 {
-            color: #1e3c72;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-        
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .result-card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        
-        .result-card h3 {
-            color: #666;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-        
-        .result-card .value {
-            color: #2a5298;
-            font-size: 2em;
-            font-weight: bold;
-        }
-        
-        .result-card.positive .value {
-            color: #27ae60;
-        }
-        
-        .result-card.negative .value {
-            color: #e74c3c;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .tab {
-            padding: 12px 24px;
-            background: #e0e0e0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .insight-box {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-        
-        .insight-box.success {
-            background: #d4edda;
-            border-left-color: #28a745;
-        }
-        
-        .insight-box.danger {
-            background: #f8d7da;
-            border-left-color: #dc3545;
-        }
-        
-        .chart-container {
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 30px;
-            background: #e0e0e0;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.5s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.8em;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AARIA's Ultimate Plot Investment ROI Calculator — Corrected</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:20px;min-height:100vh}
+  .container{max-width:1400px;margin:0 auto;background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+  .header{background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);color:#fff;padding:30px;text-align:center}
+  .header h1{font-size:2.2em;margin-bottom:6px;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+  .main-content{padding:24px}
+  .tabs{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;padding:0 24px}
+  .tab{padding:10px 18px;background:#e7eaf3;border:none;border-radius:10px;cursor:pointer;font-weight:600;transition:all .2s;font-size:14px}
+  .tab:hover{transform:translateY(-2px)}
+  .tab.active{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff}
+  .tab-content{display:none}
+  .tab-content.active{display:block}
+  .section{background:#f8f9fa;padding:20px;border-radius:14px;box-shadow:0 4px 6px rgba(0,0,0,.06);margin-bottom:16px}
+  .section h2{color:#2a5298;margin-bottom:14px;font-size:1.15em;border-bottom:3px solid #667eea;padding-bottom:6px}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .form-group label{display:block;margin-bottom:6px;color:#333;font-weight:600;font-size:13px}
+  .form-group input,.form-group select{width:100%;padding:11px;border:2px solid #e3e6ee;border-radius:10px;font-size:15px;transition:border-color .2s,box-shadow .2s;background:#fff}
+  .form-group input:focus,.form-group select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
+  .helper-text{font-size:12px;color:#666;margin-top:4px;font-style:italic}
+  .calculated-field{background:#e8f4f8;padding:10px;border-radius:10px;margin-top:8px;font-weight:700;color:#2a5298}
+  .btn{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:14px 24px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s;width:100%;margin-top:10px}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(102,126,234,.3)}
+  .results{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);padding:24px;border-radius:16px;margin-top:18px}
+  .results h2{color:#1e3c72;text-align:center;margin-bottom:22px;font-size:1.6em}
+  .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:18px}
+  .result-card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,.08);text-align:center;transition:transform .15s}
+  .result-card:hover{transform:translateY(-3px)}
+  .result-card h3{color:#666;font-size:.85em;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+  .result-card .value{color:#2a5298;font-size:1.5em;font-weight:800;word-break:break-word}
+  .result-card.positive .value{color:#27ae60}
+  .result-card.negative .value{color:#e74c3c}
+  .chart-container{margin:14px 0;padding:16px;background:#fff;border-radius:12px}
+  .progress-bar{width:100%;height:36px;background:#e9edf5;border-radius:18px;overflow:hidden;margin:8px 0}
+  .progress-fill{height:100%;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);transition:width .8s ease;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+  .timeline{margin:20px 0;padding:16px;background:#fff;border-radius:12px}
+  .timeline-item{display:flex;margin-bottom:12px;padding:12px;background:#f8f9fa;border-radius:10px;border-left:4px solid #667eea}
+  .timeline-year{font-weight:800;color:#2a5298;min-width:90px;font-size:15px}
+  .comparison-table{width:100%;margin:14px 0;background:#fff;border-radius:12px;overflow:hidden}
+  .comparison-table table{width:100%;border-collapse:collapse}
+  .comparison-table th{background:#2a5298;color:#fff;padding:12px;text-align:left;font-weight:700}
+  .comparison-table td{padding:11px 12px;border-bottom:1px solid #e6eaf2}
+  .insight-box{background:#fff3cd;border-left:5px solid #ffc107;padding:16px;margin:14px 0;border-radius:10px}
+  .insight-box.success{background:#d4edda;border-left-color:#28a745}
+  .insight-box.danger{background:#f8d7da;border-left-color:#dc3545}
+  .def-link{display:inline-block;margin:0 0 10px 0;font-size:14px;font-weight:700;color:#2a5298;cursor:pointer;text-decoration:underline}
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:999}
+  .modal-content{max-width:900px;width:100%;max-height:85vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:20px}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .modal-title{font-weight:900;color:#2a5298;font-size:18px}
+  .close-btn{background:#e9edf5;border:none;border-radius:10px;padding:8px 12px;font-weight:800;cursor:pointer}
+  .defs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+  .def-card{border:1px solid #e6eaf2;border-radius:10px;padding:12px;background:#fafbff}
+  .def-card h4{margin-bottom:6px;color:#1e3c72}
+  @media (max-width:768px){
+    .header h1{font-size:1.7em}
+    .results-grid{grid-template-columns:1fr}
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>✅ AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
-            <p>Your Total Market-Minded Calculator for Indian Plot Investments</p>
+<div class="container">
+  <div class="header">
+    <h1>✅ AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
+    <p>Your market-standard, India-ready plot investment analyzer</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="basic">📋 Basic Inputs</button>
+    <button class="tab" data-tab="holding">💰 Holding Costs</button>
+    <button class="tab" data-tab="growth">📈 Growth Forecast</button>
+    <button class="tab" data-tab="exit">🎯 Exit Strategy</button>
+    <button class="tab" data-tab="risk">⚠️ Risk Analysis</button>
+  </div>
+
+  <div class="main-content">
+    <!-- BASIC -->
+    <div id="basic" class="tab-content active">
+      <div class="section">
+        <h2>🏗️ Plot Details</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Purchase Price (₹)</label>
+            <input type="number" id="purchasePrice" value="5000000" />
+            <div class="helper-text">Sale deed value / agreement value</div>
+          </div>
+          <div class="form-group">
+            <label>Plot Size</label>
+            <input type="number" id="plotSize" value="1000" />
+          </div>
+          <div class="form-group">
+            <label>Unit</label>
+            <select id="plotUnit">
+              <option value="sqft" selected>Square Feet</option>
+              <option value="sqyard">Square Yards</option>
+              <option value="sqmeter">Square Meters</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Circle Rate (₹ per unit)</label>
+            <input type="number" id="circleRate" value="4500"/>
+            <div class="helper-text">Govt. minimum (guidance) value</div>
+          </div>
         </div>
-        
-        <div class="tabs" style="padding: 20px 30px 0;">
-            <button class="tab active" onclick="switchTab('basic')">Basic Inputs</button>
-            <button class="tab" onclick="switchTab('holding')">Holding Costs</button>
-            <button class="tab" onclick="switchTab('growth')">Growth Forecast</button>
-            <button class="tab" onclick="switchTab('exit')">Exit Strategy</button>
-            <button class="tab" onclick="switchTab('risk')">Risk Analysis</button>
+        <div class="calculated-field">
+          Price per unit: ₹<span id="pricePerUnit">0</span> |
+          <span id="circleRateComparison"></span>
         </div>
-        
-        <div class="main-content">
-            <!-- Tab 1: Basic Investment Inputs -->
-            <div id="basic" class="tab-content active" style="grid-column: 1 / -1;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="section">
-                        <h2>🏗️ Plot Details</h2>
-                        <div class="form-group">
-                            <label>Purchase Price (₹)</label>
-                            <input type="number" id="purchasePrice" value="5000000">
-                        </div>
-                        <div class="form-group">
-                            <label>Plot Size</label>
-                            <input type="number" id="plotSize" value="1000">
-                        </div>
-                        <div class="form-group">
-                            <label>Unit</label>
-                            <select id="plotUnit">
-                                <option value="sqft">Square Feet</option>
-                                <option value="sqyard">Square Yards</option>
-                                <option value="sqmeter">Square Meters</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Circle Rate (₹ per unit)</label>
-                            <input type="number" id="circleRate" value="4500">
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <h2>💰 Purchase Costs</h2>
-                        <div class="form-group">
-                            <label>State</label>
-                            <select id="state">
-                                <option value="up">Uttar Pradesh (7%)</option>
-                                <option value="mh">Maharashtra (5%)</option>
-                                <option value="dl">Delhi (6%)</option>
-                                <option value="ka">Karnataka (5%)</option>
-                                <option value="tn">Tamil Nadu (7%)</option>
-                                <option value="rj">Rajasthan (6%)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Registration Cost (₹)</label>
-                            <input type="number" id="registrationCost" value="10000">
-                        </div>
-                        <div class="form-group">
-                            <label>GST Applicable?</label>
-                            <select id="gstApplicable">
-                                <option value="no">No</option>
-                                <option value="yes">Yes (18%)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Brokerage (%)</label>
-                            <input type="number" id="brokerage" value="1" step="0.1" min="0" max="3">
-                        </div>
-                        <div class="form-group">
-                            <label>Lawyer/Consultancy Fees (₹)</label>
-                            <input type="number" id="lawyerFees" value="25000">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab 2: Holding Costs -->
-            <div id="holding" class="tab-content" style="grid-column: 1 / -1;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="section">
-                        <h2>🏦 Loan Details</h2>
-                        <div class="form-group">
-                            <label>Taking Loan?</label>
-                            <select id="loanTaken" onchange="toggleLoanFields()">
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-                        <div id="loanFields" style="display: none;">
-                            <div class="form-group">
-                                <label>Loan Amount (₹)</label>
-                                <input type="number" id="loanAmount" value="3000000">
-                            </div>
-                            <div class="form-group">
-                                <label>Interest Rate (% p.a.)</label>
-                                <input type="number" id="interestRate" value="9.5" step="0.1">
-                            </div>
-                            <div class="form-group">
-                                <label>Loan Tenure (years)</label>
-                                <input type="number" id="loanTenure" value="10">
-                            </div>
-                            <div class="form-group">
-                                <label>Processing Charges (₹)</label>
-                                <input type="number" id="processingCharges" value="30000">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <h2>📅 Annual Holding Costs</h2>
-                        <div class="form-group">
-                            <label>Annual Property Tax (₹)</label>
-                            <input type="number" id="propertyTax" value="5000">
-                        </div>
-                        <div class="form-group">
-                            <label>Annual Maintenance (₹)</label>
-                            <input type="number" id="maintenance" value="12000">
-                        </div>
-                        <div class="form-group">
-                            <label>Opportunity Cost (% p.a.)</label>
-                            <input type="number" id="opportunityCost" value="8" step="0.1">
-                        </div>
-                        <div class="form-group">
-                            <label>Inflation Rate (%)</label>
-                            <input type="number" id="inflationRate" value="6" step="0.1">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab 3: Growth Forecast -->
-            <div id="growth" class="tab-content" style="grid-column: 1 / -1;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="section">
-                        <h2>📈 Market Growth</h2>
-                        <div class="form-group">
-                            <label>Historical Growth Rate (% p.a.)</label>
-                            <input type="number" id="historicalGrowth" value="12" step="0.1">
-                        </div>
-                        <div class="form-group">
-                            <label>Forecasted Growth Rate (% p.a.)</label>
-                            <input type="number" id="forecastedGrowth" value="15" step="0.1">
-                        </div>
-                        <div class="form-group">
-                            <label>Growth Model</label>
-                            <select id="growthModel">
-                                <option value="linear">Linear Growth</option>
-                                <option value="compound">Compound Growth</option>
-                                <option value="momentum">Momentum-Based</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <h2>🏗️ Infrastructure Impact</h2>
-                        <div class="form-group">
-                            <label>Metro/Expressway Proximity</label>
-                            <select id="metroProximity">
-                                <option value="1">None (0% impact)</option>
-                                <option value="1.05">Planned (5% boost)</option>
-                                <option value="1.15">Under Construction (15% boost)</option>
-                                <option value="1.25">Operational (25% boost)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Industrial Corridor</label>
-                            <select id="industrialCorridor">
-                                <option value="1">No Impact</option>
-                                <option value="1.1">Low Impact (10%)</option>
-                                <option value="1.2">Medium Impact (20%)</option>
-                                <option value="1.3">High Impact (30%)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Commercial Development Score</label>
-                            <select id="commercialDev">
-                                <option value="1">Low</option>
-                                <option value="1.1">Medium</option>
-                                <option value="1.2">High</option>
-                                <option value="1.3">Very High</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab 4: Exit Strategy -->
-            <div id="exit" class="tab-content" style="grid-column: 1 / -1;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="section">
-                        <h2>🎯 Exit Planning</h2>
-                        <div class="form-group">
-                            <label>Holding Period (years)</label>
-                            <input type="number" id="holdingPeriod" value="5" min="1" max="30">
-                        </div>
-                        <div class="form-group">
-                            <label>Quick Sale Discount (%)</label>
-                            <input type="number" id="quickSaleDiscount" value="10" step="1">
-                        </div>
-                        <div class="form-group">
-                            <label>Capital Gains Tax (%)</label>
-                            <select id="capitalGainsTax">
-                                <option value="20">Long Term (20%)</option>
-                                <option value="30">Short Term (30%)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <h2>🏗️ Construction Plan (Optional)</h2>
-                        <div class="form-group">
-                            <label>Plan to Construct?</label>
-                            <select id="planConstruct" onchange="toggleConstructionFields()">
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-                        <div id="constructionFields" style="display: none;">
-                            <div class="form-group">
-                                <label>Construction Cost (₹)</label>
-                                <input type="number" id="constructionCost" value="2000000">
-                            </div>
-                            <div class="form-group">
-                                <label>Expected Monthly Rent (₹)</label>
-                                <input type="number" id="monthlyRent" value="25000">
-                            </div>
-                            <div class="form-group">
-                                <label>Vacancy Rate (%)</label>
-                                <input type="number" id="vacancyRate" value="10" step="1">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab 5: Risk Analysis -->
-            <div id="risk" class="tab-content" style="grid-column: 1 / -1;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="section">
-                        <h2>⚠️ Market Risks</h2>
-                        <div class="form-group">
-                            <label>Price Stagnation Risk</label>
-                            <select id="stagnationRisk">
-                                <option value="0">Low (0% probability)</option>
-                                <option value="0.25">Medium (25% probability)</option>
-                                <option value="0.5">High (50% probability)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Infrastructure Delay Risk</label>
-                            <select id="infraDelayRisk">
-                                <option value="1">No Risk</option>
-                                <option value="0.9">Low Risk (10% reduction)</option>
-                                <option value="0.7">High Risk (30% reduction)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="section">
-                        <h2>📋 Legal Readiness</h2>
-                        <div class="form-group">
-                            <label>Documentation Grade</label>
-                            <select id="docGrade">
-                                <option value="1.1">Grade A (Premium +10%)</option>
-                                <option value="1">Grade B (Standard)</option>
-                                <option value="0.9">Grade C (Risky -10%)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>NOC Status</label>
-                            <select id="nocStatus">
-                                <option value="1.05">All NOCs Available (+5%)</option>
-                                <option value="1">Partial NOCs</option>
-                                <option value="0.95">No NOCs (-5%)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Bank Loan Approved?</label>
-                            <select id="bankApproved">
-                                <option value="1.05">Yes (+5% value)</option>
-                                <option value="0.95">No (-5% value)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="btn" onclick="calculateROI()" style="grid-column: 1 / -1;">🚀 Calculate My Investment Returns</button>
-            
-            <!-- Results Section -->
-            <div id="resultsSection" class="results" style="display: none;">
-                <h2>📊 Your Investment Analysis Report</h2>
-                
-                <div class="results-grid">
-                    <div class="result-card">
-                        <h3>Total Investment</h3>
-                        <div class="value" id="totalInvestment">₹0</div>
-                    </div>
-                    <div class="result-card positive">
-                        <h3>Expected Value</h3>
-                        <div class="value" id="expectedValue">₹0</div>
-                    </div>
-                    <div class="result-card positive">
-                        <h3>Net Profit</h3>
-                        <div class="value" id="netProfit">₹0</div>
-                    </div>
-                    <div class="result-card">
-                        <h3>ROI (%)</h3>
-                        <div class="value" id="roiPercent">0%</div>
-                    </div>
-                    <div class="result-card">
-                        <h3>CAGR (%)</h3>
-                        <div class="value" id="cagr">0%</div>
-                    </div>
-                    <div class="result-card">
-                        <h3>Profit per Sq Ft</h3>
-                        <div class="value" id="profitPerSqft">₹0</div>
-                    </div>
-                </div>
-                
-                <div class="chart-container">
-                    <h3 style="margin-bottom: 15px;">📈 Investment Performance Score</h3>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="performanceScore" style="width: 0%">0%</div>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                    <div class="insight-box success">
-                        <h3 style="margin-bottom: 10px;">✅ Top 3 Reasons to Invest</h3>
-                        <ul id="proslist" style="margin-left: 20px; line-height: 1.8;"></ul>
-                    </div>
-                    <div class="insight-box danger">
-                        <h3 style="margin-bottom: 10px;">⚠️ Top 3 Risk Factors</h3>
-                        <ul id="conslist" style="margin-left: 20px; line-height: 1.8;"></ul>
-                    </div>
-                </div>
-                
-                <div class="insight-box" style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 10px;">🎯 AARIA's Best Buy Score</h3>
-                    <div style="font-size: 1.5em; font-weight: bold; color: #2a5298;" id="bestBuyScore">0/100</div>
-                    <p id="scoreInsight" style="margin-top: 10px;"></p>
-                </div>
-                
-                <div class="insight-box" style="margin-top: 20px; background: #ffe5e5; border-left-color: #dc3545;">
-                    <h3 style="margin-bottom: 10px;">😰 Panic-Proof Mode: Worst Case Scenario</h3>
-                    <p><strong>If everything goes wrong:</strong></p>
-                    <ul style="margin: 10px 0 10px 20px; line-height: 1.8;">
-                        <li>No infrastructure development</li>
-                        <li>Economic downturn (price drop 20%)</li>
-                        <li>Interest rates rise</li>
-                        <li>Distress sale situation</li>
-                    </ul>
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
-                        <strong>Worst Case Net Position:</strong>
-                        <div style="font-size: 1.8em; font-weight: bold; color: #dc3545; margin-top: 10px;" id="worstCase">₹0</div>
-                    </div>
-                </div>
-            </div>
+      </div>
+
+      <div class="section">
+        <h2>💰 Purchase Costs & Registration</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>State (Stamp Duty)</label>
+            <select id="state">
+              <option value="up">Uttar Pradesh (7%)</option>
+              <option value="mh">Maharashtra (5.5%)</option>
+              <option value="dl">Delhi (6%)</option>
+              <option value="ka">Karnataka (5%)</option>
+              <option value="tn">Tamil Nadu (7%)</option>
+              <option value="rj">Rajasthan (5.5%)</option>
+              <option value="gj">Gujarat (4.9%)</option>
+              <option value="hr">Haryana (6.5%)</option>
+              <option value="mp">Madhya Pradesh (7.5%)</option>
+              <option value="pb">Punjab (7%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Registration Cost (₹)</label>
+            <input type="number" id="registrationCost" value="10000"/>
+            <div class="helper-text">Often ~1% (varies)</div>
+          </div>
+          <div class="form-group">
+            <label>GST Applicable?</label>
+            <select id="gstApplicable">
+              <option value="no" selected>No</option>
+              <option value="yes">Yes (on under-construction)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Brokerage (%)</label>
+            <input type="number" id="brokerage" value="1" step="0.1" min="0" max="5"/>
+          </div>
+          <div class="form-group">
+            <label>Lawyer/Consultancy Fees (₹)</label>
+            <input type="number" id="lawyerFees" value="25000"/>
+          </div>
+          <div class="form-group">
+            <label>Other Misc Costs (₹)</label>
+            <input type="number" id="miscCosts" value="10000"/>
+            <div class="helper-text">Site visits, documentation, etc.</div>
+          </div>
         </div>
+        <div class="calculated-field">
+          Stamp Duty: ₹<span id="stampDutyCalc">0</span> |
+          Brokerage: ₹<span id="brokerageCalc">0</span> |
+          <strong>Total Upfront Cash (w/o loan): ₹<span id="totalUpfrontPreview">0</span></strong>
+        </div>
+      </div>
     </div>
-    
-    <script>
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-        }
-        
-        function toggleLoanFields() {
-            const loanTaken = document.getElementById('loanTaken').value;
-            document.getElementById('loanFields').style.display = loanTaken === 'yes' ? 'block' : 'none';
-        }
-        
-        function toggleConstructionFields() {
-            const planConstruct = document.getElementById('planConstruct').value;
-            document.getElementById('constructionFields').style.display = planConstruct === 'yes' ? 'block' : 'none';
-        }
-        
-        function calculateROI() {
-            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-            const plotSize = parseFloat(document.getElementById('plotSize').value) || 1;
-            const registrationCost = parseFloat(document.getElementById('registrationCost').value) || 0;
-            const lawyerFees = parseFloat(document.getElementById('lawyerFees').value) || 0;
-            const brokerage = parseFloat(document.getElementById('brokerage').value) || 0;
-            
-            const state = document.getElementById('state').value;
-            const stampDutyRates = {up: 0.07, mh: 0.05, dl: 0.06, ka: 0.05, tn: 0.07, rj: 0.06};
-            const stampDuty = purchasePrice * stampDutyRates[state];
-            
-            const gstApplicable = document.getElementById('gstApplicable').value === 'yes';
-            const gst = gstApplicable ? purchasePrice * 0.18 : 0;
-            
-            const brokerageCost = purchasePrice * (brokerage / 100);
-            
-            let totalInvestment = purchasePrice + stampDuty + registrationCost + gst + brokerageCost + lawyerFees;
-            
-            const loanTaken = document.getElementById('loanTaken').value === 'yes';
-            let totalLoanCost = 0;
-            
-            if (loanTaken) {
-                const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
-                const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
-                const loanTenure = parseFloat(document.getElementById('loanTenure').value) || 1;
-                const processingCharges = parseFloat(document.getElementById('processingCharges').value) || 0;
-                
-                const monthlyRate = (interestRate / 100) / 12;
-                const months = loanTenure * 12;
-                const emi = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
-                const totalInterest = (emi * months) - loanAmount;
-                totalLoanCost = totalInterest + processingCharges;
-                totalInvestment += processingCharges;
-            }
-            
-            const propertyTax = parseFloat(document.getElementById('propertyTax').value) || 0;
-            const maintenance = parseFloat(document.getElementById('maintenance').value) || 0;
-            const holdingPeriod = parseFloat(document.getElementById('holdingPeriod').value) || 5;
-            const inflationRate = parseFloat(document.getElementById('inflationRate').value) || 6;
-            
-            let totalHoldingCost = 0;
-            for (let i = 1; i <= holdingPeriod; i++) {
-                const yearCost = (propertyTax + maintenance) * Math.pow(1 + inflationRate / 100, i - 1);
-                totalHoldingCost += yearCost;
-            }
-            
-            if (loanTaken) {
-                const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
-                const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
-                const loanTenure = parseFloat(document.getElementById('loanTenure').value) || 1;
-                const monthlyRate = (interestRate / 100) / 12;
-                const months = Math.min(loanTenure * 12, holdingPeriod * 12);
-                const emi = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
-                totalHoldingCost += emi * months - loanAmount;
-            }
-            
-            totalInvestment += totalHoldingCost;
-            
-            const forecastedGrowth = parseFloat(document.getElementById('forecastedGrowth').value) || 0;
-            const metroProximity = parseFloat(document.getElementById('metroProximity').value) || 1;
-            const industrialCorridor = parseFloat(document.getElementById('industrialCorridor').value) || 1;
-            const commercialDev = parseFloat(document.getElementById('commercialDev').value) || 1;
-            const docGrade = parseFloat(document.getElementById('docGrade').value) || 1;
-            const nocStatus = parseFloat(document.getElementById('nocStatus').value) || 1;
-            const bankApproved = parseFloat(document.getElementById('bankApproved').value) || 1;
-            const infraDelayRisk = parseFloat(document.getElementById('infraDelayRisk').value) || 1;
-            
-            const infrastructureMultiplier = metroProximity * industrialCorridor * commercialDev * infraDelayRisk;
-            const legalMultiplier = docGrade * nocStatus * bankApproved;
-            const adjustedGrowth = forecastedGrowth * infrastructureMultiplier * legalMultiplier;
-            
-            const growthModel = document.getElementById('growthModel').value;
-            let expectedValue = purchasePrice;
-            
-            if (growthModel === 'linear') {
-                expectedValue = purchasePrice * (1 + (adjustedGrowth / 100) * holdingPeriod);
-            } else if (growthModel === 'compound') {
-                expectedValue = purchasePrice * Math.pow(1 + adjustedGrowth / 100, holdingPeriod);
-            } else {
-                const momentum = 1.1;
-                expectedValue = purchasePrice * Math.pow(1 + (adjustedGrowth * momentum) / 100, holdingPeriod);
-            }
-            
-            const capitalGainsTax = parseFloat(document.getElementById('capitalGainsTax').value) || 20;
-            const capitalGains = expectedValue - purchasePrice;
-            const taxAmount = capitalGains * (capitalGainsTax / 100);
-            
-            const netProfit = expectedValue - totalInvestment - taxAmount;
-            const roiPercent = (netProfit / totalInvestment) * 100;
-            const cagr = (Math.pow(expectedValue / totalInvestment, 1 / holdingPeriod) - 1) * 100;
-            
-            const plotSizeInSqft = plotSize * (document.getElementById('plotUnit').value === 'sqyard' ? 9 : document.getElementById('plotUnit').value === 'sqmeter' ? 10.764 : 1);
-            const profitPerSqft = netProfit / plotSizeInSqft;
-            
-            document.getElementById('totalInvestment').textContent = '₹' + totalInvestment.toLocaleString('en-IN', {maximumFractionDigits: 0});
-            document.getElementById('expectedValue').textContent = '₹' + expectedValue.toLocaleString('en-IN', {maximumFractionDigits: 0});
-            document.getElementById('netProfit').textContent = '₹' + netProfit.toLocaleString('en-IN', {maximumFractionDigits: 0});
-            document.getElementById('roiPercent').textContent = roiPercent.toFixed(2) + '%';
-            document.getElementById('cagr').textContent = cagr.toFixed(2) + '%';
-            document.getElementById('profitPerSqft').textContent = '₹' + profitPerSqft.toLocaleString('en-IN', {maximumFractionDigits: 0});
-            
-            if (netProfit > 0) {
-                document.getElementById('netProfit').parentElement.classList.add('positive');
-                document.getElementById('netProfit').parentElement.classList.remove('negative');
-            } else {
-                document.getElementById('netProfit').parentElement.classList.add('negative');
-                document.getElementById('netProfit').parentElement.classList.remove('positive');
-            }
-            
-            const performanceScore = Math.min(100, Math.max(0, (roiPercent / 2)));
-            document.getElementById('performanceScore').style.width = performanceScore + '%';
-            document.getElementById('performanceScore').textContent = performanceScore.toFixed(0) + '%';
-            
-            const pros = [];
-            const cons = [];
-            
-            if (cagr > 15) pros.push('Excellent CAGR above 15% - Strong wealth creation potential');
-            if (metroProximity > 1.1) pros.push('Metro/Expressway connectivity boosts long-term value');
-            if (docGrade >= 1.05) pros.push('Grade A documentation ensures smooth resale and premium pricing');
-            if (infrastructureMultiplier > 1.2) pros.push('High infrastructure development score indicates rapid appreciation');
-            if (roiPercent > 100) pros.push('ROI exceeds 100% - Exceptional investment opportunity');
-            if (bankApproved > 1) pros.push('Bank loan approved property - Higher liquidity and buyer confidence');
-            
-            if (cagr < 8) cons.push('CAGR below 8% - Consider alternative investments');
-            if (loanTaken) cons.push('Loan burden reduces effective returns - Monitor EMI impact');
-            if (infraDelayRisk < 1) cons.push('Infrastructure delay risk may impact growth projections');
-            if (docGrade < 1) cons.push('Documentation issues may reduce resale value and buyer interest');
-            if (holdingPeriod > 10) cons.push('Long holding period increases market uncertainty');
-            if (nocStatus < 1) cons.push('Missing NOCs can create legal complications and reduce value');
-            
-            while (pros.length < 3) pros.push('Stable real estate asset for portfolio diversification');
-            while (cons.length < 3) cons.push('Market volatility may affect short-term valuations');
-            
-            document.getElementById('proslist').innerHTML = pros.slice(0, 3).map(p => '<li>' + p + '</li>').join('');
-            document.getElementById('conslist').innerHTML = cons.slice(0, 3).map(c => '<li>' + c + '</li>').join('');
-            
-            let buyScore = 50;
-            if (cagr > 15) buyScore += 15;
-            else if (cagr > 12) buyScore += 10;
-            else if (cagr > 8) buyScore += 5;
-            else buyScore -= 10;
-            
-            if (infrastructureMultiplier > 1.3) buyScore += 15;
-            else if (infrastructureMultiplier > 1.15) buyScore += 10;
-            else if (infrastructureMultiplier > 1) buyScore += 5;
-            
-            if (legalMultiplier > 1.1) buyScore += 10;
-            else if (legalMultiplier < 0.95) buyScore -= 10;
-            
-            if (roiPercent > 150) buyScore += 10;
-            else if (roiPercent < 50) buyScore -= 10;
-            
-            buyScore = Math.min(100, Math.max(0, buyScore));
-            
-            document.getElementById('bestBuyScore').textContent = buyScore.toFixed(0) + '/100';
-            
-            let scoreInsight = '';
-            if (buyScore >= 80) scoreInsight = '🌟 Exceptional Investment! This plot shows outstanding potential with strong fundamentals and excellent growth prospects.';
-            else if (buyScore >= 65) scoreInsight = '✅ Good Investment. Solid fundamentals with reasonable growth expectations. Proceed with confidence.';
-            else if (buyScore >= 50) scoreInsight = '⚠️ Average Investment. Consider negotiating better terms or exploring alternative options in the area.';
-            else scoreInsight = '❌ Below Average. Significant concerns identified. Strongly recommend reconsidering or seeking professional advice.';
-            
-            document.getElementById('scoreInsight').textContent = scoreInsight;
-            
-            const worstCaseValue = purchasePrice * 0.8 * 0.9;
-            const quickSaleDiscount = parseFloat(document.getElementById('quickSaleDiscount').value) || 10;
-            const distressSaleValue = worstCaseValue * (1 - quickSaleDiscount / 100);
-            const worstCasePosition = distressSaleValue - totalInvestment - (totalInvestment * 0.05);
-            
-            document.getElementById('worstCase').textContent = '₹' + worstCasePosition.toLocaleString('en-IN', {maximumFractionDigits: 0});
-            document.getElementById('worstCase').style.color = worstCasePosition >= 0 ? '#27ae60' : '#dc3545';
-            
-            document.getElementById('resultsSection').style.display = 'block';
-            document.getElementById('resultsSection').scrollIntoView({behavior: 'smooth', block: 'start'});
-        }
-        
-        window.onload = function() {
-            toggleLoanFields();
-            toggleConstructionFields();
-        };
-    </script>
+
+    <!-- HOLDING -->
+    <div id="holding" class="tab-content">
+      <div class="section">
+        <h2>🏦 Loan Details</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Taking Loan?</label>
+            <select id="loanTaken">
+              <option value="no" selected>No (Cash Purchase)</option>
+              <option value="yes">Yes (Home/Plot Loan)</option>
+            </select>
+          </div>
+        </div>
+        <div id="loanFields" style="display:none;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Loan Amount (₹)</label>
+              <input type="number" id="loanAmount" value="3000000"/>
+              <div class="helper-text">Usually ≤ 80% of value</div>
+            </div>
+            <div class="form-group">
+              <label>Interest Rate (% p.a.)</label>
+              <input type="number" id="interestRate" value="9.5" step="0.1"/>
+            </div>
+            <div class="form-group">
+              <label>Loan Tenure (years)</label>
+              <input type="number" id="loanTenure" value="10" min="1" max="30"/>
+            </div>
+            <div class="form-group">
+              <label>Processing Fee (%)</label>
+              <input type="number" id="processingFeePercent" value="0.5" step="0.1"/>
+            </div>
+          </div>
+          <div class="calculated-field">
+            Monthly EMI: ₹<span id="emiCalc">0</span> |
+            Total Interest (till sale): ₹<span id="totalInterestCalc">0</span> |
+            Processing Fee: ₹<span id="processingFeeCalc">0</span> |
+            Remaining Loan at Sale: ₹<span id="loanBalanceAtSale">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>📅 Annual Holding Costs</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Annual Property Tax (₹)</label>
+            <input type="number" id="propertyTax" value="5000"/>
+          </div>
+          <div class="form-group">
+            <label>Annual Maintenance (₹)</label>
+            <input type="number" id="maintenance" value="12000"/>
+          </div>
+          <div class="form-group">
+            <label>Inflation Rate for Costs (%)</label>
+            <input type="number" id="inflationRate" value="6" step="0.1"/>
+          </div>
+          <div class="form-group">
+            <label>Opportunity Cost (% p.a.)</label>
+            <input type="number" id="opportunityCost" value="0" step="0.1"/>
+            <div class="helper-text">Info only; not used in ROI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROWTH -->
+    <div id="growth" class="tab-content">
+      <div class="section">
+        <h2>📈 Market Growth Projections</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Forecasted Growth Rate (% p.a.)</label>
+            <input type="number" id="forecastedGrowth" value="10" step="0.5"/>
+          </div>
+          <div class="form-group">
+            <label>Growth Model</label>
+            <select id="growthModel">
+              <option value="compound" selected>Compound (standard)</option>
+              <option value="linear">Linear (conservative)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Market Cycle Multiplier</label>
+            <select id="marketCycle">
+              <option value="0.9">Soft Market</option>
+              <option value="1" selected>Neutral</option>
+              <option value="1.1">Rising Market</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Infra/Legal/Demand Multiplier (combined)</label>
+            <select id="combinedMultiplier">
+              <option value="0.95">Below Average</option>
+              <option value="1" selected>Average</option>
+              <option value="1.05">Above Average</option>
+              <option value="1.1">Strong Drivers</option>
+            </select>
+            <div class="helper-text">Applies to growth, capped to market-realistic band</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXIT -->
+    <div id="exit" class="tab-content">
+      <div class="section">
+        <h2>🎯 Exit Planning & Timeline</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Holding Period (years)</label>
+            <input type="number" id="holdingPeriod" value="5" min="1" max="30"/>
+          </div>
+          <div class="form-group">
+            <label>Exit Strategy</label>
+            <select id="exitStrategy">
+              <option value="normal" selected>Normal Market Sale</option>
+              <option value="quick">Quick Sale (−10%)</option>
+              <option value="distress">Distress (−20%)</option>
+              <option value="premium">Premium (+5%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Capital Gains Tax Scenario</label>
+            <select id="capitalGainsTax">
+              <option value="20" selected>Long Term (≥ 24 months): 20%</option>
+              <option value="30">Short Term (&lt; 24 months): 30% (slab approx)</option>
+              <option value="0">Reinvest (Sec 54F assumed): 0%</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Selling Costs (%)</label>
+            <input type="number" id="sellingCosts" value="2" step="0.5"/>
+            <div class="helper-text">Brokerage, legal fees at time of sale</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🏗️ Optional: Construction & Rent</h2>
+        <div class="form-group">
+          <label>Plan to Construct & Rent?</label>
+          <select id="planConstruct">
+            <option value="no" selected>No - Sell Plot As-Is</option>
+            <option value="yes">Yes - Build & Rent Out</option>
+          </select>
+        </div>
+        <div id="constructionFields" style="display:none;">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Construction Cost (₹ per sq ft)</label>
+              <input type="number" id="constructionCostPerSqft" value="1500"/>
+            </div>
+            <div class="form-group">
+              <label>Built-up Area (sq ft)</label>
+              <input type="number" id="builtupArea" value="1500"/>
+            </div>
+            <div class="form-group">
+              <label>Expected Monthly Rent (₹)</label>
+              <input type="number" id="monthlyRent" value="25000"/>
+            </div>
+            <div class="form-group">
+              <label>Vacancy Rate (% of year)</label>
+              <input type="number" id="vacancyRate" value="10" step="1"/>
+            </div>
+            <div class="form-group">
+              <label>Annual Property Maintenance for Rental (₹)</label>
+              <input type="number" id="rentalMaintenance" value="30000"/>
+            </div>
+            <div class="form-group">
+              <label>Rent Growth Rate (% p.a.)</label>
+              <input type="number" id="rentGrowth" value="5" step="0.5"/>
+            </div>
+          </div>
+          <div class="calculated-field">
+            Total Construction Cost: ₹<span id="totalConstructionCost">0</span> |
+            Year-1 Net Rent: ₹<span id="annualRent">0</span> |
+            Rental Yield (Yr-1): <span id="rentalYield">0</span>%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RISK -->
+    <div id="risk" class="tab-content">
+      <div class="section">
+        <h2>⚠️ Simple Risk Toggles (applied in growth multiplier)</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Sales Velocity</label>
+            <select id="salesVelocity">
+              <option value="0.98">Slow</option>
+              <option value="1" selected>Moderate</option>
+              <option value="1.02">Fast</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Documentation Grade</label>
+            <select id="docGrade">
+              <option value="0.98">Issues</option>
+              <option value="1" selected>Standard</option>
+              <option value="1.02">Premium</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Macro Environment</label>
+            <select id="macro">
+              <option value="0.98">Weak</option>
+              <option value="1" selected>Neutral</option>
+              <option value="1.02">Strong</option>
+            </select>
+          </div>
+        </div>
+        <div class="helper-text">These nudge the combined multiplier subtly to prevent unrealistic projections.</div>
+      </div>
+    </div>
+
+    <button class="btn" id="calcBtn">🚀 Calculate Complete Investment Analysis</button>
+    <div class="def-link" id="openDefs">📘 Definitions of all terms</div>
+
+    <!-- RESULTS -->
+    <div id="resultsSection" class="results" style="display:none;">
+      <h2>📊 Complete Investment Analysis Report</h2>
+
+      <div class="results-grid">
+        <div class="result-card">
+          <h3>Total Upfront Cash</h3>
+          <div class="value" id="totalUpfrontCash">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Down payment + purchase costs (+ processing fee if loan)</div>
+        </div>
+        <div class="result-card">
+          <h3>Total Investment</h3>
+          <div class="value" id="totalInvestment">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">All cash outflows over holding</div>
+        </div>
+        <div class="result-card positive">
+          <h3>Expected Sale Value</h3>
+          <div class="value" id="expectedValue">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">After <span id="yearsHeld">5</span> years</div>
+        </div>
+        <div class="result-card">
+          <h3>Capital Gain (for tax)</h3>
+          <div class="value" id="capitalGainForTax">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Sale − eligible costs − selling expenses</div>
+        </div>
+        <div class="result-card">
+          <h3>Capital Gains Tax</h3>
+          <div class="value" id="taxAmount">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Approx as per selection</div>
+        </div>
+        <div class="result-card">
+          <h3>Net Sale Proceeds</h3>
+          <div class="value" id="netSaleProceeds">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">After selling costs, tax & loan payoff</div>
+        </div>
+        <div class="result-card">
+          <h3>Net Profit</h3>
+          <div class="value" id="netProfit">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Proceeds − Total Investment</div>
+        </div>
+        <div class="result-card">
+          <h3>ROI</h3>
+          <div class="value" id="roiPercent">0%</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Return on Investment</div>
+        </div>
+        <div class="result-card">
+          <h3>CAGR</h3>
+          <div class="value" id="cagr">0%</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Annualised (cash-on-cash)</div>
+        </div>
+        <div class="result-card">
+          <h3>Profit per Sq Ft</h3>
+          <div class="value" id="profitPerSqft">₹0</div>
+          <div style="font-size:12px;margin-top:6px;color:#666">Unit economics</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h3 style="margin-bottom:10px;">📈 Overall Investment Performance Score</h3>
+        <div class="progress-bar"><div class="progress-fill" id="performanceScore" style="width:0%">0%</div></div>
+        <div id="performanceText" style="margin-top:8px;text-align:center;color:#555;font-size:14px;"></div>
+      </div>
+
+      <div class="timeline">
+        <h3 style="margin-bottom:12px;color:#2a5298;">📅 Year-wise Value Projection</h3>
+        <div id="yearlyBreakdown"></div>
+      </div>
+
+      <div class="comparison-table">
+        <h3 style="padding:14px;color:#2a5298;background:#f8f9fa;">📊 Benchmark Comparison</h3>
+        <table>
+          <thead>
+            <tr><th>Investment Type</th><th>Returns (CAGR)</th><th>Comparison</th></tr>
+          </thead>
+          <tbody id="comparisonTable"></tbody>
+        </table>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+        <div class="insight-box success">
+          <h3>✅ Top Investment Strengths</h3>
+          <ul id="proslist"></ul>
+        </div>
+        <div class="insight-box danger">
+          <h3>⚠️ Key Risk Factors</h3>
+          <ul id="conslist"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Definitions Modal -->
+<div class="modal" id="defsModal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="defsTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="defsTitle">📘 Definitions (Tap to learn each term)</div>
+      <button class="close-btn" id="closeDefs">Close</button>
+    </div>
+    <div class="defs-grid" id="defsGrid">
+      <!-- definitions injected by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Helpers ---------- */
+const fmt = (n, maxDigits=0)=> isFinite(n) ? n.toLocaleString('en-IN',{maximumFractionDigits:maxDigits}) : '0';
+const el = id => document.getElementById(id);
+const getNum = id => parseFloat(el(id).value)||0;
+
+const STAMP = {up:.07,mh:.055,dl:.06,ka:.05,tn:.07,rj:.055,gj:.049,hr:.065,mp:.075,pb:.07};
+
+function unitToSqft(value, unit){
+  if(unit==='sqyard') return value*9;
+  if(unit==='sqmeter') return value*10.76391041671;
+  return value;
+}
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    el(t.dataset.tab).classList.add('active');
+    liveUpdates();
+  });
+});
+
+/* ---------- Show/Hide groups ---------- */
+function toggleLoanFields(){
+  const show = el('loanTaken').value==='yes';
+  el('loanFields').style.display = show ? 'block' : 'none';
+}
+function toggleConstructionFields(){
+  const show = el('planConstruct').value==='yes';
+  el('constructionFields').style.display = show ? 'block' : 'none';
+}
+
+/* ---------- Live previews ---------- */
+function liveUpdates(){
+  const purchasePrice = getNum('purchasePrice');
+  const plotSize = getNum('plotSize')||1;
+  const circleRate = getNum('circleRate');
+  const plotUnit = el('plotUnit').value;
+
+  const pricePerUnit = purchasePrice/plotSize;
+  el('pricePerUnit').textContent = fmt(pricePerUnit);
+
+  const cmpPct = circleRate>0 ? ((pricePerUnit/circleRate)-1)*100 : 0;
+  el('circleRateComparison').innerHTML = circleRate>0
+    ? (cmpPct>0
+      ? `<span style="color:#dc3545;">Above circle rate by ${cmpPct.toFixed(1)}%</span>`
+      : `<span style="color:#27ae60;">Below circle rate by ${Math.abs(cmpPct).toFixed(1)}%</span>`)
+    : '';
+
+  const state = el('state').value;
+  const stampDuty = purchasePrice*(STAMP[state]||0);
+  el('stampDutyCalc').textContent = fmt(stampDuty);
+
+  const brokerage = getNum('brokerage');
+  const brokerageCost = purchasePrice*(brokerage/100);
+  el('brokerageCalc').textContent = fmt(brokerageCost);
+
+  const registrationCost = getNum('registrationCost');
+  const lawyerFees = getNum('lawyerFees');
+  const miscCosts = getNum('miscCosts');
+  const gst = el('gstApplicable').value==='yes' ? purchasePrice*0.12 : 0;
+
+  // Upfront cash (no loan): purchase price + all purchase costs
+  const upfrontNoLoan = purchasePrice + stampDuty + registrationCost + gst + brokerageCost + lawyerFees + miscCosts;
+  el('totalUpfrontPreview').textContent = fmt(upfrontNoLoan);
+
+  // Loan live preview
+  if(el('loanTaken').value==='yes'){
+    const loanAmount = getNum('loanAmount');
+    const r = (getNum('interestRate')/100)/12;
+    const n = Math.max(1,getNum('loanTenure')*12);
+    const emi = r>0 ? loanAmount * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1) : loanAmount/n;
+    el('emiCalc').textContent = fmt(emi);
+
+    // Assume holding period for preview
+    const holdYrs = Math.max(1,getNum('holdingPeriod'));
+    const m = Math.min(holdYrs*12,n);
+
+    let balance = loanAmount, totalInt=0;
+    for(let i=0;i<m;i++){
+      const interest = balance*r;
+      const principal = emi - interest;
+      totalInt += interest;
+      balance -= principal;
+    }
+    el('totalInterestCalc').textContent = fmt(totalInt);
+    const procFee = loanAmount*(getNum('processingFeePercent')/100);
+    el('processingFeeCalc').textContent = fmt(procFee);
+    el('loanBalanceAtSale').textContent = fmt(Math.max(0,balance));
+  }
+
+  // Construction live preview
+  if(el('planConstruct').value==='yes'){
+    const cc = getNum('constructionCostPerSqft');
+    const bua = getNum('builtupArea');
+    const totalCC = cc*bua;
+    const monthlyRent = getNum('monthlyRent');
+    const vacancy = getNum('vacancyRate');
+    const annualRent = monthlyRent*12*(1 - vacancy/100);
+    const rentalYield = (annualRent / Math.max(1,(purchasePrice+totalCC))) * 100;
+    el('totalConstructionCost').textContent = fmt(totalCC);
+    el('annualRent').textContent = fmt(annualRent);
+    el('rentalYield').textContent = rentalYield.toFixed(2);
+  }
+
+  toggleLoanFields();
+  toggleConstructionFields();
+}
+
+/* ---------- Core Calculation ---------- */
+function calculate(){
+  const purchasePrice = getNum('purchasePrice');
+  const plotSize = getNum('plotSize')||1;
+  const plotUnit = el('plotUnit').value;
+  const plotSizeSqft = unitToSqft(plotSize, plotUnit);
+
+  const registrationCost = getNum('registrationCost');
+  const lawyerFees = getNum('lawyerFees');
+  const miscCosts = getNum('miscCosts');
+  const brokeragePct = getNum('brokerage');
+
+  const state = el('state').value;
+  const stampDuty = purchasePrice*(STAMP[state]||0);
+  const gst = el('gstApplicable').value==='yes' ? purchasePrice*0.12 : 0;
+  const brokerageCost = purchasePrice*(brokeragePct/100);
+
+  // Optional construction (treated as "improvement" for tax + increases cash invested)
+  const planConstruct = el('planConstruct').value==='yes';
+  const totalConstructionCost = planConstruct ? getNum('constructionCostPerSqft')*getNum('builtupArea') : 0;
+
+  // Loan
+  const loanTaken = el('loanTaken').value==='yes';
+  const loanAmount = loanTaken ? getNum('loanAmount') : 0;
+  const interestRate = loanTaken ? getNum('interestRate') : 0;
+  const loanTenure = loanTaken ? getNum('loanTenure') : 0;
+  const processingFee = loanTaken ? loanAmount*(getNum('processingFeePercent')/100) : 0;
+
+  // Holding & exit
+  const propertyTax = getNum('propertyTax');
+  const maintenance = getNum('maintenance');
+  const inflationRate = getNum('inflationRate');
+  const holdingPeriod = Math.max(1,getNum('holdingPeriod'));
+  const exitStrategy = el('exitStrategy').value;
+  const capitalGainsTaxRate = parseFloat(el('capitalGainsTax').value)||0;
+  const sellingCostsPct = getNum('sellingCosts');
+
+  // Growth (market-standard with bounded multipliers)
+  const baseGrowth = getNum('forecastedGrowth')/100;               // as decimal
+  const marketCycle = parseFloat(el('marketCycle').value)||1;
+  const combinedMultiplierBase = parseFloat(el('combinedMultiplier').value)||1;
+  const riskNudges = (parseFloat(el('salesVelocity').value)||1) * (parseFloat(el('docGrade').value)||1) * (parseFloat(el('macro').value)||1);
+  // multiply but keep within 0.8x .. 1.3x to avoid unrealistic compounding
+  const combinedMultiplier = Math.min(1.3, Math.max(0.8, combinedMultiplierBase * riskNudges));
+  let adjGrowth = baseGrowth * combinedMultiplier * marketCycle;
+  // cap annual growth between -20% and +25% for realism
+  adjGrowth = Math.min(0.25, Math.max(-0.20, adjGrowth));
+
+  const growthModel = el('growthModel').value;
+
+  // Expected value path
+  let expectedValue = purchasePrice;
+  const yearlyValues = [];
+  if(growthModel==='linear'){
+    expectedValue = purchasePrice * (1 + adjGrowth*holdingPeriod);
+    for(let i=1;i<=holdingPeriod;i++){
+      yearlyValues.push({year:i, value: purchasePrice*(1 + adjGrowth*i)});
+    }
+  }else{
+    expectedValue = purchasePrice * Math.pow(1+adjGrowth, holdingPeriod);
+    for(let i=1;i<=holdingPeriod;i++){
+      yearlyValues.push({year:i, value: purchasePrice*Math.pow(1+adjGrowth, i)});
+    }
+  }
+
+  // Exit strategy adjustments
+  if(exitStrategy==='quick') expectedValue *= 0.90;
+  else if(exitStrategy==='distress') expectedValue *= 0.80;
+  else if(exitStrategy==='premium') expectedValue *= 1.05;
+
+  // Selling costs
+  const sellingExpense = expectedValue * (sellingCostsPct/100);
+
+  /* ====== CAPITAL GAINS (for tax) ======
+     Capital Gain ≈ Sale Price − (Eligible Acquisition & Improvement Costs) − Selling Expense
+     Eligible costs: purchase price + stamp duty + registration + brokerage + lawyer + misc + GST + construction (if any)
+     (We do not subtract holding costs/interest here for tax calculation.)
+  */
+  const acquisitionForTax = purchasePrice + stampDuty + registrationCost + brokerageCost + lawyerFees + miscCosts + gst + totalConstructionCost;
+  const capitalGainForTax = expectedValue - sellingExpense - acquisitionForTax;
+  const taxAmount = capitalGainForTax>0 ? capitalGainForTax*(capitalGainsTaxRate/100) : 0;
+
+  /* ====== LOAN AMORTIZATION ====== */
+  let totalInterestPaid = 0, loanBalance = 0, emi=0;
+  if(loanTaken){
+    const r = (interestRate/100)/12;
+    const n = Math.max(1, loanTenure*12);
+    emi = r>0 ? loanAmount * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1) : loanAmount/n;
+    const m = Math.min(holdingPeriod*12, n);
+    loanBalance = loanAmount;
+    for(let i=0;i<m;i++){
+      const interest = loanBalance*r;
+      const principal = emi - interest;
+      totalInterestPaid += interest;
+      loanBalance -= principal;
+    }
+    loanBalance = Math.max(0, loanBalance);
+  }
+
+  /* ====== CASH INVESTED (MARKET-STANDARD) ======
+     Total Upfront Cash:
+       If loan: down payment + stamp + registration + GST + brokerage + lawyer + misc + processing fee + (construction if done upfront)
+       If no loan: purchase price + all the above costs (+ construction)
+     Total Holding Costs:
+       Property tax + maintenance escalated for each year
+     Total Interest Paid (till sale) is included in Total Investment (cash outflow)
+     Opportunity cost is NOT included (only informational)
+  */
+  const downPayment = loanTaken ? Math.max(0, purchasePrice - loanAmount) : purchasePrice;
+  const upfrontPurchaseCosts = stampDuty + registrationCost + gst + brokerageCost + lawyerFees + miscCosts;
+  const upfrontConstruction = planConstruct ? totalConstructionCost : 0;
+  const totalUpfrontCash = downPayment + upfrontPurchaseCosts + (loanTaken ? processingFee : 0) + upfrontConstruction;
+
+  // Holding costs (inflation escalated)
+  let totalHoldingCost = 0;
+  for(let y=1;y<=holdingPeriod;y++){
+    totalHoldingCost += (propertyTax + maintenance) * Math.pow(1 + (getNum('inflationRate')/100), y-1);
+  }
+
+  // Rental income (optional, offsets holding; simple model with growth)
+  let totalRentNet = 0;
+  if(planConstruct){
+    const monthlyRent = getNum('monthlyRent');
+    const vacancy = getNum('vacancyRate');
+    const rentGrowth = getNum('rentGrowth')/100;
+    const annualMaintRent = getNum('rentalMaintenance');
+    let yearRent = monthlyRent*12*(1 - vacancy/100) - annualMaintRent;
+    for(let y=1;y<=holdingPeriod;y++){
+      totalRentNet += yearRent;
+      yearRent *= (1 + rentGrowth);
+    }
+  }
+
+  // Total cash invested over holding (cash outflow minus rent inflow)
+  const totalInvestment = totalUpfrontCash + totalHoldingCost + totalInterestPaid - totalRentNet;
+
+  /* ====== NET SALE PROCEEDS (to investor) ======
+     Proceeds after: selling costs, tax, and loan payoff (if any)
+  */
+  const netSaleProceeds = expectedValue - sellingExpense - taxAmount - (loanTaken ? loanBalance : 0);
+
+  /* ====== RESULTS ====== */
+  const netProfit = netSaleProceeds - totalInvestment;
+  const roiPercent = totalInvestment>0 ? (netProfit/totalInvestment)*100 : 0;
+  const cagr = (totalInvestment>0 && holdingPeriod>0)
+    ? (Math.pow(netSaleProceeds/totalInvestment, 1/holdingPeriod) - 1)*100
+    : 0;
+  const profitPerSqft = plotSizeSqft>0 ? netProfit/plotSizeSqft : 0;
+
+  // UI bind
+  el('totalUpfrontCash').textContent = '₹'+fmt(totalUpfrontCash);
+  el('totalInvestment').textContent  = '₹'+fmt(totalInvestment);
+  el('expectedValue').textContent    = '₹'+fmt(expectedValue);
+  el('yearsHeld').textContent        = holdingPeriod;
+  el('capitalGainForTax').textContent= '₹'+fmt(capitalGainForTax);
+  el('taxAmount').textContent        = '₹'+fmt(taxAmount);
+  el('netSaleProceeds').textContent  = '₹'+fmt(netSaleProceeds);
+  el('netProfit').textContent        = '₹'+fmt(netProfit);
+  el('roiPercent').textContent       = (isFinite(roiPercent)?roiPercent:0).toFixed(2)+'%';
+  el('cagr').textContent             = (isFinite(cagr)?cagr:0).toFixed(2)+'%';
+  el('profitPerSqft').textContent    = '₹'+fmt(profitPerSqft);
+
+  // Performance score (simple)
+  const perf = Math.min(100, Math.max(0, 50 + ((cagr-10)*3)));
+  const pf = el('performanceScore');
+  pf.style.width = perf.toFixed(0)+'%';
+  pf.textContent = perf.toFixed(0)+'%';
+  el('performanceText').textContent =
+    perf>=85?'Outstanding 🌟':
+    perf>=70?'Excellent 👍':
+    perf>=55?'Good 😊':
+    perf>=40?'Average 😐':'Below Expectations 😟';
+
+  // Yearly breakdown
+  let yHTML = '';
+  yearlyValues.forEach(v=>{
+    const growthPct = ((v.value/purchasePrice)-1)*100;
+    yHTML += `
+      <div class="timeline-item">
+        <div class="timeline-year">Year ${v.year}</div>
+        <div style="flex:1">
+          <div style="font-size:1.1em;font-weight:800;color:#2a5298;">₹${fmt(v.value)}</div>
+          <div style="color:#27ae60;margin-top:4px;">${growthPct>=0?'+':''}${growthPct.toFixed(1)}% from purchase</div>
+        </div>
+      </div>
+    `;
+  });
+  el('yearlyBreakdown').innerHTML = yHTML;
+
+  // Comparison table (illustrative)
+  const cagrVal = isFinite(cagr)?cagr:0;
+  const comps = [
+    {type:'Your Plot Investment', cagr:cagrVal, key:true},
+    {type:'Gold (long-term)', cagr:9},
+    {type:'Fixed Deposit', cagr:6.5},
+    {type:'Nifty 50 (LT avg)', cagr:12},
+    {type:'RE (India avg)', cagr:8.5}
+  ];
+  el('comparisonTable').innerHTML = comps.map(row=>{
+    const comp = row.key ? '—' :
+      (cagrVal>row.cagr
+        ? `<span style="color:#27ae60;">Better by ${(cagrVal-row.cagr).toFixed(1)}%</span>`
+        : `<span style="color:#e74c3c;">Lower by ${(row.cagr-cagrVal).toFixed(1)}%</span>`);
+    return `<tr>
+      <td style="font-weight:${row.key?'800':'500'}">${row.type}</td>
+      <td style="font-weight:800">${row.cagr.toFixed(2)}%</td>
+      <td>${comp}</td>
+    </tr>`;
+  }).join('');
+
+  // Pros/Cons quick list
+  const pros=[], cons=[];
+  if(cagrVal>12) pros.push('Strong annualised return (CAGR) vs common benchmarks');
+  if(roiPercent>60) pros.push('Healthy cash-on-cash ROI over holding period');
+  if(totalRentNet>0) pros.push('Rental inflow offsets holding/interest costs');
+  if(planConstruct && totalConstructionCost>0) pros.push('Improvement adds value and tax basis');
+
+  if(cagrVal<8) cons.push('Projected CAGR near/below real estate averages');
+  if(totalInterestPaid>0 && roiPercent<12) cons.push('Loan interest burden pressurises returns');
+  if(sellingExpense/expectedValue>0.03) cons.push('High exit costs reduce net proceeds');
+  if(capitalGainForTax<=0) cons.push('Low/negative capital gain after eligible costs & selling');
+
+  el('proslist').innerHTML = pros.slice(0,3).map(p=>`<li>${p}</li>`).join('') || '<li>Real estate offers inflation hedge</li>';
+  el('conslist').innerHTML = cons.slice(0,3).map(c=>`<li>${c}</li>`).join('') || '<li>Real estate is relatively illiquid</li>';
+
+  // Color cues
+  const cards = document.querySelectorAll('.result-card');
+  cards.forEach(c=>c.classList.remove('positive','negative'));
+  const netProfitCard = el('netProfit').closest('.result-card');
+  if(netProfit>0) netProfitCard.classList.add('positive'); else netProfitCard.classList.add('negative');
+}
+
+/* ---------- Definitions Modal ---------- */
+const DEFINITIONS = [
+  {t:'Total Upfront Cash', d:'All cash you pay at purchase. If loan: Down payment + stamp duty + registration + GST (if any) + brokerage + lawyer + misc + processing fee + construction (if built upfront). If no loan: Purchase price + these costs (+ construction).'},
+  {t:'Total Investment', d:'Total cash outflows over the holding period: Total Upfront Cash + inflation-adjusted property tax & maintenance + loan interest paid (till sale) − total net rent received (if any).'},
+  {t:'Expected Sale Value', d:'Projected sale price after your holding period, based on your growth settings and exit strategy (quick/premium, etc.).'},
+  {t:'Selling Costs', d:'Costs paid at sale (brokerage, legal, etc.) as a % of sale price.'},
+  {t:'Capital Gain (for tax)', d:'Sale price − eligible acquisition & improvement costs (purchase price, stamp duty, registration, brokerage, lawyer, misc, GST, construction) − selling expenses. Used only to estimate capital gains tax.'},
+  {t:'Capital Gains Tax', d:'Estimated tax on capital gain based on your selected scenario (LT 20%, ST 30% approximate, or reinvest @ 0%). Indexation is not modelled here.'},
+  {t:'Net Sale Proceeds', d:'Money you actually take home at sale after: selling costs, capital gains tax, and paying off any remaining loan balance.'},
+  {t:'Net Profit', d:'Net Sale Proceeds − Total Investment (all the cash you put in over time).'},
+  {t:'ROI', d:'Return on Investment = Net Profit ÷ Total Investment.'},
+  {t:'CAGR', d:'Annualised cash-on-cash return ≈ [(Net Sale Proceeds ÷ Total Investment)^(1/years)] − 1.'},
+  {t:'Profit per Sq Ft', d:'Net Profit ÷ plot area (in square feet).'},
+  {t:'Price per Unit', d:'Purchase price ÷ plot size (in your selected unit).'},
+  {t:'Circle Rate', d:'Government-notified minimum value per unit for stamp duty purposes; varies by locality.'}
+];
+
+function buildDefs(){
+  el('defsGrid').innerHTML = DEFINITIONS.map(def=>`
+    <div class="def-card">
+      <h4>${def.t}</h4>
+      <p style="font-size:14px;line-height:1.55;color:#333">${def.d}</p>
+    </div>
+  `).join('');
+}
+function openDefs(){ el('defsModal').style.display='flex'; }
+function closeDefs(){ el('defsModal').style.display='none'; }
+
+/* ---------- Events ---------- */
+['purchasePrice','plotSize','circleRate','plotUnit','state','registrationCost','gstApplicable','brokerage','lawyerFees','miscCosts',
+ 'loanTaken','loanAmount','interestRate','loanTenure','processingFeePercent','propertyTax','maintenance','inflationRate',
+ 'forecastedGrowth','growthModel','marketCycle','combinedMultiplier','salesVelocity','docGrade','macro',
+ 'holdingPeriod','exitStrategy','capitalGainsTax','sellingCosts','planConstruct','constructionCostPerSqft','builtupArea','monthlyRent','vacancyRate','rentalMaintenance','rentGrowth'
+].forEach(id=>{
+  const node = el(id);
+  if(node){ node.addEventListener('input', liveUpdates); node.addEventListener('change', liveUpdates); }
+});
+
+el('calcBtn').addEventListener('click', ()=>{
+  calculate();
+  el('resultsSection').style.display='block';
+  el('resultsSection').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+el('openDefs').addEventListener('click', ()=>{ buildDefs(); openDefs(); });
+el('closeDefs').addEventListener('click', closeDefs);
+window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDefs(); });
+el('defsModal').addEventListener('click', (e)=>{ if(e.target.id==='defsModal') closeDefs(); });
+
+/* ---------- Init ---------- */
+window.onload = () => { liveUpdates(); };
+</script>
 </body>
 </html>
