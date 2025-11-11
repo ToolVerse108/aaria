@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aaria • Plot Comparison Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--brand:#2d7efb}
+    html{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,"Helvetica Neue",Arial,"Apple Color Emoji","Segoe UI Emoji"}
+    @media print{
+      .no-print{display:none!important}
+      .print-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      body{background:#fff}
+    }
+    input[type="range"]{accent-color:var(--brand)}
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 backdrop-blur bg-slate-950/70 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center gap-4">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 via-cyan-400 to-indigo-600 grid place-items-center shadow-lg shadow-blue-700/30">
+        <span class="font-black text-xl">A</span>
+      </div>
+      <div>
+        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">Aaria – Plot Comparison Lab</h1>
+        <p class="text-slate-400 text-sm">Add plots, tweak weights, and get a transparent score for long‑term investment.</p>
+      </div>
+      <div class="ml-auto flex items-center gap-2 no-print">
+        <button id="btnPrint" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sm">Print / Save PDF</button>
+        <button id="btnExport" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sm">Export JSON</button>
+        <label class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sm cursor-pointer">
+          Import JSON <input id="fileImport" type="file" accept="application/json" class="hidden" />
+        </label>
+        <button id="btnReset" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sm">Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-8">
+    <!-- Quick KPIs -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <p class="text-slate-400 text-xs">Total Plots</p>
+        <p id="kpiCount" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <p class="text-slate-400 text-xs">Average Score</p>
+        <p id="kpiAvg" class="text-2xl font-bold">–</p>
+      </div>
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <p class="text-slate-400 text-xs">Best Pick</p>
+        <p id="kpiBest" class="text-2xl font-bold">–</p>
+      </div>
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <p class="text-slate-400 text-xs">Median Price</p>
+        <p id="kpiMedian" class="text-2xl font-bold">–</p>
+      </div>
+    </section>
+
+    <!-- Weights + Filters -->
+    <section class="grid md:grid-cols-2 gap-6">
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <h2 class="font-semibold mb-3">Scoring Weights</h2>
+        <div class="space-y-3 text-sm">
+          <div class="grid grid-cols-5 items-center gap-2">
+            <label class="col-span-2">Price Efficiency</label>
+            <input type="range" min="0" max="40" value="25" data-weight="price" class="col-span-2"/>
+            <span id="w_price" class="text-right">25%</span>
+          </div>
+          <div class="grid grid-cols-5 items-center gap-2">
+            <label class="col-span-2">Location & Connectivity</label>
+            <input type="range" min="0" max="40" value="25" data-weight="location" class="col-span-2"/>
+            <span id="w_location" class="text-right">25%</span>
+          </div>
+          <div class="grid grid-cols-5 items-center gap-2">
+            <label class="col-span-2">Growth Potential</label>
+            <input type="range" min="0" max="40" value="20" data-weight="growth" class="col-span-2"/>
+            <span id="w_growth" class="text-right">20%</span>
+          </div>
+          <div class="grid grid-cols-5 items-center gap-2">
+            <label class="col-span-2">Legal & Risk</label>
+            <input type="range" min="0" max="40" value="20" data-weight="legal" class="col-span-2"/>
+            <span id="w_legal" class="text-right">20%</span>
+          </div>
+          <p class="text-slate-400 text-xs">Tip: Total should be near 100. We normalize automatically.</p>
+        </div>
+      </div>
+
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <h2 class="font-semibold mb-3">Quick Filters</h2>
+        <div class="grid sm:grid-cols-2 gap-3 text-sm">
+          <label class="flex items-center gap-2 bg-slate-800/60 rounded-xl px-3 py-2">
+            <span class="whitespace-nowrap">Max Budget (₹ lakhs)</span>
+            <input id="fltBudget" type="number" class="w-full bg-transparent outline-none" placeholder="e.g., 25" />
+          </label>
+          <label class="flex items-center gap-2 bg-slate-800/60 rounded-xl px-3 py-2">
+            <span class="whitespace-nowrap">Min Road (ft)</span>
+            <input id="fltRoad" type="number" class="w-full bg-transparent outline-none" placeholder="20" />
+          </label>
+          <label class="flex items-center gap-2 bg-slate-800/60 rounded-xl px-3 py-2">
+            <span>Facing</span>
+            <select id="fltFacing" class="w-full bg-transparent outline-none">
+              <option value="">Any</option>
+              <option>East</option>
+              <option>West</option>
+              <option>North</option>
+              <option>South</option>
+              <option>North-East</option>
+              <option>North-West</option>
+              <option>South-East</option>
+              <option>South-West</option>
+            </select>
+          </label>
+          <label class="flex items-center gap-2 bg-slate-800/60 rounded-xl px-3 py-2">
+            <input id="fltRera" type="checkbox" /> <span>RERA Only</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add / Edit Plot -->
+    <section class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+      <div class="flex items-center gap-2 mb-4">
+        <h2 class="font-semibold">Add / Edit Plot</h2>
+        <span class="text-xs text-slate-400">(Fields marked * are important for scoring)</span>
+      </div>
+      <form id="plotForm" class="grid md:grid-cols-4 gap-3 text-sm">
+        <input type="hidden" id="plotId" />
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Title *</span>
+          <input id="title" required placeholder="Mandhana – 800 sqft corner" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Locality *</span>
+          <input id="locality" required placeholder="Narayana Purwa, Mandhana" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Area (sqft) *</span>
+          <input id="area" type="number" min="0" required placeholder="800" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Price / sqft (₹) *</span>
+          <input id="ppsqft" type="number" min="0" required placeholder="1400" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Distance to CBD (km)</span>
+          <input id="dist" type="number" min="0" step="0.1" placeholder="12" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Road Width (ft)</span>
+          <input id="road" type="number" min="0" placeholder="30" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Facing</span>
+          <select id="facing" class="w-full bg-transparent outline-none">
+            <option value="">—</option>
+            <option>East</option><option>West</option><option>North</option><option>South</option>
+            <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+          </select>
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Shape</span>
+          <select id="shape" class="w-full bg-transparent outline-none">
+            <option>Regular</option>
+            <option>Irregular</option>
+          </select>
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Corner Plot</span>
+          <select id="corner" class="w-full bg-transparent outline-none">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Zoning</span>
+          <select id="zoning" class="w-full bg-transparent outline-none">
+            <option>Residential</option>
+            <option>Agricultural</option>
+            <option>Industrial</option>
+          </select>
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">RERA Registered</span>
+          <select id="rera" class="w-full bg-transparent outline-none">
+            <option>No</option>
+            <option>Yes</option>
+          </select>
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Nearby Infra Score (0–10)</span>
+          <input id="infra" type="number" min="0" max="10" step="0.1" placeholder="6.5" class="w-full bg-transparent outline-none" />
+        </label>
+        <label class="bg-slate-800/60 rounded-xl px-3 py-2">
+          <span class="text-xs text-slate-400">Expected CAGR %</span>
+          <input id="cagr" type="number" min="0" max="40" step="0.1" placeholder="10" class="w-full bg-transparent outline-none" />
+        </label>
+        <div class="md:col-span-4 grid sm:grid-cols-4 gap-3">
+          <fieldset class="bg-slate-800/40 rounded-xl p-3">
+            <legend class="text-xs text-slate-400">Legal Checklist</legend>
+            <label class="flex items-center gap-2 mt-1"><input id="legal_title" type="checkbox"/> Title Clear</label>
+            <label class="flex items-center gap-2"><input id="legal_mutation" type="checkbox"/> Mutation Done</label>
+            <label class="flex items-center gap-2"><input id="legal_tax" type="checkbox"/> Tax Up‑to‑date</label>
+            <label class="flex items-center gap-2"><input id="legal_noc" type="checkbox"/> NOCs (as applicable)</label>
+            <label class="flex items-center gap-2"><input id="legal_enc" type="checkbox"/> Encumbrance Cert.</label>
+          </fieldset>
+          <fieldset class="bg-slate-800/40 rounded-xl p-3">
+            <legend class="text-xs text-slate-400">Utilities</legend>
+            <label class="flex items-center gap-2 mt-1"><input id="uti_water" type="checkbox"/> Water</label>
+            <label class="flex items-center gap-2"><input id="uti_power" type="checkbox"/> Electricity</label>
+            <label class="flex items-center gap-2"><input id="uti_drain" type="checkbox"/> Drainage</label>
+            <label class="flex items-center gap-2"><input id="uti_street" type="checkbox"/> Street Lights</label>
+          </fieldset>
+          <fieldset class="bg-slate-800/40 rounded-xl p-3">
+            <legend class="text-xs text-slate-400">Seller</legend>
+            <label class="block mt-1">
+              <span class="text-xs text-slate-400">Type</span>
+              <select id="seller" class="w-full bg-transparent outline-none">
+                <option>Developer</option>
+                <option>Individual</option>
+                <option>Broker</option>
+              </select>
+            </label>
+            <label class="block mt-2">
+              <span class="text-xs text-slate-400">Credibility (0–10)</span>
+              <input id="seller_score" type="number" min="0" max="10" step="0.1" placeholder="7" class="w-full bg-transparent outline-none" />
+            </label>
+          </fieldset>
+          <fieldset class="bg-slate-800/40 rounded-xl p-3">
+            <legend class="text-xs text-slate-400">Notes</legend>
+            <textarea id="notes" rows="5" class="w-full bg-transparent outline-none" placeholder="Any remarks, comparables, upcoming infra..."></textarea>
+          </fieldset>
+        </div>
+        <div class="md:col-span-4 flex gap-2 mt-2 no-print">
+          <button class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 font-medium" id="btnSave" type="submit">Save Plot</button>
+          <button class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700" id="btnClear" type="button">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Results & Compare -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-3 no-print">
+        <h2 class="font-semibold">Your Plots</h2>
+        <div class="ml-auto flex items-center gap-2">
+          <label class="flex items-center gap-2 text-sm"><input id="chkNormalized" type="checkbox" checked /> Normalize by price/area</label>
+          <select id="sortBy" class="text-sm bg-slate-900/60 border border-slate-800 rounded-xl px-2 py-1">
+            <option value="score">Sort: Score</option>
+            <option value="price">Sort: Price (low→high)</option>
+            <option value="area">Sort: Area (large→small)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Cards Grid -->
+      <div id="cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 print-grid"></div>
+
+      <!-- Compare Drawer -->
+      <div class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <h3 class="font-semibold">Compare (up to 4)</h3>
+          <button id="btnCompare" class="ml-auto px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-sm no-print">Open Compare</button>
+        </div>
+        <div id="compareGrid" class="hidden grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- Footer note -->
+    <p class="text-xs text-slate-500">Disclaimer: Scores are decision aids based on your inputs. Always conduct site visits and legal due diligence.</p>
+  </main>
+
+  <template id="cardTpl">
+    <article class="rounded-2xl bg-slate-900/60 border border-slate-800 p-4 flex flex-col">
+      <div class="flex items-start gap-2">
+        <div class="flex-1">
+          <h4 class="font-semibold leading-tight"></h4>
+          <p class="text-xs text-slate-400"></p>
+        </div>
+        <label class="text-xs flex items-center gap-2"><input type="checkbox" class="chk-compare"/> Compare</label>
+      </div>
+      <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
+        <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Total Price</p><p class="font-semibold price"></p></div>
+        <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Score</p><p class="font-semibold score"></p></div>
+        <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Road</p><p class="font-medium road"></p></div>
+        <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">RERA</p><p class="font-medium rera"></p></div>
+      </div>
+      <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
+        <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Price</p><p class="font-semibold s_price"></p></div>
+        <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Location</p><p class="font-semibold s_loc"></p></div>
+        <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Growth</p><p class="font-semibold s_growth"></p></div>
+        <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Legal</p><p class="font-semibold s_legal"></p></div>
+        <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Risk</p><p class="font-semibold risk"></p></div>
+        <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Seller</p><p class="font-semibold seller"></p></div>
+      </div>
+      <div class="mt-3 flex gap-2 no-print">
+        <button class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-sm btn-edit">Edit</button>
+        <button class="px-3 py-2 rounded-lg bg-rose-600/90 hover:bg-rose-600 text-sm btn-del">Delete</button>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    // --- Storage helpers ---
+    const storeKey = 'aaria_plots_v1';
+    const readStore = () => JSON.parse(localStorage.getItem(storeKey) || '[]');
+    const writeStore = (arr) => localStorage.setItem(storeKey, JSON.stringify(arr));
+
+    // --- Elements ---
+    const el = (id) => document.getElementById(id);
+    const plotForm = el('plotForm');
+    const cardsBox = el('cards');
+
+    // --- Weights ---
+    const weightInputs = [...document.querySelectorAll('[data-weight]')];
+    const weightLabels = {
+      price: el('w_price'), location: el('w_location'), growth: el('w_growth'), legal: el('w_legal')
+    };
+
+    function getWeights(){
+      const w = Object.fromEntries(weightInputs.map(i=>[i.dataset.weight, Number(i.value)||0]));
+      const sum = Object.values(w).reduce((a,b)=>a+b,0) || 1;
+      for(const k in w){ w[k] = w[k]/sum; }
+      for(const i of weightInputs){ weightLabels[i.dataset.weight].textContent = `${i.value}%`; }
+      return w;
+    }
+
+    weightInputs.forEach(i=> i.addEventListener('input', ()=>{ getWeights(); render(); }));
+
+    // --- Scoring Model ---
+    function scorePlot(p){
+      // Basic derived values
+      const totalPrice = (Number(p.area)||0) * (Number(p.ppsqft)||0);
+      const priceEff = p.ppsqft ? (1/(p.ppsqft)) : 0; // lower ppsqft is better
+      const loc = clamp(10 - (Number(p.dist)||0), 0, 10) * 0.6 + clamp((Number(p.infra)||0),0,10) * 0.4; // 0-10
+      const growth = clamp(Number(p.cagr)||0, 0, 30) / 3; // scale to 0-10 if 30% = 10
+      const legalList = ['legal_title','legal_mutation','legal_tax','legal_noc','legal_enc'];
+      const legalScore = legalList.reduce((a,k)=> a + (p[k]?2:0), 0); // 0-10
+      const risk = 10 - legalScore/1.0 - (p.rera==='Yes'?2:0); // lower is better risk
+      const seller = clamp(Number(p.seller_score)||0,0,10);
+      const utility = ['uti_water','uti_power','uti_drain','uti_street'].reduce((a,k)=> a+(p[k]?2.5:0),0); // 0-10
+      const road = clamp((Number(p.road)||0)/6, 0, 10); // 60ft -> ~10
+      const cornerBonus = p.corner==='Yes'?1:0;
+      const facingAdj = ({'East':0.5,'North':0.5,'North-East':1}[p.facing]||0);
+      const locComposite = clamp(loc*0.7 + road*0.2 + cornerBonus*0.5 + facingAdj*0.3,0,10);
+      const legalComposite = clamp(legalScore*0.7 + (p.rera==='Yes'?2:0) + Math.min(utility,3),0,10);
+
+      // Normalize for comparison
+      const w = getWeights();
+      const priceScore = normalize(priceEff, 'price');
+      const locationScore = normalize(locComposite, 'location');
+      const growthScore = normalize(growth, 'growth');
+      const legalRiskScore = normalize(legalComposite, 'legal');
+
+      let overall = w.price*priceScore + w.location*locationScore + w.growth*growthScore + w.legal*legalRiskScore;
+      overall = round1(overall*10); // 0–10 display
+
+      return {
+        totalPrice, priceScore: round1(priceScore*10), locationScore: round1(locationScore*10),
+        growthScore: round1(growthScore*10), legalScore: round1(legalRiskScore*10),
+        risk: round1(clamp(risk,0,10)), overall
+      };
+    }
+
+    // Dynamic normalization based on current dataset
+    function normalize(value, key){
+      const arr = readStore();
+      if(arr.length===0) return 0.5; // neutral
+      let rawList = arr.map(p=>{
+        const s = baseRaw(p);
+        return s[key];
+      });
+      rawList.push(baseRaw(tempCurrent())[key]);
+      const lo = Math.min(...rawList), hi = Math.max(...rawList);
+      if(hi===lo) return 0.5;
+      return (value - lo) / (hi - lo);
+
+      function baseRaw(p){
+        const priceEff = p.ppsqft ? (1/(p.ppsqft)) : 0;
+        const loc = clamp(10 - (Number(p.dist)||0), 0, 10) * 0.6 + clamp((Number(p.infra)||0),0,10) * 0.4;
+        const road = clamp((Number(p.road)||0)/6, 0, 10);
+        const cornerBonus = p.corner==='Yes'?1:0;
+        const facingAdj = ({'East':0.5,'North':0.5,'North-East':1}[p.facing]||0);
+        const locComposite = clamp(loc*0.7 + road*0.2 + cornerBonus*0.5 + facingAdj*0.3,0,10);
+        const growth = clamp(Number(p.cagr)||0, 0, 30) / 3;
+        const legalScore = ['legal_title','legal_mutation','legal_tax','legal_noc','legal_enc'].reduce((a,k)=> a + (p[k]?2:0), 0);
+        const legalComposite = clamp(legalScore*0.7 + (p.rera==='Yes'?2:0) + Math.min(['uti_water','uti_power','uti_drain','uti_street'].reduce((a,k)=> a+(p[k]?2.5:0),0),3),0,10);
+        return {price:priceEff, location:locComposite, growth:growth, legal:legalComposite};
+      }
+      function tempCurrent(){
+        // current form values in case we are adding new one – for smoother normalization
+        const f = formToObj();
+        return f.title? f : readStore()[0] || {};
+      }
+    }
+
+    // --- Utilities ---
+    const round1 = (x)=> Math.round((x + Number.EPSILON) * 10)/10;
+    const clamp = (v,min,max)=> Math.max(min, Math.min(max, v));
+    const fmtINR = (n)=> new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n||0);
+    const median = (arr)=>{ if(arr.length===0) return 0; const s=[...arr].sort((a,b)=>a-b); const m=Math.floor(s.length/2); return s.length%2?s[m]:(s[m-1]+s[m])/2 };
+
+    // --- Form -> Object ---
+    function formToObj(){
+      const get = (id)=> el(id).type==='checkbox'? el(id).checked : el(id).value;
+      return {
+        id: el('plotId').value || crypto.randomUUID(),
+        created: Date.now(),
+        title: el('title').value.trim(),
+        locality: el('locality').value.trim(),
+        area: Number(el('area').value),
+        ppsqft: Number(el('ppsqft').value),
+        dist: Number(el('dist').value||0),
+        road: Number(el('road').value||0),
+        facing: el('facing').value,
+        shape: el('shape').value,
+        corner: el('corner').value,
+        zoning: el('zoning').value,
+        rera: el('rera').value,
+        infra: Number(el('infra').value||0),
+        cagr: Number(el('cagr').value||0),
+        legal_title: el('legal_title').checked,
+        legal_mutation: el('legal_mutation').checked,
+        legal_tax: el('legal_tax').checked,
+        legal_noc: el('legal_noc').checked,
+        legal_enc: el('legal_enc').checked,
+        uti_water: el('uti_water').checked,
+        uti_power: el('uti_power').checked,
+        uti_drain: el('uti_drain').checked,
+        uti_street: el('uti_street').checked,
+        seller: el('seller').value,
+        seller_score: Number(el('seller_score').value||0),
+        notes: el('notes').value.trim()
+      };
+    }
+
+    function fillForm(p){
+      el('plotId').value = p.id || '';
+      el('title').value = p.title||'';
+      el('locality').value = p.locality||'';
+      el('area').value = p.area||'';
+      el('ppsqft').value = p.ppsqft||'';
+      el('dist').value = p.dist||'';
+      el('road').value = p.road||'';
+      el('facing').value = p.facing||'';
+      el('shape').value = p.shape||'Regular';
+      el('corner').value = p.corner||'No';
+      el('zoning').value = p.zoning||'Residential';
+      el('rera').value = p.rera||'No';
+      el('infra').value = p.infra||'';
+      el('cagr').value = p.cagr||'';
+      el('legal_title').checked = !!p.legal_title;
+      el('legal_mutation').checked = !!p.legal_mutation;
+      el('legal_tax').checked = !!p.legal_tax;
+      el('legal_noc').checked = !!p.legal_noc;
+      el('legal_enc').checked = !!p.legal_enc;
+      el('uti_water').checked = !!p.uti_water;
+      el('uti_power').checked = !!p.uti_power;
+      el('uti_drain').checked = !!p.uti_drain;
+      el('uti_street').checked = !!p.uti_street;
+      el('seller').value = p.seller||'Developer';
+      el('seller_score').value = p.seller_score||'';
+      el('notes').value = p.notes||'';
+    }
+
+    // --- Render cards ---
+    function render(){
+      const arr = readStore();
+      const weights = getWeights();
+
+      // Filters
+      const maxBudget = Number(el('fltBudget').value||Infinity) * 100000; // lakhs → rupees
+      const minRoad = Number(el('fltRoad').value||0);
+      const face = el('fltFacing').value;
+      const onlyRera = el('fltRera').checked;
+
+      let items = arr.map(p=>({ p, s: scorePlot(p) }));
+      items = items.filter(({p,s})=> (s.totalPrice<=maxBudget) && (Number(p.road||0)>=minRoad) && (!face || p.facing===face) && (!onlyRera || p.rera==='Yes'));
+
+      const sortBy = el('sortBy').value;
+      items.sort((a,b)=> sortBy==='price'? (a.s.totalPrice-b.s.totalPrice) : sortBy==='area'? (b.p.area-a.p.area) : (b.s.overall - a.s.overall));
+
+      cardsBox.innerHTML = '';
+      const tpl = el('cardTpl').content;
+      items.forEach(({p,s})=>{
+        const node = document.importNode(tpl, true);
+        node.querySelector('h4').textContent = p.title;
+        node.querySelector('h4').title = p.notes||'';
+        node.querySelector('p.text-xs').textContent = p.locality;
+        node.querySelector('.price').textContent = `${fmtINR(s.totalPrice)} (${p.area} sqft)`;
+        node.querySelector('.score').textContent = `${s.overall}/10`;
+        node.querySelector('.road').textContent = `${p.road||'-'} ft`;
+        node.querySelector('.rera').textContent = p.rera||'No';
+        node.querySelector('.s_price').textContent = s.priceScore;
+        node.querySelector('.s_loc').textContent = s.locationScore;
+        node.querySelector('.s_growth').textContent = s.growthScore;
+        node.querySelector('.s_legal').textContent = s.legalScore;
+        node.querySelector('.risk').textContent = s.risk;
+        node.querySelector('.seller').textContent = `${p.seller} ${p.seller_score? '('+p.seller_score+')':''}`;
+        node.querySelector('.btn-edit').addEventListener('click', ()=> fillForm(p));
+        node.querySelector('.btn-del').addEventListener('click', ()=>{
+          const nxt = readStore().filter(x=>x.id!==p.id); writeStore(nxt); render();
+        });
+        node.querySelector('.chk-compare').addEventListener('change', (e)=> handleCompare(p, e.target.checked));
+        cardsBox.appendChild(node);
+      });
+
+      // KPIs
+      el('kpiCount').textContent = items.length;
+      el('kpiAvg').textContent = items.length? `${round1(items.reduce((a,c)=>a+c.s.overall,0)/items.length)}` : '–';
+      el('kpiBest').textContent = items[0]? items[0].p.title : '–';
+      el('kpiMedian').textContent = items.length? fmtINR(median(items.map(x=>x.s.totalPrice))) : '–';
+    }
+
+    // --- Compare ---
+    const compareSet = new Map();
+    const compareGrid = el('compareGrid');
+
+    function handleCompare(p, checked){
+      if(checked){
+        if(compareSet.size>=4){ alert('You can compare up to 4 plots.'); return; }
+        compareSet.set(p.id, p);
+      } else {
+        compareSet.delete(p.id);
+      }
+      drawCompare();
+    }
+
+    function drawCompare(){
+      const list = [...compareSet.values()];
+      compareGrid.innerHTML = '';
+      if(list.length===0){ compareGrid.classList.add('hidden'); return; }
+      compareGrid.classList.remove('hidden');
+      list.forEach(p=>{
+        const s = scorePlot(p);
+        const box = document.createElement('div');
+        box.className = 'rounded-2xl bg-slate-900/60 border border-slate-800 p-4';
+        box.innerHTML = `
+          <div class="flex items-start gap-2">
+            <div class="flex-1">
+              <h4 class="font-semibold">${p.title}</h4>
+              <p class="text-xs text-slate-400">${p.locality}</p>
+            </div>
+            <button class="text-xs text-slate-400 hover:text-white" data-id="${p.id}">Remove</button>
+          </div>
+          <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
+            <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Total Price</p><p class="font-semibold">${fmtINR(s.totalPrice)}</p></div>
+            <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Overall Score</p><p class="font-semibold">${s.overall}/10</p></div>
+            <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Area</p><p class="font-semibold">${p.area} sqft</p></div>
+            <div class="bg-slate-800/50 rounded-lg p-2"><p class="text-slate-400 text-xs">Price / sqft</p><p class="font-semibold">₹${p.ppsqft}</p></div>
+          </div>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
+            <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Price</p><p class="font-semibold">${s.priceScore}</p></div>
+            <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Location</p><p class="font-semibold">${s.locationScore}</p></div>
+            <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Growth</p><p class="font-semibold">${s.growthScore}</p></div>
+            <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Legal</p><p class="font-semibold">${s.legalScore}</p></div>
+            <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Risk</p><p class="font-semibold">${s.risk}</p></div>
+            <div class="bg-slate-800/30 rounded-lg p-2"><p class="text-slate-400">Seller</p><p class="font-semibold">${p.seller} ${p.seller_score? '('+p.seller_score+')':''}</p></div>
+          </div>
+          <ul class="mt-3 text-xs list-disc pl-5 text-slate-300">
+            <li>Road: ${p.road||'-'} ft • Facing: ${p.facing||'-'} • Corner: ${p.corner}</li>
+            <li>Legal: ${['legal_title','legal_mutation','legal_tax','legal_noc','legal_enc'].map(k=>p[k]?'✓':'✗').join(' ')}</li>
+            <li>Utilities: ${['uti_water','uti_power','uti_drain','uti_street'].map(k=>p[k]?'✓':'✗').join(' ')}</li>
+            <li>RERA: ${p.rera}</li>
+          </ul>
+        `;
+        box.querySelector('button[data-id]')?.addEventListener('click', (e)=>{ compareSet.delete(e.target.dataset.id); drawCompare(); });
+        compareGrid.appendChild(box);
+      });
+    }
+
+    el('btnCompare').addEventListener('click', ()=>{
+      compareGrid.classList.toggle('hidden');
+    });
+
+    // --- Events ---
+    plotForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const obj = formToObj();
+      if(!obj.title || !obj.locality || !obj.area || !obj.ppsqft){ alert('Please fill Title, Locality, Area, and Price/sqft.'); return; }
+      const all = readStore();
+      const idx = all.findIndex(x=>x.id===obj.id);
+      if(idx>-1) all[idx]=obj; else all.push(obj);
+      writeStore(all);
+      plotForm.reset(); el('plotId').value='';
+      render();
+    });
+
+    el('btnClear').addEventListener('click', ()=>{ plotForm.reset(); el('plotId').value=''; });
+    el('btnPrint').addEventListener('click', ()=> window.print());
+
+    el('btnExport').addEventListener('click', ()=>{
+      const data = readStore();
+      const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='aaria_plot_lab.json'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    el('fileImport').addEventListener('change', (e)=>{
+      const file = e.target.files?.[0]; if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ()=>{ try{ const data = JSON.parse(reader.result); if(Array.isArray(data)){ writeStore(data); render(); } } catch(err){ alert('Invalid JSON'); } };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    el('btnReset').addEventListener('click', ()=>{ if(confirm('Clear all saved plots?')){ writeStore([]); compareSet.clear(); render(); drawCompare(); } });
+
+    // Filters refresh
+    ['fltBudget','fltRoad','fltFacing','fltRera','sortBy'].forEach(id=> el(id).addEventListener('input', render));
+
+    // Seed demo data on first load
+    (function seed(){
+      const cur = readStore();
+      if(cur.length) { render(); return; }
+      const demo = [
+        {title:'Mandhana – Corner 800 sqft', locality:'Narayana Purwa, Mandhana', area:800, ppsqft:1400, dist:14, road:30, facing:'East', shape:'Regular', corner:'Yes', zoning:'Residential', rera:'Yes', infra:6.5, cagr:11, legal_title:true, legal_mutation:true, legal_tax:true, legal_noc:true, legal_enc:true, uti_water:true, uti_power:true, uti_drain:false, uti_street:true, seller:'Developer', seller_score:7, notes:'Near upcoming commercial strip.'},
+        {title:'Kalyanpur – 1000 sqft', locality:'Kalyanpur', area:1000, ppsqft:1200, dist:10, road:25, facing:'North', shape:'Regular', corner:'No', zoning:'Residential', rera:'No', infra:7.5, cagr:10, legal_title:true, legal_mutation:false, legal_tax:true, legal_noc:false, legal_enc:false, uti_water:true, uti_power:true, uti_drain:true, uti_street:false, seller:'Individual', seller_score:6, notes:'Requires mutation & EC check.'},
+        {title:'Bithoor Link – 1200 sqft', locality:'Bithoor Road', area:1200, ppsqft:1050, dist:18, road:40, facing:'North-East', shape:'Regular', corner:'No', zoning:'Residential', rera:'Yes', infra:6, cagr:12.5, legal_title:true, legal_mutation:true, legal_tax:true, legal_noc:true, legal_enc:true, uti_water:true, uti_power:true, uti_drain:true, uti_street:true, seller:'Developer', seller_score:8, notes:'Good road width; farther from CBD.'},
+        {title:'Panki Extension – 900 sqft', locality:'Panki', area:900, ppsqft:1300, dist:11, road:24, facing:'West', shape:'Irregular', corner:'No', zoning:'Residential', rera:'No', infra:6.8, cagr:9.5, legal_title:true, legal_mutation:true, legal_tax:true, legal_noc:false, legal_enc:false, uti_water:true, uti_power:true, uti_drain:false, uti_street:true, seller:'Broker', seller_score:5, notes:'Shape irregular; price negotiable.'}
+      ];
+      writeStore(demo.map(d=>({id:crypto.randomUUID(), created:Date.now(), ...d})));
+      render();
+    })();
+  </script>
+</body>
+</html>
