@@ -820,7 +820,43 @@ function calculate(){
   el('roiPercent').textContent       = (isFinite(roiPercent)?roiPercent:0).toFixed(2)+'%';
   el('cagr').textContent             = (isFinite(cagr)?cagr:0).toFixed(2)+'%';
   el('profitPerSqft').textContent    = '₹'+fmt(profitPerSqft);
+async function generatePDF() {
+  const report = el("resultsSection").cloneNode(true);
+  report.style.background = "#fff";
+  report.style.padding = "20px";
 
+  const opt = {
+    margin: 10,
+    filename: `Aaria_Report_${Date.now()}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  await html2pdf().from(report).set(opt).save();
+}
+
+el("downloadPDF").addEventListener("click", generatePDF);
+
+el("sharePDF").addEventListener("click", async () => {
+  const report = el("resultsSection").cloneNode(true);
+  report.style.background = "#fff";
+  report.style.padding = "20px";
+
+  const pdfBlob = await html2pdf().from(report).outputPdf("blob");
+  const fileName = `Aaria_Report_${Date.now()}.pdf`;
+
+  if (navigator.share) {
+    const file = new File([pdfBlob], fileName, { type: "application/pdf" });
+    navigator.share({
+      title: "AARIA Investment Report",
+      text: "Your complete investment analysis.",
+      files: [file]
+    });
+  } else {
+    alert("Sharing not supported on this device.");
+  }
+});
   // Performance score (simple)
   const perf = Math.min(100, Math.max(0, 50 + ((cagr-10)*3)));
   const pf = el('performanceScore');
