@@ -338,6 +338,11 @@
         <div class="card"><h4>ROI</h4><div class="v" id="roiPercent">0%</div></div>
         <div class="card"><h4>CAGR</h4><div class="v" id="cagr">0%</div></div>
         <div class="card"><h4>Profit / sqft</h4><div class="v" id="profitPerSqft">₹0</div></div>
+        <div style="text-align:center;margin-top:25px;margin-bottom:15px;">
+          <button id="downloadPDF" class="btn" style="width:auto;padding:10px 20px;margin-right:10px;">📄 Download PDF</button>
+          <button id="shareResult" class="btn" style="width:auto;padding:10px 20px;">🔗 Share</button>
+        </div>
+
       </div>
 
       <div class="chart">
@@ -869,8 +874,8 @@ async function sharePdf(){
 document.getElementById('calculateBtn').addEventListener('click', ()=>{
   liveUpdates(); calculateAll();
 });
-document.getElementById('downloadPdf').addEventListener('click', ()=> buildAndDownloadPDF('AARIA-Investment-Report.pdf'));
-document.getElementById('sharePdf').addEventListener('click', ()=> sharePdf());
+document.getElementById('downloadPDF').addEventListener('click', ()=> buildAndDownloadPDF('AARIA-Investment-Report.pdf'));
+document.getElementById('shareResult').addEventListener('click', ()=> sharePdf());
 
 /* definitions modal */
 $('openDefs').addEventListener('click', ()=>{ $('defsModal').style.display='flex'; $('defsModal').setAttribute('aria-hidden','false'); });
