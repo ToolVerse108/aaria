@@ -778,7 +778,7 @@ async function buildAndDownloadPDF(filename='AARIA-Investment-Report.pdf'){
   downloadBtn.innerText = '⏳ Generating PDF...';
 
   try {
-    const { jsPDF } = window.jspdf;
+    const jsPDF = window.jspdf ? window.jspdf.jsPDF : window.jsPDF;
     const pdf = new jsPDF({unit:'px', format:'a4'});
     const pageWidth = pdf.internal.pageSize.getWidth();
     const margin = 18;
