@@ -6,6 +6,31 @@
 <title>AARIA's Ultimate Plot Investment ROI Calculator — Mobile & PDF Ready</title>
 
 <style>
+  /* === PRINT BUTTON IN TOP RIGHT OF TABS === */
+.print-button-top {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.print-button-top button {
+  padding: 8px 16px;
+  font-size: 13px;
+  background: linear-gradient(90deg,#2a5298,#667eea);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .print-button-top {
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 6px;
+  }
+}
+
 .results-header-actions {
   display: flex;
   justify-content: flex-end;
@@ -164,7 +189,12 @@
     <button class="tab" data-tab="growth" role="tab">Growth</button>
     <button class="tab" data-tab="exit" role="tab">Exit</button>
     <button class="tab" data-tab="risk" role="tab">Risk</button>
-  </div>
+
+    <!-- PRINT BUTTON AT RIGHT TOP -->
+    <div class="print-button-top" id="printBtnTopBar" style="display:none;">
+        <button id="printPdfTop">🖨 Print / Save PDF</button>
+    </div>
+</div>
 
   <div class="main">
 
@@ -809,6 +839,7 @@ function calculateAll(){
   $('sensitivityTable').querySelector('tbody').innerHTML = rows;
 
   // show results
+  document.getElementById('printBtnTopBar').style.display = 'flex';
   $('resultsSection').style.display='block';
   $('resultsSection').scrollIntoView({behavior:'smooth', block:'start'});
 }
@@ -959,6 +990,10 @@ document.getElementById('printPdf').addEventListener('click', () => {
   printWindow.onload = function() {
     printWindow.print();
   };
+});
+// TOP RIGHT PRINT BUTTON – same action as bottom button
+document.getElementById('printPdfTop').addEventListener('click', () => {
+    document.getElementById('printPdf').click();
 });
 
 /* wrapper to gather inputs for metadata */
