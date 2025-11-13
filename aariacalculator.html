@@ -178,6 +178,130 @@
   /* small sensitivity table */
   .sens-table{width:100%;border-collapse:collapse;margin-top:8px}
   .sens-table th,.sens-table td{border:1px solid #eef3ff;padding:8px;text-align:center}
+  /* === SUPER MOBILE MODE (DO NOT CHANGE LOGIC — ONLY VISUAL ENHANCEMENT) === */
+
+/* Reduce overall padding on mobile for compactness */
+@media (max-width: 600px) {
+  body {
+    padding: 8px !important;
+  }
+
+  .container {
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+  }
+
+  /* Tabs become tighter and scroll smoothly */
+  .tabs {
+    gap: 4px !important;
+    padding: 8px !important;
+    overflow-x: auto !important;
+    white-space: nowrap;
+  }
+
+  .tab {
+    padding: 7px 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Grid fields become 2 columns whenever possible */
+  .form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 9px !important;
+    font-size: 13px !important;
+  }
+
+  /* Section boxes tighter */
+  .section {
+    padding: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Results cards shrink to tighter layout */
+  .results-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .card {
+    padding: 8px !important;
+  }
+
+  .card h4 {
+    font-size: 11px !important;
+  }
+
+  .v {
+    font-size: 14px !important;
+  }
+
+  /* Insight boxes */
+  .insight {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .insight .box {
+    padding: 10px !important;
+  }
+
+  /* Yearly breakdown spacing reduced */
+  #yearlyBreakdown > div {
+    margin-bottom: 6px !important;
+  }
+
+  /* Buttons more compact */
+  .btn {
+    padding: 10px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
+  .btn.small {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .icons-row {
+    margin-top: 8px !important;
+    gap: 6px !important;
+  }
+
+  .icon-btn {
+    padding: 6px !important;
+  }
+
+  /* Print button stays visible but compact */
+  .print-button-top button {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Compress header area further on very small phones */
+@media (max-width: 420px) {
+  .aaria-logo {
+    height: 48px !important;
+  }
+
+  .header-text h1 {
+    font-size: 15px !important;
+  }
+
+  .header-text p {
+    font-size: 12px !important;
+  }
+
+  .tabs {
+    padding-bottom: 4px !important;
+  }
+}
 </style>
 </head>
 <body>
