@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AARIA — Buyer & Investor FAQs (Mobile Optimized)</title>
+  <style>
+    :root{
+      --brand-1:#2a5298;
+      --brand-2:#667eea;
+      --muted:#667080;
+      --radius:14px;
+      --shadow:0 6px 24px rgba(28,40,80,0.08);
+      font-family:Inter, sans-serif;
+    }
+
+    body{margin:0;background:#f7fbff;color:#123;line-height:1.6;}
+    .wrap{max-width:1100px;margin:auto;padding:16px;}
+
+    h1{text-align:center;font-size:22px;color:var(--brand-1);margin-bottom:12px;}
+    h2{color:var(--brand-1);font-size:20px;margin-bottom:10px;}
+
+    /* PANELS */
+    .panel{
+      background:#fff;
+      padding:20px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+    }
+
+    /* FAQ ACCORDION */
+    .q{
+      padding:16px;
+      border:1px solid #eef3fb;
+      margin-bottom:10px;
+      border-radius:12px;
+      background:#fff;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+    .q:hover{border-color:var(--brand-2);}
+
+    .q-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-weight:600;
+      font-size:15px;
+    }
+
+    .q-body{
+      display:none;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:14.5px;
+      line-height:1.55;
+    }
+
+    /* MOBILE OPTIMIZATION */
+    @media(max-width:600px){
+      h1{font-size:20px;}
+      h2{font-size:18px;}
+      .panel{padding:16px;}
+      .q{padding:14px;}
+      .q-title{font-size:14.5px;}
+      .q-body{font-size:14px;}
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>AARIA — Buyer & Investor FAQs</h1>
+
+    <!-- GENERAL FAQ -->
+    <div class="panel">
+      <h2>General FAQs</h2>
+
+      <div class="q">
+        <div class="q-title">1. What documents should I check before buying a plot? <span>▸</span></div>
+        <div class="q-body">Check title chain, Encumbrance Certificate (EC), mutation, seller ID proof, layout approvals and ensure no legal disputes exist.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">2. What is circle rate? <span>▸</span></div>
+        <div class="q-body">Circle rate is the government-declared minimum value for registering land. It affects stamp duty and tax calculations.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">3. How do I know if a plot is legally safe? <span>▸</span></div>
+        <div class="q-body">A plot is legally safe if title is clean, approvals are valid, EC is clear, and AARIA’s document grade scores it as Standard/Premium.</div>
+      </div>
+    </div>
+
+    <!-- INVESTMENT FAQ -->
+    <div class="panel">
+      <h2>Investment FAQs</h2>
+
+      <div class="q">
+        <div class="q-title">4. What is a good ROI in plot investment? <span>▸</span></div>
+        <div class="q-body">Long-term land bankers target 10–20% CAGR. Flippers aim for higher short-term returns but with higher risk.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">5. How long should I hold a plot? <span>▸</span></div>
+        <div class="q-body">2–5 years for flippers; 5–10+ years for long-term investors. Infrastructure development greatly impacts timing.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">6. How do I estimate future growth? <span>▸</span></div>
+        <div class="q-body">Use comparable sales, infra plans, market cycle and circle-rate gaps. AARIA’s forecast engine provides realistic growth bands.</div>
+      </div>
+    </div>
+
+    <!-- LOAN FAQ -->
+    <div class="panel">
+      <h2>Loan & Finance FAQs</h2>
+
+      <div class="q">
+        <div class="q-title">7. Should I take a loan or buy with cash? <span>▸</span></div>
+        <div class="q-body">Loans help leverage returns if growth beats interest. Cash avoids EMI burden and reduces risk.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">8. How is EMI calculated? <span>▸</span></div>
+        <div class="q-body">Using amortization formula (Principal + Interest). AARIA auto-calculates EMI instantly for buyers and investors.</div>
+      </div>
+    </div>
+
+    <!-- NRI FAQ -->
+    <div class="panel">
+      <h2>NRI FAQs</h2>
+
+      <div class="q">
+        <div class="q-title">9. Can NRIs buy plots in India? <span>▸</span></div>
+        <div class="q-body">Yes, under FEMA rules. NRIs can buy residential and commercial plots but agricultural land has restrictions.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">10. How does repatriation of sale proceeds work? <span>▸</span></div>
+        <div class="q-body">Repatriation requires documentation, tax clearance, and a verified inward remittance trail. Consult a CA for compliance.</div>
+      </div>
+    </div>
+
+    <!-- TAX FAQ -->
+    <div class="panel">
+      <h2>Tax FAQs</h2>
+
+      <div class="q">
+        <div class="q-title">11. When does long-term capital gains apply? <span>▸</span></div>
+        <div class="q-body">After 24 months of holding. LTCG offers indexation benefits and lower tax rates.</div>
+      </div>
+
+      <div class="q">
+        <div class="q-title">12. What are typical selling costs? <span>▸</span></div>
+        <div class="q-body">Brokerage, legal fees, transfer charges, and TDS adjustments based on seller/residency.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll('.q').forEach(q=>{
+      q.addEventListener('click',()=>{
+        const body=q.querySelector('.q-body');
+        const open=body.style.display==='block';
+        document.querySelectorAll('.q-body').forEach(b=>b.style.display='none');
+        if(!open) body.style.display='block';
+      });
+    });
+  </script>
+
+</body>
+</html>
