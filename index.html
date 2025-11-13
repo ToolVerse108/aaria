@@ -1020,6 +1020,16 @@
                 transition-duration: 0.01ms !important;
             }
         }
+        .nav-logo .logo-img {
+            height: 48px;
+            width: auto;
+        }
+        @media (max-width: 600px) {
+    .nav-logo .logo-img {
+        height: 40px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -1027,7 +1037,9 @@
     <nav id="navbar">
         <div class="container">
             <div class="nav-content">
-                <div class="nav-logo">AARIA</div>
+                <div class="nav-logo">
+                    <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
+                </div>
                 <div class="menu-toggle" id="menuToggle">
                     <span></span>
                     <span></span>
@@ -1315,7 +1327,9 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="footer-logo">AARIA</div>
+                    <div class="nav-logo">
+                        <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
+                    </div>
                     <p class="footer-tagline">Your Trusted AI Property Consultant</p>
                     <p class="footer-description">
                         Making property buying simple, transparent, and stress-free for every Indian family.
