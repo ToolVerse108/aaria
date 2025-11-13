@@ -522,11 +522,23 @@ document.querySelectorAll('.tab').forEach(btn=>{
     btn.classList.add('active');
     const id = btn.dataset.tab;
     document.getElementById(id).classList.add('active');
-    // scroll top of main on small screens
+
+    // -----------------------------------------
+    // 🔥 HIDE print button when not on RESULTS
+    // -----------------------------------------
+    const printBtn = document.getElementById('printBtnTopBar');
+    if (printBtn) {
+        if (id !== 'resultsSection') {
+            printBtn.style.display = 'none';
+        }
+    }
+    // -----------------------------------------
+
     window.scrollTo({top:0,behavior:'smooth'});
     liveUpdates();
   });
 });
+
 
 function goNext(tabId){
   // find the tab button for tabId and click
