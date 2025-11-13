@@ -457,7 +457,7 @@
     </div>
   </div>
 </div>
-
+<button id="printPdf" style="display:none"></button>
   </div><!-- main -->
 </div><!-- container -->
 
@@ -1036,11 +1036,6 @@ if(!pdfBlob) return;
 document.getElementById('calculateBtn').addEventListener('click', ()=>{
   liveUpdates(); calculateAll();
 });
-document.getElementById('downloadPDF').addEventListener('click', ()=> buildAndDownloadPDF('AARIA-Investment-Report.pdf'));
-document.getElementById('shareResult').addEventListener('click', ()=> sharePdf());
-document.getElementById('downloadPdf').addEventListener('click', ()=> buildAndDownloadPDF('AARIA-Investment-Report.pdf'));
-document.getElementById('sharePdf').addEventListener('click', ()=> sharePdf());
-
 
 /* definitions modal */
 $('openDefs').addEventListener('click', ()=>{ $('defsModal').style.display='flex'; $('defsModal').setAttribute('aria-hidden','false'); });
