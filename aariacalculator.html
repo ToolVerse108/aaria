@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>AARIA's Ultimate Plot Investment ROI Calculator — Mobile & PDF Ready</title>
 
-<!-- jsPDF + html2canvas CDNs for PDF export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5H1r2u1YqGg7z0wq5Q7V3y2k2T6GzZQh1m9YJ2/1b1L5k4qM2q6g1n8xM6Z3j8G7Y2V3b4f5a6Z7c8d9e0g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-nV3xGgGQktc+ZsYkqT+gS3k8v3h6W2p8h1Z1b0Q5p3mY3V4q8J4g9h3H1mQ2s7C5" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <style>
   /* Base + Vibe (kept similar to your earlier theme and compare.html vibes) */
   *{box-sizing:border-box}
@@ -314,8 +310,7 @@
         <div class="card"><h4>CAGR</h4><div class="v" id="cagr">0%</div></div>
         <div class="card"><h4>Profit / sqft</h4><div class="v" id="profitPerSqft">₹0</div></div>
         <div style="text-align:center;margin-top:25px;margin-bottom:15px;">
-          <button id="downloadPDF" class="btn" style="width:auto;padding:10px 20px;margin-right:10px;">📄 Download PDF</button>
-          <button id="shareResult" class="btn" style="width:auto;padding:10px 20px;">🔗 Share</button>
+          <button id="printPdf" class="btn" style="width:auto;padding:10px 20px;">🖨 Print / Save PDF</button>
         </div>
 
       </div>
@@ -756,116 +751,71 @@ function calculateAll(){
 }
 
 /* -------------------------
-  PDF export & share
-  Uses html2canvas to render resultsSection and jspdf to create PDF
+  Print / Save PDF — AARIA Branded
 -------------------------*/
-/* -------------------------
-  PDF export & share — AARIA Branded
-  Adds header, footer, and logo
--------------------------*/
-async function buildAndDownloadPDF(filename='AARIA-Investment-Report.pdf'){
+document.getElementById('printPdf').addEventListener('click', () => {
   const results = document.getElementById('resultsSection');
-  if(!results || results.style.display==='none'){ 
-    alert('Please calculate first before exporting.'); 
-    return; 
+  if (!results || results.style.display === 'none') {
+    alert('Please calculate first before printing.');
+    return;
   }
 
-  // show temporary message
-  const downloadBtn = document.getElementById('downloadPDF');
-  const originalText = downloadBtn.innerText;
-  downloadBtn.innerText = '⏳ Generating PDF...';
+  const now = new Date();
+  const htmlContent = `
+  <html>
+  <head>
+    <title>AARIA Investment Report</title>
+    <style>
+      body { font-family: Inter, sans-serif; padding: 30px; color: #222; }
+      header { text-align:center; margin-bottom: 20px; border-bottom: 3px solid #2a5298; padding-bottom: 10px; }
+      header img { height: 60px; margin-bottom: 10px; }
+      h1 { color:#16306b; font-size:22px; margin:0; }
+      h3 { color:#667eea; margin:4px 0 0; }
+      footer { text-align:center; margin-top:30px; border-top:2px solid #2a5298; padding-top:8px; font-size:12px; color:#555; }
+      .section { page-break-inside: avoid; margin-bottom:20px; }
+      .card { border:1px solid #eaeaea; border-radius:8px; padding:10px; display:inline-block; width:160px; margin:5px; text-align:center; }
+      .card h4 { font-size:13px; margin:4px 0; color:#16306b; }
+      .v { font-weight:700; color:#17366f; }
+      .chart, .timeline, .comparison, .insight, .sens-table { page-break-inside: avoid; }
+      table { border-collapse: collapse; width: 100%; margin-top:8px; }
+      th, td { border:1px solid #ddd; padding:6px; font-size:13px; }
+      th { background:#f5f7ff; color:#16306b; }
+      .proscons { display:flex; gap:10px; }
+      .box { flex:1; background:#fbfdff; border:1px solid #eef3ff; border-radius:8px; padding:10px; }
+      ul { margin:6px 0; padding-left:18px; }
+      @media print {
+        button { display:none; }
+        footer { position:fixed; bottom:0; left:0; right:0; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="https://toolverse108.github.io/aaria/aarialogo.png" alt="AARIA Logo" />
+      <h1>AARIA Investment Report</h1>
+      <h3>Personalized ROI & Growth Projection</h3>
+      <div style="font-size:13px;color:#555;margin-top:5px;">Generated on ${now.toLocaleString()}</div>
+    </header>
 
-  try {
-    const jsPDF = window.jspdf ? window.jspdf.jsPDF : window.jsPDF;
-    const pdf = new jsPDF({unit:'px', format:'a4'});
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const margin = 18;
+    <div class="section">${results.innerHTML}</div>
 
-    // Load AARIA logo (optional: use your hosted logo URL)
-    const logoUrl = 'https://toolverse108.github.io/aaria/aarialogo.png'; // change if needed
-    let logoLoaded = null;
-    try {
-      const logoImg = await fetch(logoUrl);
-      const blob = await logoImg.blob();
-      logoLoaded = await new Promise(resolve=>{
-        const reader = new FileReader();
-        reader.onload = ()=>resolve(reader.result);
-        reader.readAsDataURL(blob);
-      });
-    } catch(e) {
-      console.warn('Logo not loaded, continuing without it');
-    }
+    <footer>
+      Generated by AARIA • ${now.toLocaleDateString()} • © ${now.getFullYear()} AARIA Analytics
+      <br>Disclaimer: Estimates only. Actual performance may vary.
+    </footer>
+  </body>
+  </html>
+  `;
 
-    // Capture results section as image
-    const canvas = await html2canvas(results, {scale:2, useCORS:true});
-    const imgData = canvas.toDataURL('image/png');
-    const imgProps = pdf.getImageProperties(imgData);
-    const imgWidth = pageWidth - (margin*2);
-    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(htmlContent);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.onload = function() {
+    printWindow.print();
+  };
+});
 
-    // === HEADER ===
-    pdf.setFillColor(42,82,152); // AARIA theme blue
-    pdf.rect(0,0,pageWidth,50,'F');
-    if (logoLoaded) {
-      pdf.addImage(logoLoaded,'PNG',margin,8,60,30);
-    }
-    pdf.setFont('helvetica','bold');
-    pdf.setTextColor(255,255,255);
-    pdf.setFontSize(14);
-    pdf.text("AARIA Investment Report", margin+70, 24);
-    pdf.setFontSize(10);
-    pdf.text("Personalized ROI & Growth Projection", margin+70, 38);
-
-    // === BODY IMAGE ===
-    const yStart = 60;
-    pdf.addImage(imgData, 'PNG', margin, yStart, imgWidth, imgHeight);
-
-    // === FOOTER ===
-    const now = new Date();
-    pdf.setFontSize(9);
-    pdf.setTextColor(80,80,80);
-    pdf.text(`Generated by AARIA • ${now.toLocaleString()} • © ${now.getFullYear()} AARIA Analytics`, margin, pdf.internal.pageSize.getHeight()-10);
-
-    // === ADD SECOND PAGE FOR SUMMARY ===
-    const inputs = gatherInputs();
-    pdf.addPage();
-    pdf.setFontSize(12);
-    pdf.setTextColor(42,82,152);
-    pdf.text('📄 Investment Summary & Key Inputs', margin, 30);
-
-    pdf.setFontSize(10);
-    pdf.setTextColor(0,0,0);
-    const summaryLines = [
-      `Purchase Price: ₹${inputs.purchase.toLocaleString('en-IN')}`,
-      `Plot Size: ${inputs.plotSize} ${inputs.plotUnit}`,
-      `Holding Period: ${inputs.holdingPeriod} years`,
-      `Forecast Growth: ${inputs.baseGrowth}%`,
-      `Loan Taken: ${inputs.loanTaken ? 'Yes' : 'No'}`,
-      `Stamp Duty (State): ${inputs.state.toUpperCase()}`,
-      `Report Date: ${now.toLocaleDateString()}`
-    ];
-    let yPos = 50;
-    summaryLines.forEach(line => {
-      pdf.text(line, margin, yPos);
-      yPos += 16;
-    });
-
-    pdf.setFontSize(9);
-    pdf.setTextColor(80,80,80);
-    pdf.text("Disclaimer: This report is based on estimated market conditions. Actual performance may vary. Not financial advice.", margin, yPos + 10);
-
-    // Save PDF
-    const pdfBlob = pdf.output('blob');
-    pdf.save(filename);
-    downloadBtn.innerText = originalText;
-    return pdfBlob;
-
-  } catch(err) {
-    console.error('PDF creation error:', err);
-    alert('Failed to create PDF: ' + err.message);
-    document.getElementById('downloadPDF').innerText = originalText;
-  }
-}
 
 /* wrapper to gather inputs for metadata */
 function gatherInputs(){
