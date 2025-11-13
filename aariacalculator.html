@@ -6,6 +6,22 @@
 <title>AARIA's Ultimate Plot Investment ROI Calculator — Mobile & PDF Ready</title>
 
 <style>
+.results-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}
+
+.results-header-actions .btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  background: linear-gradient(90deg,#2a5298,#667eea);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+  
   /* AARIA Header Branding */
 .logo-container {
   display: flex;
@@ -346,6 +362,9 @@
     <!-- RESULTS (hidden until calculate) -->
     <div id="resultsSection" class="results" style="display:none">
       <h2 style="margin:0 0 8px 0;color:#16306b">📊 Investment Analysis</h2>
+      <div class="results-header-actions">
+        <button id="printPdf" class="btn small">🖨 Print / Save PDF</button>
+      </div>
 
       <div class="results-grid" id="resultsGrid">
         <div class="card"><h4>Total Upfront Cash</h4><div class="v" id="totalUpfrontCash">₹0</div></div>
@@ -358,10 +377,6 @@
         <div class="card"><h4>ROI</h4><div class="v" id="roiPercent">0%</div></div>
         <div class="card"><h4>CAGR</h4><div class="v" id="cagr">0%</div></div>
         <div class="card"><h4>Profit / sqft</h4><div class="v" id="profitPerSqft">₹0</div></div>
-        <div style="text-align:center;margin-top:25px;margin-bottom:15px;">
-          <button id="printPdf" class="btn" style="width:auto;padding:10px 20px;">🖨 Print / Save PDF</button>
-        </div>
-
       </div>
 
       <div class="chart">
