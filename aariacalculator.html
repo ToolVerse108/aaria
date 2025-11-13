@@ -6,6 +6,49 @@
 <title>AARIA's Ultimate Plot Investment ROI Calculator — Mobile & PDF Ready</title>
 
 <style>
+  /* AARIA Header Branding */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: left;
+}
+
+.aaria-logo {
+  height: 70px;
+  width: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(102,126,234,0.35);
+  background: #0b1124;
+  padding: 6px;
+}
+
+.header-text h1 {
+  font-size: 20px;
+  color: #fff;
+  margin: 0;
+}
+
+.header-text p {
+  font-size: 13px;
+  color: #d6e0ff;
+  margin: 4px 0 0;
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px) {
+  .logo-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .aaria-logo {
+    height: 60px;
+  }
+  .header-text h1 {
+    font-size: 17px;
+  }
+}
   /* Base + Vibe (kept similar to your earlier theme and compare.html vibes) */
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -89,9 +132,15 @@
 
 <div class="container" role="application" aria-labelledby="appTitle">
   <div class="header">
-    <h1 id="appTitle">✅ AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
-    <p>Mobile-first • Investor-focused • Download & share detailed PDF report</p>
+  <div class="logo-container">
+    <img src="aarialogo.png" alt="AARIA Logo" class="aaria-logo logo-glow" />
+    <div class="header-text">
+      <h1 id="appTitle">AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
+      <p>Real Estate Consulting AI • Mobile-first • Investor-focused</p>
+    </div>
   </div>
+</div>
+
 
   <div class="tabs" role="tablist" aria-label="Calculator tabs">
     <button class="tab active" data-tab="basic" role="tab" aria-selected="true">Basic</button>
