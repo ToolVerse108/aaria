@@ -302,6 +302,99 @@
     padding-bottom: 4px !important;
   }
 }
+  /* FIX 1 — Darker mobile header */
+@media (max-width: 600px) {
+  .top-brand-bar {
+    background: linear-gradient(135deg, #1e2a62, #2a5298) !important;
+    padding: 18px 14px !important;
+    border-bottom: 3px solid #18224a !important;
+  }
+
+  .top-brand-bar h1 {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  }
+
+  .top-brand-bar p {
+    color: #d9e3ff !important;
+  }
+}
+  <style>
+
+/* === (your full existing CSS unchanged above) === */
+
+
+/* Compress header area further on very small phones */
+@media (max-width: 420px) {
+  .aaria-logo {
+    height: 48px !important;
+  }
+
+  .header-text h1 {
+    font-size: 15px !important;
+  }
+
+  .header-text p {
+    font-size: 12px !important;
+  }
+
+  .tabs {
+    padding-bottom: 4px !important;
+  }
+}
+
+/* ========================================================= */
+/* FIX 1 — Darker Mobile Header */
+/* ========================================================= */
+@media (max-width: 600px) {
+
+  /* Apply to your main calculator header */
+  .header, 
+  .logo-container {
+    background: linear-gradient(135deg, #1b2550, #2a5298) !important;
+    padding-top: 22px !important;
+    padding-bottom: 22px !important;
+  }
+
+  .header-text h1,
+  .header-text p {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  }
+}
+
+
+/* ========================================================= */
+/* FIX 2 — Sensitivity Table Mobile Overflow */
+/* ========================================================= */
+
+/* Wrap scroll for ALL tables marked as .sens-table */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;  /* smooth on iOS */
+}
+
+/* Prevent table from squeezing too much */
+.table-scroll table {
+  min-width: 520px;     /* ensures neat layout */
+  width: auto !important;
+  display: block;
+}
+
+/* Optional: make table look clean on small screens */
+@media (max-width: 600px) {
+  .sens-table th,
+  .sens-table td {
+    padding: 6px !important;
+    font-size: 12px !important;
+  }
+}
+
+</style>
+
+
 </style>
 </head>
 <body>
@@ -781,6 +874,12 @@
           <tbody></tbody>
         </table>
       </div>
+      <div class="table-scroll">
+        <table class="sens-table">
+          <!-- your thead + tbody -->
+        </table>
+      </div>
+
 
       <div class="insight">
         <div class="box" id="proslist"><strong>Top Strengths</strong><ul></ul></div>
