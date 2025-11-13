@@ -18,9 +18,17 @@
   font-size: 13px;
   background: linear-gradient(90deg,#2a5298,#667eea);
   color: #fff;
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
+  box-shadow: 0 4px 12px rgba(38,59,145,0.25);
+  transition: all 0.3s ease;
+}
+
+.print-button-top button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(38,59,145,0.35);
 }
 
 @media (max-width: 600px) {
@@ -58,11 +66,17 @@
 
 .aaria-logo {
   height: 70px;
-  width: auto;
+  width: 70px;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(102,126,234,0.35);
-  background: #0b1124;
+  background: linear-gradient(135deg, #2a5298, #667eea);
   padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 900;
+  color: white;
 }
 
 .header-text h1 {
@@ -85,12 +99,13 @@
   }
   .aaria-logo {
     height: 60px;
+    width: 60px;
   }
   .header-text h1 {
     font-size: 17px;
   }
 }
-  /* Base + Vibe (kept similar to your earlier theme and compare.html vibes) */
+  /* Base + Vibe */
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -108,8 +123,9 @@
   .header h1{font-size:20px;margin-bottom:6px}
   .header p{font-size:13px;opacity:.95;margin:0}
   .tabs{display:flex;gap:8px;padding:12px;flex-wrap:wrap;background:#f7f9ff}
-  .tab{background:#e6ecff;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;color:#17366f}
+  .tab{background:#e6ecff;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700;color:#17366f;transition:all 0.3s ease;}
   .tab.active{background:linear-gradient(90deg,#2a5298 0%,#667eea 100%);color:white;box-shadow:0 6px 18px rgba(38,59,145,0.18)}
+  .tab:hover:not(.active){background:#d6e0ff;}
   .main{padding:16px}
   .tab-content{display:none}
   .tab-content.active{display:block}
@@ -118,13 +134,15 @@
   .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
   .form-group{display:flex;flex-direction:column}
   .form-group label{font-weight:700;font-size:13px;color:#223}
-  .form-group input,.form-group select{padding:10px;border-radius:8px;border:1.5px solid #e6eefc;background:white;font-size:14px}
+  .form-group input,.form-group select{padding:10px;border-radius:8px;border:1.5px solid #e6eefc;background:white;font-size:14px;transition:all 0.3s ease;}
   .form-group input:focus,.form-group select:focus{outline:none;box-shadow:0 6px 18px rgba(102,126,234,0.12);border-color:#667eea}
   .helper{font-size:12px;color:#556; margin-top:6px}
   .calculated-field{background:#f2f9ff;padding:10px;border-radius:8px;margin-top:10px;font-weight:700;color:#13408f}
   .btn-row{display:flex;gap:10px;margin-top:12px}
-  .btn{flex:1;padding:12px;border-radius:10px;border:0;font-weight:800;background:linear-gradient(90deg,#2a5298,#667eea);color:white;cursor:pointer}
+  .btn{flex:1;padding:12px;border-radius:10px;border:0;font-weight:800;background:linear-gradient(90deg,#2a5298,#667eea);color:white;cursor:pointer;transition:all 0.3s ease;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(38,59,145,0.35);}
   .btn.secondary{background:#eef4ff;color:#16306b;font-weight:800}
+  .btn.secondary:hover{background:#dfeeff;}
   .small{padding:8px;font-size:13px;border-radius:8px}
   .results{padding:12px;background:#fff;border-radius:10px;margin-top:12px}
   .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
@@ -162,6 +180,7 @@
   .modal .panel{width:100%;max-width:820px;background:white;border-radius:12px;padding:16px;max-height:86vh;overflow:auto}
   .modal .panel h3{margin-top:0}
   .close-x{float:right;border:0;background:#f2f6ff;padding:6px;border-radius:8px;cursor:pointer}
+  .close-x:hover{background:#dfeeff;}
   .info-line{font-size:13px;color:#334;margin-top:8px}
 
   /* small sensitivity table */
@@ -174,7 +193,7 @@
 <div class="container" role="application" aria-labelledby="appTitle">
   <div class="header">
   <div class="logo-container">
-    <img src="aarialogo.png" alt="AARIA Logo" class="aaria-logo logo-glow" />
+    <div class="aaria-logo">A</div>
     <div class="header-text">
       <h1 id="appTitle">AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
       <p>Real Estate Consulting AI • Mobile-first • Investor-focused</p>
@@ -382,8 +401,7 @@
         <div class="helper info-line">These adjust the combined multiplier for realism and avoid extreme forecasts.</div>
 
         <div class="btn-row" style="margin-top:12px">
-          <button class="btn secondary small" onclick="goPrev('risk')">← Back</button>
-          <!-- Calculate appears only on last tab -->
+          <button class="btn secondary small" onclick="goPrev('exit')">← Back</button>
           <button class="btn small" id="calculateBtn">🚀 Calculate & Show Results</button>
         </div>
       </div>
@@ -457,7 +475,6 @@
     </div>
   </div>
 </div>
-<button id="printPdf" style="display:none"></button>
   </div><!-- main -->
 </div><!-- container -->
 
@@ -510,17 +527,6 @@ document.querySelectorAll('.tab').forEach(btn=>{
     const id = btn.dataset.tab;
     document.getElementById(id).classList.add('active');
 
-    // -----------------------------------------
-    // 🔥 HIDE print button when not on RESULTS
-    // -----------------------------------------
-    const printBtn = document.getElementById('printBtnTopBar');
-    if (printBtn) {
-        if (id !== 'resultsSection') {
-            printBtn.style.display = 'none';
-        }
-    }
-    // -----------------------------------------
-
     window.scrollTo({top:0,behavior:'smooth'});
     liveUpdates();
   });
@@ -528,12 +534,10 @@ document.querySelectorAll('.tab').forEach(btn=>{
 
 
 function goNext(tabId){
-  // find the tab button for tabId and click
   const tabBtn = [...document.querySelectorAll('.tab')].find(t=>t.dataset.tab===tabId);
   if(tabBtn) tabBtn.click();
 }
 function goPrev(curr){
-  // find previous tab index
   const tabs = [...document.querySelectorAll('.tab')];
   const idx = tabs.findIndex(t=>t.dataset.tab===curr);
   if(idx>0) tabs[idx-1].click();
@@ -568,7 +572,6 @@ function liveUpdates(){
     $('circleRateComparison').innerHTML = pct>0 ? `Above circle by ${pct.toFixed(1)}%` : `Below circle by ${Math.abs(pct).toFixed(1)}%`;
   } else $('circleRateComparison').innerText = '';
 
-  // stamp duty, brokerage preview
   const STAMP = {up:.07,mh:.055,dl:.06,ka:.05,tn:.07,rj:.055,gj:.049,hr:.065,mp:.075,pb:.07};
   const state = $('state').value;
   const stamp = purchase*(STAMP[state]||0);
@@ -585,7 +588,6 @@ function liveUpdates(){
   const upfrontNoLoan = purchase + stamp + reg + gst + brokerageCost + lawyer + misc;
   $('totalUpfrontPreview').innerText = fmt(upfrontNoLoan);
 
-  // loan preview
   toggleLoanFields();
   if($('loanTaken').value==='yes'){
     const loanAmt = Number($('loanAmount').value)||0;
@@ -607,7 +609,6 @@ function liveUpdates(){
     $('loanBalanceAtSale').innerText = fmt(Math.max(0,bal));
   }
 
-  // construction preview
   toggleConstruction();
   if($('planConstruct').value==='yes'){
     const cc = Number($('constructionCostPerSqft').value)||0;
@@ -626,7 +627,6 @@ function liveUpdates(){
   Core calculation + results rendering
 -------------------------*/
 function calculateAll(){
-  // read inputs
   const purchase = Number($('purchasePrice').value)||0;
   const plotSize = Number($('plotSize').value)||1;
   const unit = $('plotUnit').value;
@@ -651,7 +651,6 @@ function calculateAll(){
   const loanTenure = loanTaken ? Number($('loanTenure').value)||0 : 0;
   const processingFee = loanTaken ? loanAmount*(Number($('processingFeePercent').value)||0)/100 : 0;
 
-  // holding & exit
   const propertyTax = Number($('propertyTax').value)||0;
   const maintenance = Number($('maintenance').value)||0;
   const inflationRate = Number($('inflationRate').value)||0;
@@ -660,19 +659,16 @@ function calculateAll(){
   const capitalGainsTaxRate = Number($('capitalGainsTax').value)||0;
   const sellingCostsPct = Number($('sellingCosts').value)||0;
 
-  // growth adjustment
   const baseGrowth = (Number($('forecastedGrowth').value)||0)/100;
   const marketCycle = Number($('marketCycle').value)||1;
   const combinedMultiplierBase = Number($('combinedMultiplier').value)||1;
   const riskNudges = (Number($('salesVelocity').value)||1)*(Number($('docGrade').value)||1)*(Number($('macro').value)||1);
-  const combinedMultiplier = Math.min(1.4, Math.max(0.7, combinedMultiplierBase * riskNudges)); // slightly wider bounds for internal calc
+  const combinedMultiplier = Math.min(1.4, Math.max(0.7, combinedMultiplierBase * riskNudges));
   let adjGrowth = baseGrowth * combinedMultiplier * marketCycle;
-  // CAP to ±35% per your request
   adjGrowth = Math.min(0.35, Math.max(-0.35, adjGrowth));
 
   const growthModel = $('growthModel').value;
 
-  // expected value path
   let expectedValue = purchase;
   const yearlyValues = [];
   if(growthModel==='linear'){
@@ -683,19 +679,16 @@ function calculateAll(){
     for(let i=1;i<=holdingPeriod;i++) yearlyValues.push({year:i, value: purchase*Math.pow(1+adjGrowth, i)});
   }
 
-  // exit adjustments
   if(exitStrategy==='quick') expectedValue *= 0.9;
   else if(exitStrategy==='distress') expectedValue *= 0.8;
   else if(exitStrategy==='premium') expectedValue *= 1.05;
 
   const sellingExpense = expectedValue * (sellingCostsPct/100);
 
-  // Capital gains for tax (eligible costs include acquisition + improvements)
   const acquisitionForTax = purchase + stamp + registrationCost + brokerageCost + lawyerFees + miscCosts + gst + totalConstructionCost;
   const capitalGainForTax = expectedValue - sellingExpense - acquisitionForTax;
   const taxAmount = capitalGainForTax>0 ? capitalGainForTax*(capitalGainsTaxRate/100) : 0;
 
-  // loan amortization / interest
   let totalInterestPaid = 0, loanBalance = 0, emi=0;
   if(loanTaken){
     const r = (interestRate/100)/12;
@@ -712,19 +705,16 @@ function calculateAll(){
     loanBalance = Math.max(0, loanBalance);
   }
 
-  // upfront
   const downPayment = loanTaken ? Math.max(0, purchase - loanAmount) : purchase;
   const upfrontPurchaseCosts = stamp + registrationCost + gst + brokerageCost + lawyerFees + miscCosts;
   const upfrontConstruction = planConstruct ? totalConstructionCost : 0;
   const totalUpfrontCash = downPayment + upfrontPurchaseCosts + (loanTaken ? processingFee : 0) + upfrontConstruction;
 
-  // holding costs escalated by inflation
   let totalHoldingCost = 0;
   for(let y=1;y<=holdingPeriod;y++){
     totalHoldingCost += (propertyTax + maintenance) * Math.pow(1 + inflationRate/100, y-1);
   }
 
-  // rental income (optional)
   let totalRentNet = 0;
   if(planConstruct){
     let yearRent = (Number($('monthlyRent').value)||0)*12*(1 - (Number($('vacancyRate').value)||0)/100) - (Number($('rentalMaintenance').value)||0);
@@ -736,16 +726,12 @@ function calculateAll(){
   }
 
   const totalInvestment = totalUpfrontCash + totalHoldingCost + totalInterestPaid - totalRentNet;
-
-  // net sale proceeds (after selling cost, tax, loan payoff)
   const netSaleProceeds = expectedValue - sellingExpense - taxAmount - (loanTaken ? loanBalance : 0);
-
   const netProfit = netSaleProceeds - totalInvestment;
   const roiPercent = totalInvestment>0 ? (netProfit/totalInvestment)*100 : 0;
   const cagr = (totalInvestment>0 && holdingPeriod>0) ? (Math.pow(netSaleProceeds/totalInvestment, 1/holdingPeriod) -1)*100 : 0;
   const profitPerSqft = plotSizeSqft>0 ? netProfit/plotSizeSqft : 0;
 
-  // render results
   $('totalUpfrontCash').innerText = money(totalUpfrontCash);
   $('totalInvestment').innerText = money(totalInvestment);
   $('expectedValue').innerText = money(expectedValue);
@@ -758,16 +744,13 @@ function calculateAll(){
   $('cagr').innerText = isFinite(cagr)? cagr.toFixed(2)+'%' : '0%';
   $('profitPerSqft').innerText = money(profitPerSqft);
 
-  // performance bar
   const perf = Math.min(100, Math.max(0,50 + ((cagr - 10) * 3)));
   $('performanceFill').style.width = perf + '%';
   $('performanceText').innerText = perf>=85?'Outstanding':perf>=70?'Excellent':perf>=55?'Good':perf>=40?'Average':'Below expectations';
 
-  // yearly breakdown
   const yHtml = yearlyValues.map(v=>`<div style="display:flex;gap:8px;margin-bottom:8px"><div style="width:70px;font-weight:800;color:#16306b">Yr ${v.year}</div><div><div style="font-weight:800">${money(v.value)}</div><div style="font-size:13px;color:#3b6cc9">${(((v.value/purchase)-1)*100).toFixed(1)}% from purchase</div></div></div>`).join('');
   $('yearlyBreakdown').innerHTML = yHtml;
 
-  // comparison
   const cagrVal = isFinite(cagr)? cagr:0;
   const comps = [
     {type:'This Plot', cagr:cagrVal},
@@ -778,7 +761,6 @@ function calculateAll(){
   ];
   $('comparisonTable').innerHTML = comps.map(row=>`<tr><td style="font-weight:${row.type==='This Plot'?'800':'500'}">${row.type}</td><td style="font-weight:800">${row.cagr.toFixed(2)}%</td><td>${row.type==='This Plot'?'—': (cagrVal>row.cagr? `<span style="color:#1b8a4d">Better by ${(cagrVal-row.cagr).toFixed(1)}%</span>`:`<span style="color:#d1423f">Lower by ${(row.cagr-cagrVal).toFixed(1)}%</span>`)}</td></tr>`).join('');
 
-  // pros/cons
   const pros=[], cons=[];
   if(cagrVal>12) pros.push('Attractive CAGR vs benchmarks');
   if(roiPercent>50) pros.push('Strong cash-on-cash ROI');
@@ -791,7 +773,6 @@ function calculateAll(){
   $('proslist').querySelector('ul').innerHTML = (pros.length? pros: ['Real estate provides inflation hedge']).map(p=>`<li>${p}</li>`).join('');
   $('conslist').querySelector('ul').innerHTML = (cons.length? cons: ['Real estate is relatively illiquid']).map(c=>`<li>${c}</li>`).join('');
 
-  // investor snapshot & actionable suggestions
   let snapshot = '';
   let actions = '';
   if(cagrVal>15 && holdingPeriod<=4) snapshot = 'Short-term flipper candidate';
@@ -806,24 +787,20 @@ function calculateAll(){
   $('snapshotText').innerText = snapshot;
   $('actionableSuggestions').innerText = actions;
 
-  // Sensitivity analysis (conservative/base/optimistic)
-  // Use +/- 3% around base growth by default (can be changed)
   const deltas = [-0.03, 0, 0.03];
   const rows = deltas.map((d,idx)=>{
     let g = adjGrowth + d;
-    g = Math.min(0.35, Math.max(-0.35, g)); // reapply cap
+    g = Math.min(0.35, Math.max(-0.35, g));
     let ev= purchase;
     if(growthModel==='linear') ev = purchase * (1 + g*holdingPeriod);
     else ev = purchase * Math.pow(1+g, holdingPeriod);
-    // exit adjust
     if(exitStrategy==='quick') ev *= 0.9; else if(exitStrategy==='distress') ev *= 0.8; else if(exitStrategy==='premium') ev *= 1.05;
     const sellExp = ev * (sellingCostsPct/100);
     const capGain = ev - sellExp - acquisitionForTax;
     const tax = capGain>0 ? capGain*(capitalGainsTaxRate/100) : 0;
-    // assume loan balance & interest approximate same ratio => use earlier loanBalance & totalInterestPaid proportions by scaling (simple approach)
     let loanBalHere = loanTaken ? loanBalance : 0;
     const netProceeds = ev - sellExp - tax - loanBalHere;
-    const totalInvHere = totalInvestment; // keep same totalInvestment for comparability
+    const totalInvHere = totalInvestment;
     const netProfHere = netProceeds - totalInvHere;
     const cagrHere = (totalInvHere>0) ? (Math.pow(netProceeds/totalInvHere, 1/holdingPeriod) -1)*100 : 0;
     const label = idx===0?'Conservative': idx===1?'Base':'Optimistic';
@@ -837,8 +814,7 @@ function calculateAll(){
   }).join('');
   $('sensitivityTable').querySelector('tbody').innerHTML = rows;
 
-  // show results
-  document.getElementById('printBtnTopBar').style.display = 'flex';
+  $('printBtnTopBar').style.display = 'flex';
   $('resultsSection').style.display='block';
   $('resultsSection').scrollIntoView({behavior:'smooth', block:'start'});
 }
@@ -846,7 +822,7 @@ function calculateAll(){
 /* -------------------------
    Print / Save PDF — AARIA Branded
 -------------------------*/
-document.getElementById('printPdf').addEventListener('click', () => {
+function printReport() {
   const results = document.getElementById('resultsSection');
   if (!results || results.style.display === 'none') {
     alert('Please calculate first before printing.');
@@ -854,11 +830,8 @@ document.getElementById('printPdf').addEventListener('click', () => {
   }
 
   const now = new Date();
-
-  // Clone full results HTML (all cards, charts, tables)
   const fullResultsHTML = results.innerHTML;
 
-  // Build branded printable document
   const printHTML = `
   <html>
   <head>
@@ -876,9 +849,18 @@ document.getElementById('printPdf').addEventListener('click', () => {
         margin-bottom: 20px;
         padding-bottom: 8px;
       }
-      header img {
+      .logo-print {
+        width: 60px;
         height: 60px;
-        margin-bottom: 6px;
+        margin: 0 auto 10px;
+        background: linear-gradient(135deg, #2a5298, #667eea);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 900;
+        color: white;
       }
       h1 {
         color: #16306b;
@@ -962,7 +944,7 @@ document.getElementById('printPdf').addEventListener('click', () => {
   </head>
   <body>
     <header>
-      <img src="https://toolverse108.github.io/aaria/aarialogo.png" alt="AARIA Logo">
+      <div class="logo-print">A</div>
       <h1>AARIA Investment Report</h1>
       <h3>Personalized ROI & Growth Projection</h3>
       <div style="font-size:13px;color:#555;margin-top:5px;">
@@ -989,60 +971,18 @@ document.getElementById('printPdf').addEventListener('click', () => {
   printWindow.onload = function() {
     printWindow.print();
   };
-});
-// TOP RIGHT PRINT BUTTON – same action as bottom button
-document.getElementById('printPdfTop').addEventListener('click', () => {
-    document.getElementById('printPdf').click();
-});
-
-/* wrapper to gather inputs for metadata */
-function gatherInputs(){
-  return {
-    purchase: Number($('purchasePrice').value)||0,
-    plotSize: Number($('plotSize').value)||0,
-    plotUnit: $('plotUnit').value,
-    holdingPeriod: Number($('holdingPeriod').value)||1,
-    baseGrowth: Number($('forecastedGrowth').value)||0,
-    loanTaken: $('loanTaken').value==='yes',
-    state: $('state').value
-  }
 }
 
-/* share handler: tries Web Share API, else downloads */
-async function sharePdf(){
-const pdfBlob = await buildAndDownloadPDF('AARIA-Investment-Report.pdf');
-if(!pdfBlob) return;
+document.getElementById('printPdfTop').addEventListener('click', printReport);
 
-  // try Web Share
-  if(navigator.canShare && navigator.canShare({files:[new File([pdfBlob],'AARIA-Investment-Report.pdf',{type:pdfBlob.type})]})){
-    try{
-      await navigator.share({
-        files: [new File([pdfBlob],'AARIA-Investment-Report.pdf',{type:pdfBlob.type})],
-        title: 'AARIA Investment Report',
-        text: 'Investment analysis generated by AARIA'
-      });
-      return;
-    }catch(e){
-      console.warn('Share failed',e);
-      alert('Share cancelled or failed. The PDF has been downloaded instead.');
-    }
-  } else {
-    // fallback: download (browser will have already triggered download in buildAndDownloadPDF)
-    alert('Sharing not supported on this device — the PDF has been downloaded instead.');
-  }
-}
-
-/* Button wiring */
-document.getElementById('calculateBtn').addEventListener('click', ()=>{
+$('calculateBtn').addEventListener('click', ()=>{
   liveUpdates(); calculateAll();
 });
 
-/* definitions modal */
 $('openDefs').addEventListener('click', ()=>{ $('defsModal').style.display='flex'; $('defsModal').setAttribute('aria-hidden','false'); });
 $('closeDefs').addEventListener('click', ()=>{ $('defsModal').style.display='none'; $('defsModal').setAttribute('aria-hidden','true'); });
 window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ $('defsModal').style.display='none'; $('defsModal').setAttribute('aria-hidden','true'); } });
 
-/* wire inputs for live updates and show/hide groups */
 const watch = ['purchasePrice','plotSize','circleRate','plotUnit','state','registrationCost','gstApplicable','brokerage','lawyerFees','miscCosts',
 'loanTaken','loanAmount','interestRate','loanTenure','processingFeePercent','propertyTax','maintenance','inflationRate',
 'forecastedGrowth','growthModel','marketCycle','combinedMultiplier','salesVelocity','docGrade','macro',
@@ -1052,11 +992,9 @@ watch.forEach(id=>{
   if(el) { el.addEventListener('input', liveUpdates); el.addEventListener('change', liveUpdates); }
 });
 
-// add show/hide triggers
 $('loanTaken').addEventListener('change', toggleLoanFields);
 $('planConstruct').addEventListener('change', toggleConstruction);
 
-// initial
 window.addEventListener('load', ()=>{ liveUpdates(); });
 </script>
 </body>
