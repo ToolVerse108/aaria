@@ -751,7 +751,7 @@ function calculateAll(){
 }
 
 /* -------------------------
-  Print / Save PDF — AARIA Branded
+   Print / Save PDF — AARIA Branded
 -------------------------*/
 document.getElementById('printPdf').addEventListener('click', () => {
   const results = document.getElementById('resultsSection');
@@ -761,79 +761,124 @@ document.getElementById('printPdf').addEventListener('click', () => {
   }
 
   const now = new Date();
+
+  // Clone full results HTML (all cards, charts, tables)
+  const fullResultsHTML = results.innerHTML;
+
+  // Build branded printable document
   const printHTML = `
   <html>
   <head>
     <title>AARIA Investment Report</title>
     <style>
-      body { font-family: Inter, sans-serif; padding: 25px; color: #222; background: #fff; }
-      header { text-align:center; margin-bottom: 20px; border-bottom: 3px solid #2a5298; padding-bottom: 10px; }
-      header img { height: 60px; margin-bottom: 8px; }
-      h1 { color:#16306b; font-size:22px; margin:0; }
-      h3 { color:#667eea; margin:4px 0 0; }
-      footer { text-align:center; margin-top:25px; border-top:2px solid #2a5298; padding-top:6px; font-size:12px; color:#555; }
-      .section { page-break-inside: avoid; margin-bottom:20px; }
-      .card { border:1px solid #dfe3f5; border-radius:8px; padding:10px; display:inline-block; width:160px; margin:5px; text-align:center; background:#fbfdff; }
-      .card h4 { font-size:13px; margin:4px 0; color:#16306b; }
-      .v { font-weight:700; color:#17366f; }
-      .chart, .timeline, .comparison, .insight, .sens-table { page-break-inside: avoid; margin-top:12px; }
-      table { border-collapse: collapse; width: 100%; margin-top:8px; }
-      th, td { border:1px solid #dfe3f5; padding:6px; font-size:13px; }
-      th { background:#f5f7ff; color:#16306b; }
-      .proscons { display:flex; gap:10px; }
-      .box { flex:1; background:#fbfdff; border:1px solid #eef3ff; border-radius:8px; padding:10px; }
-      ul { margin:6px 0; padding-left:18px; }
-      h2 { color:#16306b; border-left:4px solid #2a5298; padding-left:8px; margin-top:30px; }
-      .highlight { background:#eef4ff; border-radius:6px; padding:6px 10px; font-weight:600; color:#17366f; }
+      body {
+        font-family: 'Inter', sans-serif;
+        padding: 24px;
+        color: #222;
+        background: #fff;
+      }
+      header {
+        text-align: center;
+        border-bottom: 3px solid #2a5298;
+        margin-bottom: 20px;
+        padding-bottom: 8px;
+      }
+      header img {
+        height: 60px;
+        margin-bottom: 6px;
+      }
+      h1 {
+        color: #16306b;
+        margin: 0;
+        font-size: 22px;
+      }
+      h3 {
+        color: #667eea;
+        margin: 4px 0 0;
+      }
+      h2 {
+        color: #16306b;
+        border-left: 4px solid #2a5298;
+        padding-left: 8px;
+        margin-top: 25px;
+      }
+      .results {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .card {
+        border: 1px solid #dfe3f5;
+        border-radius: 8px;
+        padding: 10px;
+        display: inline-block;
+        width: 160px;
+        margin: 5px;
+        text-align: center;
+        background: #fbfdff;
+      }
+      .card h4 {
+        font-size: 13px;
+        margin: 4px 0;
+        color: #16306b;
+      }
+      .v {
+        font-weight: 700;
+        color: #17366f;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 10px;
+      }
+      th, td {
+        border: 1px solid #dfe3f5;
+        padding: 6px;
+        font-size: 13px;
+      }
+      th {
+        background: #f5f7ff;
+        color: #16306b;
+      }
+      .chart, .timeline, .comparison, .insight, .sens-table {
+        page-break-inside: avoid;
+        margin-top: 12px;
+      }
+      .box {
+        background: #fbfdff;
+        border: 1px solid #eef3ff;
+        border-radius: 8px;
+        padding: 10px;
+      }
+      ul {
+        margin: 6px 0;
+        padding-left: 18px;
+      }
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        border-top: 2px solid #2a5298;
+        padding-top: 6px;
+        font-size: 12px;
+        color: #555;
+      }
       @media print {
-        button { display:none; }
-        footer { position:fixed; bottom:0; left:0; right:0; }
+        button { display: none; }
+        footer { position: fixed; bottom: 0; left: 0; right: 0; }
       }
     </style>
   </head>
   <body>
     <header>
-      <img src="https://toolverse108.github.io/aaria/aarialogo.png" alt="AARIA Logo" />
+      <img src="https://toolverse108.github.io/aaria/aarialogo.png" alt="AARIA Logo">
       <h1>AARIA Investment Report</h1>
       <h3>Personalized ROI & Growth Projection</h3>
-      <div style="font-size:13px;color:#555;margin-top:5px;">Generated on ${now.toLocaleString()}</div>
+      <div style="font-size:13px;color:#555;margin-top:5px;">
+        Generated on ${now.toLocaleString()}
+      </div>
     </header>
 
-    <main>
-      <div class="section">
-        <h2>📊 Investment Summary</h2>
-        ${results.querySelector('#resultsGrid').outerHTML}
-      </div>
-
-      <div class="section">
-        <h2>📈 Performance Overview</h2>
-        ${results.querySelector('.chart').outerHTML}
-      </div>
-
-      <div class="section">
-        <h2>🧮 Yearly Growth Breakdown</h2>
-        ${results.querySelector('#yearlyBreakdown').outerHTML}
-      </div>
-
-      <div class="section">
-        <h2>📊 Benchmark Comparison</h2>
-        ${results.querySelector('.comparison').outerHTML}
-      </div>
-
-      <div class="section">
-        <h2>👤 Investor Snapshot</h2>
-        ${results.querySelector('#snapshotText').parentElement.outerHTML}
-      </div>
-
-      <div class="section">
-        <h2>📉 Sensitivity Analysis</h2>
-        ${results.querySelector('#sensitivityTable').outerHTML}
-      </div>
-
-      <div class="section">
-        <h2>🧭 Strengths & Risks</h2>
-        ${results.querySelector('.insight').outerHTML}
-      </div>
+    <main class="results">
+      ${fullResultsHTML}
     </main>
 
     <footer>
@@ -844,15 +889,14 @@ document.getElementById('printPdf').addEventListener('click', () => {
   </html>
   `;
 
-  const printWin = window.open('', '_blank');
-  printWin.document.write(printHTML);
-  printWin.document.close();
-  printWin.focus();
-  printWin.onload = function() {
-    printWin.print();
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(printHTML);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.onload = function() {
+    printWindow.print();
   };
 });
-
 
 /* wrapper to gather inputs for metadata */
 function gatherInputs(){
