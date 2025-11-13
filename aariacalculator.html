@@ -66,17 +66,9 @@
 
 .aaria-logo {
   height: 70px;
-  width: 70px;
+  width: auto;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(102,126,234,0.35);
-  background: linear-gradient(135deg, #2a5298, #667eea);
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  font-weight: 900;
-  color: white;
 }
 
 .header-text h1 {
@@ -190,17 +182,13 @@
 </head>
 <body>
 
-<div class="container" role="application" aria-labelledby="appTitle">
-  <div class="header">
-  <div class="logo-container">
-    <div class="aaria-logo">A</div>
-    <div class="header-text">
-      <h1 id="appTitle">AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
-      <p>Real Estate Consulting AI • Mobile-first • Investor-focused</p>
-    </div>
+<div class="logo-container">
+  <img src="aarialogo.png" alt="AARIA Logo" class="aaria-logo" />
+  <div class="header-text">
+    <h1 id="appTitle">AARIA'S ULTIMATE PLOT INVESTMENT ROI CALCULATOR</h1>
+    <p>Real Estate Consulting AI • Mobile-first • Investor-focused</p>
   </div>
 </div>
-
 
   <div class="tabs" role="tablist" aria-label="Calculator tabs">
     <button class="tab active" data-tab="basic" role="tab" aria-selected="true">Basic</button>
@@ -850,18 +838,12 @@ function printReport() {
         padding-bottom: 8px;
       }
       .logo-print {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 10px;
-        background: linear-gradient(135deg, #2a5298, #667eea);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 32px;
-        font-weight: 900;
-        color: white;
-      }
+  width: 70px;
+  height: auto;
+  margin: 0 auto 10px;
+  display: block;
+}
+
       h1 {
         color: #16306b;
         margin: 0;
@@ -944,7 +926,7 @@ function printReport() {
   </head>
   <body>
     <header>
-      <div class="logo-print">A</div>
+      <img src="https://toolverse108.github.io/aaria/aarialogo.png" class="logo-print">
       <h1>AARIA Investment Report</h1>
       <h3>Personalized ROI & Growth Projection</h3>
       <div style="font-size:13px;color:#555;margin-top:5px;">
