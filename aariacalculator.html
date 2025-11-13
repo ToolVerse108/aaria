@@ -335,6 +335,76 @@
   color: #ffffff !important;
   text-shadow: 0 1px 2px rgba(0,0,0,0.35);
 }
+/* PREMIUM DEFINITIONS MODAL */
+.defs-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  padding: 20px;
+}
+
+.defs-panel {
+  background: #fff;
+  width: min(600px, 95%);
+  margin: 50px auto;
+  padding: 25px 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  font-family: Inter, sans-serif;
+  position: relative;
+}
+
+.defs-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: #555;
+}
+
+.defs-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2a5298;
+  text-align: center;
+}
+
+.defs-subtitle {
+  font-size: 14px;
+  color: #444;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.def-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #e6e6e6;
+  cursor: pointer;
+}
+
+.def-item:hover .def-title {
+  color: #2a5298;
+}
+
+.def-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+}
+
+.def-desc {
+  display: none;
+  font-size: 14px;
+  color: #444;
+  margin-top: 6px;
+  line-height: 1.5;
+}
 
   <style>
 
@@ -904,23 +974,98 @@
     </div>
 
     <!-- DEFINITIONS -->
-    <div style="margin-top:20px;">
-      <span class="defs-link" id="openDefs" style="cursor:pointer; color:#2a5298; font-weight:700;">📘 Definitions & Assumptions</span>
-    </div>
+  <div style="margin-top:20px;">
+  <span class="defs-link" id="openDefs" style="cursor:pointer; color:#2a5298; font-weight:700;">
+    📘 Definitions & Assumptions
+  </span>
+</div>
 
-  </div> <!-- END MAIN -->
-
+</div> <!-- END MAIN -->
 </div> <!-- END CONTAINER -->
 
-
 <!-- MODAL -->
-<div class="modal" id="defsModal">
-  <div class="panel">
-    <button id="closeDefs" style="float:right;">✕</button>
-    <h3>Definitions & Assumptions</h3>
-    <p class="info-line">
-      Estimates only. EMI assumes standard amortisation. Growth capped to maintain realism.
-    </p>
+<div class="defs-modal" id="defsModal">
+  <div class="defs-panel">
+    
+    <button id="closeDefs" class="defs-close">✕</button>
+
+    <h3 class="defs-title">Definitions & Assumptions</h3>
+    <p class="defs-subtitle">These terms help you understand how calculations are performed in AARIA.</p>
+
+    <div class="defs-list">
+
+      <div class="def-item">
+        <div class="def-title">Purchase Price</div>
+        <div class="def-desc">The total amount paid to buy the plot.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Plot Size</div>
+        <div class="def-desc">Total land area measured in sq ft, sq yd, or sq m.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Circle Rate</div>
+        <div class="def-desc">Government-set minimum land value for taxation.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Stamp Duty</div>
+        <div class="def-desc">State tax paid during property registration.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Registration Cost</div>
+        <div class="def-desc">Fee for legally registering property ownership.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Brokerage</div>
+        <div class="def-desc">Percentage fee paid to the property broker.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Loan Amount</div>
+        <div class="def-desc">Money borrowed from the bank for the purchase.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Monthly EMI</div>
+        <div class="def-desc">Fixed monthly loan repayment amount.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Opportunity Cost</div>
+        <div class="def-desc">Return you miss by investing here instead of elsewhere.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Forecasted Growth Rate</div>
+        <div class="def-desc">Expected annual appreciation of plot value.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Exit Strategy</div>
+        <div class="def-desc">Defines how the property will be sold – normal, premium, or distress.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Capital Gains Tax</div>
+        <div class="def-desc">Tax on profit earned when selling the property.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">Net Profit</div>
+        <div class="def-desc">Final gain after subtracting all costs and taxes.</div>
+      </div>
+
+      <div class="def-item">
+        <div class="def-title">ROI</div>
+        <div class="def-desc">Percentage return on the total invested amount.</div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
@@ -1359,5 +1504,22 @@ if($('planConstruct')) $('planConstruct').addEventListener('change', toggleConst
 
 window.addEventListener('load', ()=>{ liveUpdates(); });
 </script>
+  <script>
+document.getElementById("openDefs").onclick = () => {
+  document.getElementById("defsModal").style.display = "block";
+};
+
+document.getElementById("closeDefs").onclick = () => {
+  document.getElementById("defsModal").style.display = "none";
+};
+
+document.querySelectorAll(".def-item").forEach(item => {
+  item.addEventListener("click", () => {
+    const desc = item.querySelector(".def-desc");
+    desc.style.display = desc.style.display === "block" ? "none" : "block";
+  });
+});
+</script>
+
 </body>
 </html>
