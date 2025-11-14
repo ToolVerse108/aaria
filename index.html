@@ -1035,6 +1035,7 @@
     flex-wrap: wrap;
 }
 
+/* Make both buttons equal width */
 .cta-btn {
     display: inline-flex;
     align-items: center;
@@ -1045,21 +1046,24 @@
     border-radius: 50px;
     text-decoration: none;
     transition: 0.3s ease;
+    min-width: 230px;      /* ✅ SAME WIDTH */
+    height: 50px;          /* ✅ SAME HEIGHT */
+    box-sizing: border-box;
 }
 
-/* White Button */
+/* WhatsApp Button */
 .white-btn {
     background: #ffffff;
     color: #0A7C6B;
 }
 
-/* Call Button (same shape) */
+/* Call Button */
 .green-btn {
     background: #19b394;
     color: #ffffff;
 }
 
-/* Hover Effects (optional) */
+/* Hover Effects */
 .white-btn:hover {
     background: #f3f3f3;
 }
@@ -1067,6 +1071,7 @@
 .green-btn:hover {
     background: #149d82;
 }
+
 
     </style>
 </head>
