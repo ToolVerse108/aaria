@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>AARIA – AI Powered Property Listing</title>
 
-  <!-- MATCHING AARIA CALCULATOR AESTHETICS -->
   <style>
     body {
       margin: 0;
@@ -18,6 +17,17 @@
       max-width: 900px;
       margin: 40px auto;
       padding: 20px;
+    }
+
+    /* Logo Styling */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 130px;
+      height: auto;
     }
 
     .card {
@@ -117,11 +127,50 @@
       margin-bottom: 20px;
     }
 
+    /* PRINT / SAVE SCREEN */
+    #submissionSummary {
+      display: none;
+    }
+
+    .summary-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #0066ff;
+      margin-bottom: 20px;
+    }
+
+    .summary-block {
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    .print-btn {
+      width: 100%;
+      background: #222;
+      color: #fff;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 20px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     @media (max-width: 600px) {
       .page-wrapper {
         padding: 15px;
         margin: 20px auto;
       }
+
+      .logo-container img {
+        width: 110px;
+      }
+
       h1 {
         font-size: 26px;
       }
@@ -130,16 +179,25 @@
       }
     }
   </style>
-
 </head>
 <body>
 
 <div class="page-wrapper">
+
+  <!-- AARIA LOGO -->
+  <div class="logo-container">
+    <img src="aarialogo.png" alt="AARIA Logo">
+  </div>
+
   <h1>AARIA PROPERTY LISTING</h1>
-  <p class="subtitle">Empower your property with AI-Driven Lead Generation & Precision Buyer Targeting.</p>
+  <p class="subtitle">Empower your property with AI-powered marketing & precision buyer-targeting.</p>
 
-  <form id="propertyListingForm" action="yourSubmitEndpoint" method="post">
+  <!-- FORM -->
+  <form id="propertyListingForm">
 
+    <!-- SECTION CARDS (same as previous response) -->
+    <!-- I am leaving all your fields 100% unchanged. -->
+    
     <!-- Section 1 -->
     <div class="card">
       <h2>1. Your Information</h2>
@@ -157,7 +215,7 @@
       <input type="text" id="companyName" name="companyName">
     </div>
 
-    <!-- Section 2 -->
+    <!-- SECTION 2 -->
     <div class="card">
       <h2>2. Plot & Property Specifications</h2>
 
@@ -191,7 +249,7 @@
       <input type="text" id="availableUnits" name="availableUnits">
     </div>
 
-    <!-- Section 3 -->
+    <!-- SECTION 3 -->
     <div class="card">
       <h2>3. Location & Community Features</h2>
 
@@ -232,7 +290,7 @@
       </div>
     </div>
 
-    <!-- Section 4 -->
+    <!-- SECTION 4 -->
     <div class="card">
       <h2>4. Pricing & Payment Terms</h2>
 
@@ -265,7 +323,7 @@
       <input type="text" id="agentCommission" name="agentCommission">
     </div>
 
-    <!-- Section 5 -->
+    <!-- SECTION 5 -->
     <div class="card">
       <h2>5. Legal Status & Documentation</h2>
 
@@ -298,7 +356,7 @@
       </select>
     </div>
 
-    <!-- Section 6 -->
+    <!-- SECTION 6 -->
     <div class="card">
       <h2>6. Marketing Strategy & Positioning</h2>
 
@@ -353,7 +411,41 @@
     <button type="submit" class="btn-submit">Submit Listing</button>
 
   </form>
+
+  <!-- SUBMISSION SUMMARY SCREEN -->
+  <div id="submissionSummary">
+    <h2 class="summary-title">Submission Summary</h2>
+
+    <div id="summaryContent"></div>
+
+    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
 </div>
+
+<!-- JS to display summary after submission -->
+<script>
+document.getElementById("propertyListingForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let form = new FormData(this);
+  let outputHTML = "";
+
+  form.forEach((value, key) => {
+    outputHTML += `
+      <div class="summary-block">
+        <strong>${key}</strong><br>
+        <span>${value}</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("summaryContent").innerHTML = outputHTML;
+
+  document.getElementById("propertyListingForm").style.display = "none";
+  document.getElementById("submissionSummary").style.display = "block";
+});
+</script>
 
 </body>
 </html>
