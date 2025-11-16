@@ -1649,7 +1649,7 @@ document.getElementById("aariaCallForm").addEventListener("submit", function(e) 
 
   const formData = new FormData(this);
 
-  fetch("YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL", {
+  fetch("https://script.google.com/macros/s/AKfycby943bmzlRfAdYY3N6MvuCa2MjAHGDaultwZQxPOoFQ23mjFVL-YhT9UmdyPM_dehmCnQ/exec", {
     method: "POST",
     body: formData
   })
