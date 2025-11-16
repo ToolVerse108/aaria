@@ -2,450 +2,544 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Aaria Property profile listing</title>
-
+  <title>AARIA – AI Powered Property Listing</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Inter", Arial, sans-serif;
-      background: #eef2f7;
-      color: #1a1a1a;
+    /* ===== AARIA Calculator-like theme (slight-blue card background) ===== */
+    :root{
+      --brand:#0066ff;
+      --card-bg:#f7fbff; /* slight-blue card background - chosen option B */
+      --white:#ffffff;
+      --muted:#6b7280;
+      --border:#d6e1f0;
+      --input-bg:#ffffff;
+      --radius:10px;
+      --field-height:42px;
+      --max-width:1000px;
     }
 
-    .page-wrapper {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
+    html,body{height:100%; margin:0; padding:0; font-family:Inter, Arial, Helvetica, sans-serif; background:#eef4fb; color:#0b1726;}
+    .wrap { max-width: var(--max-width); margin:28px auto; padding:18px; box-sizing:border-box; }
+
+    /* Logo & header */
+    .logo-wrap { text-align:center; margin-bottom:8px; }
+    .logo-wrap img { width:120px; height:auto; display:inline-block; }
+    h1 { margin:8px 0 6px; text-align:center; color:var(--brand); font-size:28px; font-weight:700; }
+    .subtitle { text-align:center; color:#334155; margin-bottom:18px; font-size:15px; }
+
+    /* Card wrapper like calculator */
+    .card { background:var(--card-bg); border-radius:14px; padding:18px; box-shadow:0 6px 20px rgba(12,40,80,0.04); margin-bottom:20px; border:1px solid rgba(6,34,97,0.03); }
+
+    /* Section heading style */
+    .section-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .section-head .dot { width:14px; height:14px; border-radius:4px; background:var(--brand); opacity:0.95; }
+    .section-head h2 { margin:0; font-size:16px; font-weight:700; color:#0b2440; padding-left:4px; }
+
+    /* Grid layout for fields */
+    .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; align-items:start; }
+    .field { display:flex; flex-direction:column; }
+    label { font-size:13px; color:#0b2540; font-weight:600; margin-bottom:6px; }
+
+    input[type=text], input[type=email], select, textarea {
+      box-sizing:border-box;
+      height: var(--field-height);
+      padding:10px 12px;
+      font-size:14px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--input-bg);
+      transition: box-shadow .18s ease, border-color .12s ease;
+      color:#0b1726;
     }
 
-    /* Logo Styling */
-    .logo-container {
-      text-align: center;
-      margin-bottom: 20px;
+    textarea { min-height:84px; height:auto; padding:10px 12px; resize:vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      outline:none;
+      border-color:var(--brand);
+      box-shadow:0 0 0 6px rgba(0,102,255,0.08);
+      background:var(--white);
     }
 
-    .logo-container img {
-      width: 130px;
-      height: auto;
+    /* Select arrow */
+    select {
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      appearance:none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='gray'><path d='M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/></svg>");
+      background-repeat:no-repeat;
+      background-position:right 12px center;
+      padding-right:40px;
     }
 
-    .card {
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-      margin-bottom: 30px;
+    /* checkbox group */
+    .checkbox-group { display:flex; flex-direction:column; gap:6px; }
+    .checkbox-group label { font-weight:500; display:flex; align-items:center; gap:8px; font-size:14px; color:#0b1726; }
+    .checkbox-group input { width:16px; height:16px; }
+
+    /* helper note and CTA */
+    .note { color:var(--muted); font-size:13px; margin-top:6px; }
+    .cta { margin-top:12px; }
+
+    .btn {
+      display:inline-block;
+      background:var(--brand);
+      color:#fff;
+      border:none;
+      padding:12px 16px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:15px;
+      width:100%;
+      box-shadow:0 6px 18px rgba(6,34,97,0.12);
+    }
+    .btn.secondary {
+      background:#0b1726;
     }
 
-    h1 {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: #0066ff;
-      text-align: center;
+    /* Submission summary view (printable) */
+    #submissionSummary { display:none; }
+    .summary-inner {
+      background:var(--white); border-radius:12px; padding:18px; box-shadow:0 6px 20px rgba(12,40,80,0.04);
+    }
+    .summary-title { font-size:20px; color:var(--brand); font-weight:800; text-align:center; margin-bottom:12px; }
+    .summary-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .summary-row { border-radius:8px; padding:10px; background:#fbfdff; border:1px solid #eef6ff; }
+    .summary-label { font-size:13px; color:#0b2440; font-weight:700; margin-bottom:6px; }
+    .summary-val { font-size:14px; color:#10203a; word-wrap:break-word; white-space:pre-wrap; }
+
+    /* print styles - keep only summary when printing */
+    @media print {
+      body * { visibility: hidden; }
+      #submissionSummary, #submissionSummary * { visibility: visible; }
+      #submissionSummary { position: absolute; left:0; top:0; width:100%; }
+      .summary-inner { box-shadow:none; border-radius:0; padding:0; }
+      .btn { display:none !important; }
     }
 
-    .subtitle {
-      text-align: center;
-      font-size: 17px;
-      color: #444;
-      margin-bottom: 35px;
+    /* Responsive breakpoints */
+    @media (max-width: 920px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; gap:12px; }
+      .logo-wrap img { width:110px; }
+      .card { padding:14px; }
+      h1 { font-size:22px; }
     }
 
-    h2 {
-      font-size: 22px;
-      margin-bottom: 18px;
-      color: #1a1a1a;
-      border-left: 4px solid #0066ff;
-      padding-left: 10px;
-      font-weight: 600;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    input[type=text],
-    input[type=email],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d5d5d5;
-      border-radius: 8px;
-      margin-bottom: 18px;
-      font-size: 15px;
-      background: #fafafa;
-      transition: 0.2s ease;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: #0066ff;
-      background: #ffffff;
-      outline: none;
-      box-shadow: 0 0 4px rgba(0,102,255,0.4);
-    }
-
-    .checkbox-group label {
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .checkbox-group input {
-      margin-right: 8px;
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: #0066ff;
-      color: #ffffff;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.25s;
-      margin-top: 10px;
-    }
-
-    .btn-submit:hover {
-      background: #0052cc;
-    }
-
-    .note {
-      font-size: 14px;
-      color: #666;
-      margin-top: -10px;
-      margin-bottom: 20px;
-    }
-
-    /* PRINT / SAVE SCREEN */
-    #submissionSummary {
-      display: none;
-    }
-
-    .summary-title {
-      text-align: center;
-      font-size: 26px;
-      font-weight: 700;
-      color: #0066ff;
-      margin-bottom: 20px;
-    }
-
-    .summary-block {
-      background: white;
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 15px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-    }
-
-    .print-btn {
-      width: 100%;
-      background: #222;
-      color: #fff;
-      padding: 14px;
-      border-radius: 10px;
-      border: none;
-      margin-top: 20px;
-      font-size: 17px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    @media (max-width: 600px) {
-      .page-wrapper {
-        padding: 15px;
-        margin: 20px auto;
-      }
-
-      .logo-container img {
-        width: 110px;
-      }
-
-      h1 {
-        font-size: 26px;
-      }
-      h2 {
-        font-size: 19px;
-      }
-    }
+    /* utility: full-span field for elements that need full width */
+    .full { grid-column: 1 / -1; }
+    .notes-row { background:#eef8ff; padding:12px; border-radius:8px; color:#0b2440; font-weight:700; margin-top:8px; }
   </style>
 </head>
 <body>
+  <div class="wrap">
 
-<div class="page-wrapper">
+    <!-- Logo -->
+    <div class="logo-wrap">
+      <img src="aarialogo.png" alt="AARIA logo">
+    </div>
 
-  <!-- AARIA LOGO -->
-  <div class="logo-container">
-    <img src="aarialogo.png" alt="AARIA Logo">
+    <h1>AARIA PROPERTY LISTING</h1>
+    <p class="subtitle">Empower your property with AI-driven lead generation & precision buyer targeting.</p>
+
+    <!-- FORM (IDs and names preserved; fields rearranged into grid to match calculator layout) -->
+    <form id="propertyListingForm" novalidate>
+      <!-- Section 1: Your Information -->
+      <div class="card">
+        <div class="section-head"><div class="dot"></div><h2>1. Your Information</h2></div>
+        <div class="grid">
+          <div class="field">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+          <div class="field">
+            <label for="contactNumber">Contact Number *</label>
+            <input type="text" id="contactNumber" name="contactNumber" required>
+          </div>
+          <div class="field">
+            <label for="emailAddress">Email Address *</label>
+            <input type="email" id="emailAddress" name="emailAddress" required>
+          </div>
+
+          <div class="field full">
+            <label for="companyName">Company / Organization</label>
+            <input type="text" id="companyName" name="companyName">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Plot & Property Specifications -->
+      <div class="card">
+        <div class="section-head"><div class="dot"></div><h2>2. Plot & Property Specifications</h2></div>
+        <div class="grid">
+          <div class="field">
+            <label for="projectName">Project / Plot Name *</label>
+            <input type="text" id="projectName" name="projectName" required>
+          </div>
+
+          <div class="field">
+            <label for="plotSize">Plot Size *</label>
+            <input type="text" id="plotSize" name="plotSize" required>
+          </div>
+
+          <div class="field">
+            <label for="unit">Unit</label>
+            <!-- to keep previous 'unit' semantics, we used 'projectType' earlier; original used 'projectType' - keep both if needed -->
+            <select id="projectType" name="projectType" required>
+              <option value="" disabled selected>Select Type</option>
+              <option>Residential</option>
+              <option>Commercial</option>
+              <option>Industrial</option>
+              <option>Farmhouse</option>
+              <option>Agricultural Land</option>
+              <option>Mixed-use</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="circleRate">Circle Rate (₹ / unit)</label>
+            <input type="text" id="circleRate" name="circleRate">
+          </div>
+
+          <div class="field full">
+            <label for="address">Exact Location / Address *</label>
+            <textarea id="address" name="address" rows="2" required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="landmarks">Nearby Landmarks</label>
+            <input type="text" id="landmarks" name="landmarks">
+          </div>
+
+          <div class="field">
+            <label for="availableUnits">Available Plot Units</label>
+            <input type="text" id="availableUnits" name="availableUnits">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Location & Community Features -->
+      <div class="card">
+        <div class="section-head"><div class="dot"></div><h2>3. Location & Community Features</h2></div>
+        <div class="grid">
+          <div class="field">
+            <label for="distanceCity">Distance from City Centre</label>
+            <input type="text" id="distanceCity" name="distanceCity">
+          </div>
+
+          <div class="field">
+            <label for="localityCategory">Locality Category *</label>
+            <select id="localityCategory" name="localityCategory" required>
+              <option value="" disabled selected>Select Category</option>
+              <option>Prime Location</option>
+              <option>Developing Area</option>
+              <option>Upcoming Hotspot</option>
+              <option>Outskirts</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="nearbyFacilities">Nearby Facilities</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" id="school" name="nearbyFacilities[]" value="School / College">School / College</label>
+              <label><input type="checkbox" id="hospital" name="nearbyFacilities[]" value="Hospital / Clinic">Hospital / Clinic</label>
+              <label><input type="checkbox" id="market" name="nearbyFacilities[]" value="Market / Mall">Market / Mall</label>
+              <label><input type="checkbox" id="publicTransport" name="nearbyFacilities[]" value="Public Transport">Public Transport</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>&nbsp;</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" id="metro" name="nearbyFacilities[]" value="Metro / Highway">Metro / Highway</label>
+              <label><input type="checkbox" id="park" name="nearbyFacilities[]" value="Park / Green">Park / Green</label>
+              <label><input type="checkbox" id="bank" name="nearbyFacilities[]" value="Bank / ATM">Bank / ATM</label>
+              <label><input type="checkbox" id="religious" name="nearbyFacilities[]" value="Religious Site">Religious Site</label>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Community Features</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" id="gatedCommunity" name="communityFeatures[]" value="Gated Community">Gated Community</label>
+              <label><input type="checkbox" id="security247" name="communityFeatures[]" value="24×7 Security">24×7 Security</label>
+              <label><input type="checkbox" id="powerWater" name="communityFeatures[]" value="Power & Water">Power & Water</label>
+              <label><input type="checkbox" id="wideRoads" name="communityFeatures[]" value="Wide Roads">Wide Roads</label>
+              <label><input type="checkbox" id="drainage" name="communityFeatures[]" value="Drainage">Drainage</label>
+              <label><input type="checkbox" id="streetLights" name="communityFeatures[]" value="Street Lights">Street Lights</label>
+              <label><input type="checkbox" id="parkClub" name="communityFeatures[]" value="Park / Club">Park / Club</label>
+              <label><input type="checkbox" id="internet" name="communityFeatures[]" value="Internet">Internet</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Pricing & Payment Terms -->
+      <div class="card">
+        <div class="section-head"><div class="dot"></div><h2>4. Pricing & Payment Terms</h2></div>
+        <div class="grid">
+          <div class="field">
+            <label for="pricePerUnit">Price per Sq Yard / Sq Ft *</label>
+            <input type="text" id="pricePerUnit" name="pricePerUnit" required>
+          </div>
+
+          <div class="field">
+            <label for="totalProjectPrice">Total Project Price</label>
+            <input type="text" id="totalProjectPrice" name="totalProjectPrice">
+          </div>
+
+          <div class="field">
+            <label for="bookingAmount">Booking Amount</label>
+            <input type="text" id="bookingAmount" name="bookingAmount">
+          </div>
+
+          <div class="field">
+            <label for="priceNegotiable">Price Negotiable? *</label>
+            <select id="priceNegotiable" name="priceNegotiable" required>
+              <option value="" disabled selected>Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="paymentPlans">Payment Plans Available</label>
+            <select id="paymentPlans" name="paymentPlans">
+              <option value="" disabled selected>Select Plan</option>
+              <option>Full Payment</option>
+              <option>EMI</option>
+              <option>Installments</option>
+              <option>Loan Facility</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="agentCommission">Agent Commission Structure</label>
+            <input type="text" id="agentCommission" name="agentCommission">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Legal -->
+      <div class="card">
+        <div class="section-head"><div class="dot"></div><h2>5. Legal Status & Documentation</h2></div>
+        <div class="grid">
+          <div class="field">
+            <label for="ownershipType">Ownership Type *</label>
+            <select id="ownershipType" name="ownershipType" required>
+              <option value="" disabled selected>Select Type</option>
+              <option>Freehold</option>
+              <option>Leasehold</option>
+              <option>Group Housing</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="reraRegistered">RERA Registered? *</label>
+            <select id="reraRegistered" name="reraRegistered" required>
+              <option value="" disabled selected>Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="approvalAuthority">Approval Authority</label>
+            <input type="text" id="approvalAuthority" name="approvalAuthority">
+          </div>
+
+          <div class="field">
+            <label for="registrationNumber">Registration Number</label>
+            <input type="text" id="registrationNumber" name="registrationNumber">
+          </div>
+
+          <div class="field">
+            <label for="pendingDues">Pending Dues or Disputes?</label>
+            <select id="pendingDues" name="pendingDues">
+              <option value="" disabled selected>Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+        </div>
+        <div class="notes-row full">Accurate legal information lets AARIA match your project with buyers confidently and quickly.</div>
+      </div>
+
+      <!-- Section 6: Marketing -->
+      <div class="card">
+        <div class="section-head"><div class="dot"></div><h2>6. Marketing Strategy & Positioning</h2></div>
+        <div class="grid">
+          <div class="field">
+            <label for="idealBuyerProfile">Ideal Buyer Profile *</label>
+            <select id="idealBuyerProfile" name="idealBuyerProfile" required>
+              <option value="" disabled selected>Select Profile</option>
+              <option>Families</option>
+              <option>Investors</option>
+              <option>Builders</option>
+              <option>NRIs</option>
+              <option>Retired</option>
+              <option>First-time Buyers</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="pricingStrategy">Pricing Strategy *</label>
+            <select id="pricingStrategy" name="pricingStrategy" required>
+              <option value="" disabled selected>Select Strategy</option>
+              <option>Premium (High Demand)</option>
+              <option>Mid-range (Competitive)</option>
+              <option>Budget (Mass Appeal)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="aiTone">AI Communication Tone *</label>
+            <select id="aiTone" name="aiTone" required>
+              <option value="" disabled selected>Select Tone</option>
+              <option>Professional & Polite</option>
+              <option>Friendly & Warm</option>
+              <option>Confident & Persuasive</option>
+              <option>Calm & Reassuring</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="usps">Top 3 USPs</label>
+            <input type="text" id="usps" name="usps">
+          </div>
+
+          <div class="field">
+            <label for="salesPitch">One-liner Sales Pitch</label>
+            <input type="text" id="salesPitch" name="salesPitch">
+          </div>
+
+          <div class="field full">
+            <label>Current Marketing Channels</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" id="facebook" name="marketingChannels[]" value="Facebook">Facebook</label>
+              <label><input type="checkbox" id="whatsapp" name="marketingChannels[]" value="WhatsApp">WhatsApp</label>
+              <label><input type="checkbox" id="calls" name="marketingChannels[]" value="Calls">Calls</label>
+              <label><input type="checkbox" id="brokers" name="marketingChannels[]" value="Brokers">Brokers</label>
+              <label><input type="checkbox" id="printAds" name="marketingChannels[]" value="Print Ads">Print Ads</label>
+              <label><input type="checkbox" id="instagram" name="marketingChannels[]" value="Instagram">Instagram</label>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label for="specialInstructions">Special Instructions</label>
+            <textarea id="specialInstructions" name="specialInstructions" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="cta">
+          <button type="submit" class="btn">Submit Listing</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Submission Summary (printable) -->
+    <div id="submissionSummary">
+      <div class="summary-inner">
+        <div class="summary-title">Submission Summary</div>
+
+        <!-- summary content will be injected here -->
+        <div id="summaryContent"></div>
+
+        <div style="margin-top:14px;">
+          <button class="btn secondary" onclick="window.print()">Print / Save PDF</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <h1>AARIA PROPERTY LISTING</h1>
-  <p class="subtitle">Welcome to Aaria — Personal AI Real Estate Consultant.</p>
+  <script>
+    /* ===== Collect form values and show a printable summary =====
+       - keeps all original name/id attributes intact
+       - for array fields (checkboxes) groups values
+    */
+    (function(){
+      const form = document.getElementById('propertyListingForm');
+      const summary = document.getElementById('submissionSummary');
+      const summaryContent = document.getElementById('summaryContent');
 
-  <!-- FORM -->
-  <form id="propertyListingForm">
+      function normalizeKey(k){
+        // Make label-like string: remove trailing [] and replace _ with space + capitalize
+        let key = k.replace(/\[\]$/,'').replace(/([A-Z])/g,' $1').replace(/[_\-]+/g,' ');
+        key = key.replace(/\s+/g,' ').trim();
+        return key.charAt(0).toUpperCase() + key.slice(1);
+      }
 
-    <!-- SECTION CARDS (same as previous response) -->
-    <!-- I am leaving all your fields 100% unchanged. -->
-    
-    <!-- Section 1 -->
-    <div class="card">
-      <h2>1. Your Information</h2>
+      function collectValues(fd){
+        const data = {};
+        for (const pair of fd.entries()){
+          let k = pair[0];
+          let v = pair[1];
+          // For checkboxes with [] names, aggregate values
+          if (k.endsWith('[]')){
+            const short = k;
+            if (!data[short]) data[short] = [];
+            data[short].push(v);
+          } else {
+            // If same key appears multiple times, make array
+            if (data[k] !== undefined){
+              if (!Array.isArray(data[k])) data[k] = [data[k]];
+              data[k].push(v);
+            } else {
+              data[k] = v;
+            }
+          }
+        }
+        return data;
+      }
 
-      <label>Full Name *</label>
-      <input type="text" id="fullName" name="fullName" required>
+      function makeSummaryHTML(obj){
+        // Build a clear two-column summary (switch to single column for small screens)
+        let html = '<div class="summary-grid">';
+        // We'll create key-value blocks. Convert object keys into readable labels.
+        const entries = Object.entries(obj);
+        if (entries.length === 0) html += '<div class="summary-row"><div class="summary-label">No data submitted</div></div>';
+        entries.forEach(([k,v])=>{
+          const label = normalizeKey(k);
+          let value = '';
+          if (Array.isArray(v)) value = v.join(', ');
+          else value = String(v);
+          // empty -> show dash
+          if (!value) value = '—';
+          html += `<div class="summary-row"><div class="summary-label">${label}</div><div class="summary-val">${escapeHtml(value)}</div></div>`;
+        });
+        html += '</div>';
+        return html;
+      }
 
-      <label>Contact Number *</label>
-      <input type="text" id="contactNumber" name="contactNumber" required>
+      function escapeHtml(str){
+        return String(str).replace(/[&<>"']/g, function(m){
+          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[m];
+        });
+      }
 
-      <label>Email Address *</label>
-      <input type="email" id="emailAddress" name="emailAddress" required>
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
 
-      <label>Company / Organization</label>
-      <input type="text" id="companyName" name="companyName">
-    </div>
+        // collect all values using FormData
+        const fd = new FormData(form);
+        const dataObj = collectValues(fd);
 
-    <!-- SECTION 2 -->
-    <div class="card">
-      <h2>2. Plot & Property Specifications</h2>
+        // Put keys in consistent order if you want; otherwise just list
+        summaryContent.innerHTML = makeSummaryHTML(dataObj);
 
-      <label>Project / Plot Name *</label>
-      <input type="text" id="projectName" name="projectName" required>
+        // Hide form, show summary
+        form.style.display = 'none';
+        summary.style.display = 'block';
 
-      <label>Project Type *</label>
-      <select id="projectType" name="projectType" required>
-        <option value="" disabled selected>Select Type</option>
-        <option>Residential</option>
-        <option>Commercial</option>
-        <option>Industrial</option>
-        <option>Farmhouse</option>
-        <option>Agricultural Land</option>
-        <option>Mixed-use</option>
-      </select>
-
-      <label>Plot Size *</label>
-      <input type="text" id="plotSize" name="plotSize" required>
-
-      <label>Total Project Area</label>
-      <input type="text" id="totalArea" name="totalArea">
-
-      <label>Exact Location / Address *</label>
-      <textarea id="address" name="address" rows="2" required></textarea>
-
-      <label>Nearby Landmarks</label>
-      <input type="text" id="landmarks" name="landmarks">
-
-      <label>Available Plot Units</label>
-      <input type="text" id="availableUnits" name="availableUnits">
-    </div>
-
-    <!-- SECTION 3 -->
-    <div class="card">
-      <h2>3. Location & Community Features</h2>
-
-      <label>Distance from City Centre</label>
-      <input type="text" id="distanceCity" name="distanceCity">
-
-      <label>Locality Category *</label>
-      <select id="localityCategory" name="localityCategory" required>
-        <option value="" disabled selected>Select Category</option>
-        <option>Prime Location</option>
-        <option>Developing Area</option>
-        <option>Upcoming Hotspot</option>
-        <option>Outskirts</option>
-      </select>
-
-      <label>Nearby Facilities</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="School / College" name="nearbyFacilities[]">School / College</label>
-        <label><input type="checkbox" value="Hospital / Clinic" name="nearbyFacilities[]">Hospital / Clinic</label>
-        <label><input type="checkbox" value="Market / Mall" name="nearbyFacilities[]">Market / Mall</label>
-        <label><input type="checkbox" value="Public Transport" name="nearbyFacilities[]">Public Transport</label>
-        <label><input type="checkbox" value="Metro / Highway" name="nearbyFacilities[]">Metro / Highway</label>
-        <label><input type="checkbox" value="Park / Green" name="nearbyFacilities[]">Park / Green</label>
-        <label><input type="checkbox" value="Bank / ATM" name="nearbyFacilities[]">Bank / ATM</label>
-        <label><input type="checkbox" value="Religious Site" name="nearbyFacilities[]">Religious Site</label>
-      </div>
-
-      <label>Community Features</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="Gated Community" name="communityFeatures[]">Gated Community</label>
-        <label><input type="checkbox" value="24×7 Security" name="communityFeatures[]">24×7 Security</label>
-        <label><input type="checkbox" value="Power & Water" name="communityFeatures[]">Power & Water</label>
-        <label><input type="checkbox" value="Wide Roads" name="communityFeatures[]">Wide Roads</label>
-        <label><input type="checkbox" value="Drainage" name="communityFeatures[]">Drainage</label>
-        <label><input type="checkbox" value="Street Lights" name="communityFeatures[]">Street Lights</label>
-        <label><input type="checkbox" value="Park / Club" name="communityFeatures[]">Park / Club</label>
-        <label><input type="checkbox" value="Internet" name="communityFeatures[]">Internet</label>
-      </div>
-    </div>
-
-    <!-- SECTION 4 -->
-    <div class="card">
-      <h2>4. Pricing & Payment Terms</h2>
-
-      <label>Price per Sq Yard / Sq Ft *</label>
-      <input type="text" id="pricePerUnit" name="pricePerUnit" required>
-
-      <label>Total Project Price</label>
-      <input type="text" id="totalProjectPrice" name="totalProjectPrice">
-
-      <label>Booking Amount</label>
-      <input type="text" id="bookingAmount" name="bookingAmount">
-
-      <label>Price Negotiable? *</label>
-      <select id="priceNegotiable" name="priceNegotiable" required>
-        <option value="" disabled selected>Select</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-
-      <label>Payment Plans Available</label>
-      <select id="paymentPlans" name="paymentPlans">
-        <option value="" disabled selected>Select Plan</option>
-        <option>Full Payment</option>
-        <option>EMI</option>
-        <option>Installments</option>
-        <option>Loan Facility</option>
-      </select>
-
-      <label>Agent Commission Structure</label>
-      <input type="text" id="agentCommission" name="agentCommission">
-    </div>
-
-    <!-- SECTION 5 -->
-    <div class="card">
-      <h2>5. Legal Status & Documentation</h2>
-
-      <label>Ownership Type *</label>
-      <select id="ownershipType" name="ownershipType" required>
-        <option value="" disabled selected>Select Type</option>
-        <option>Freehold</option>
-        <option>Leasehold</option>
-        <option>Group Housing</option>
-      </select>
-
-      <label>RERA Registered? *</label>
-      <select id="reraRegistered" name="reraRegistered" required>
-        <option value="" disabled selected>Select</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-
-      <label>Approval Authority</label>
-      <input type="text" id="approvalAuthority" name="approvalAuthority">
-
-      <label>Registration Number</label>
-      <input type="text" id="registrationNumber" name="registrationNumber">
-
-      <label>Pending Dues or Disputes?</label>
-      <select id="pendingDues" name="pendingDues">
-        <option value="" disabled selected>Select</option>
-        <option>Yes</option>
-        <option>No</option>
-      </select>
-    </div>
-
-    <!-- SECTION 6 -->
-    <div class="card">
-      <h2>6. Marketing Strategy & Positioning</h2>
-
-      <label>Ideal Buyer Profile *</label>
-      <select id="idealBuyerProfile" name="idealBuyerProfile" required>
-        <option value="" disabled selected>Select Profile</option>
-        <option>Families</option>
-        <option>Investors</option>
-        <option>Builders</option>
-        <option>NRIs</option>
-        <option>Retired</option>
-        <option>First-time Buyers</option>
-      </select>
-
-      <label>Pricing Strategy *</label>
-      <select id="pricingStrategy" name="pricingStrategy" required>
-        <option value="" disabled selected>Select Strategy</option>
-        <option>Premium (High Demand)</option>
-        <option>Mid-range (Competitive)</option>
-        <option>Budget (Mass Appeal)</option>
-      </select>
-
-      <label>AI Communication Tone *</label>
-      <select id="aiTone" name="aiTone" required>
-        <option value="" disabled selected>Select Tone</option>
-        <option>Professional & Polite</option>
-        <option>Friendly & Warm</option>
-        <option>Confident & Persuasive</option>
-        <option>Calm & Reassuring</option>
-      </select>
-
-      <label>Top 3 USPs</label>
-      <input type="text" id="usps" name="usps">
-
-      <label>One-liner Sales Pitch</label>
-      <input type="text" id="salesPitch" name="salesPitch">
-
-      <label>Current Marketing Channels</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="Facebook" name="marketingChannels[]">Facebook</label>
-        <label><input type="checkbox" value="WhatsApp" name="marketingChannels[]">WhatsApp</label>
-        <label><input type="checkbox" value="Calls" name="marketingChannels[]">Calls</label>
-        <label><input type="checkbox" value="Brokers" name="marketingChannels[]">Brokers</label>
-        <label><input type="checkbox" value="Print Ads" name="marketingChannels[]">Print Ads</label>
-        <label><input type="checkbox" value="Instagram" name="marketingChannels[]">Instagram</label>
-      </div>
-
-      <label>Special Instructions</label>
-      <textarea id="specialInstructions" name="specialInstructions" rows="2"></textarea>
-    </div>
-
-    <button type="submit" class="btn-submit">Submit Listing</button>
-
-  </form>
-
-  <!-- SUBMISSION SUMMARY SCREEN -->
-  <div id="submissionSummary">
-    <h2 class="summary-title">Submission Summary</h2>
-
-    <div id="summaryContent"></div>
-
-    <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
-  </div>
-
-</div>
-
-<!-- JS to display summary after submission -->
-<script>
-document.getElementById("propertyListingForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  let form = new FormData(this);
-  let outputHTML = "";
-
-  form.forEach((value, key) => {
-    outputHTML += `
-      <div class="summary-block">
-        <strong>${key}</strong><br>
-        <span>${value}</span>
-      </div>
-    `;
-  });
-
-  document.getElementById("summaryContent").innerHTML = outputHTML;
-
-  document.getElementById("propertyListingForm").style.display = "none";
-  document.getElementById("submissionSummary").style.display = "block";
-});
-</script>
-
+        // scroll summary into view on mobile
+        summary.scrollIntoView({behavior:'smooth'});
+      });
+    })();
+  </script>
 </body>
 </html>
