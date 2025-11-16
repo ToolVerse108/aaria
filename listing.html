@@ -3,314 +3,357 @@
 <head>
   <meta charset="UTF-8">
   <title>AARIA – AI Powered Property Listing</title>
-  <!-- (Include your existing CSS/JS links here) -->
+
+  <!-- MATCHING AARIA CALCULATOR AESTHETICS -->
   <style>
-    /* Example additional styling to match calculator vibe */
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
-      color: #333;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", Arial, sans-serif;
+      background: #eef2f7;
+      color: #1a1a1a;
     }
-    .container {
-      max-width: 800px;
+
+    .page-wrapper {
+      max-width: 900px;
       margin: 40px auto;
       padding: 20px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #0056b3;
-    }
-    p.subtitle {
-      font-size: 16px;
-      color: #555;
+
+    .card {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
       margin-bottom: 30px;
     }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #0066ff;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 17px;
+      color: #444;
+      margin-bottom: 35px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 18px;
+      color: #1a1a1a;
+      border-left: 4px solid #0066ff;
+      padding-left: 10px;
+      font-weight: 600;
+    }
+
     label {
       display: block;
-      margin-top: 15px;
+      margin-bottom: 8px;
+      font-size: 15px;
       font-weight: 600;
-      color: #444;
     }
+
     input[type=text],
     input[type=email],
     select,
     textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      padding: 12px;
+      border: 1px solid #d5d5d5;
+      border-radius: 8px;
+      margin-bottom: 18px;
       font-size: 15px;
+      background: #fafafa;
+      transition: 0.2s ease;
     }
-    .form-section {
-      margin-bottom: 30px;
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #0066ff;
+      background: #ffffff;
+      outline: none;
+      box-shadow: 0 0 4px rgba(0,102,255,0.4);
     }
+
+    .checkbox-group label {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .checkbox-group input {
+      margin-right: 8px;
+    }
+
     .btn-submit {
-      background-color: #0056b3;
-      color: #fff;
-      padding: 12px 20px;
+      width: 100%;
+      background: #0066ff;
+      color: #ffffff;
+      padding: 14px;
       border: none;
-      border-radius: 4px;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
       cursor: pointer;
-      font-size: 16px;
+      transition: 0.25s;
+      margin-top: 10px;
     }
+
     .btn-submit:hover {
-      background-color: #004494;
+      background: #0052cc;
     }
+
     .note {
       font-size: 14px;
-      color: #777;
-      margin-top: 5px;
+      color: #666;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .page-wrapper {
+        padding: 15px;
+        margin: 20px auto;
+      }
+      h1 {
+        font-size: 26px;
+      }
+      h2 {
+        font-size: 19px;
+      }
     }
   </style>
+
 </head>
 <body>
-  <div class="container">
-    <h1>AARIA PROPERTY LISTING FORM</h1>
-    <p class="subtitle">Unlock your property’s potential with AI-driven marketing. Let AARIA craft precision lead generation and conversion-ready campaigns for you.</p>
 
-    <form id="propertyListingForm" action="yourSubmitEndpoint" method="post">
-      <!-- Your Information Section -->
-      <div class="form-section">
-        <h2>1. Your Information</h2>
-        <label for="fullName">Full Name *</label>
-        <input type="text" id="fullName" name="fullName" required>
+<div class="page-wrapper">
+  <h1>AARIA PROPERTY LISTING</h1>
+  <p class="subtitle">Empower your property with AI-Driven Lead Generation & Precision Buyer Targeting.</p>
 
-        <label for="contactNumber">Contact Number *</label>
-        <input type="text" id="contactNumber" name="contactNumber" required>
+  <form id="propertyListingForm" action="yourSubmitEndpoint" method="post">
 
-        <label for="emailAddress">Email Address *</label>
-        <input type="email" id="emailAddress" name="emailAddress" required>
+    <!-- Section 1 -->
+    <div class="card">
+      <h2>1. Your Information</h2>
 
-        <label for="companyName">Company / Organization</label>
-        <input type="text" id="companyName" name="companyName">
+      <label>Full Name *</label>
+      <input type="text" id="fullName" name="fullName" required>
 
-        <p class="note">* We use these details to connect qualified leads, coordinate site visits & keep you updated in real-time.</p>
+      <label>Contact Number *</label>
+      <input type="text" id="contactNumber" name="contactNumber" required>
+
+      <label>Email Address *</label>
+      <input type="email" id="emailAddress" name="emailAddress" required>
+
+      <label>Company / Organization</label>
+      <input type="text" id="companyName" name="companyName">
+    </div>
+
+    <!-- Section 2 -->
+    <div class="card">
+      <h2>2. Plot & Property Specifications</h2>
+
+      <label>Project / Plot Name *</label>
+      <input type="text" id="projectName" name="projectName" required>
+
+      <label>Project Type *</label>
+      <select id="projectType" name="projectType" required>
+        <option value="" disabled selected>Select Type</option>
+        <option>Residential</option>
+        <option>Commercial</option>
+        <option>Industrial</option>
+        <option>Farmhouse</option>
+        <option>Agricultural Land</option>
+        <option>Mixed-use</option>
+      </select>
+
+      <label>Plot Size *</label>
+      <input type="text" id="plotSize" name="plotSize" required>
+
+      <label>Total Project Area</label>
+      <input type="text" id="totalArea" name="totalArea">
+
+      <label>Exact Location / Address *</label>
+      <textarea id="address" name="address" rows="2" required></textarea>
+
+      <label>Nearby Landmarks</label>
+      <input type="text" id="landmarks" name="landmarks">
+
+      <label>Available Plot Units</label>
+      <input type="text" id="availableUnits" name="availableUnits">
+    </div>
+
+    <!-- Section 3 -->
+    <div class="card">
+      <h2>3. Location & Community Features</h2>
+
+      <label>Distance from City Centre</label>
+      <input type="text" id="distanceCity" name="distanceCity">
+
+      <label>Locality Category *</label>
+      <select id="localityCategory" name="localityCategory" required>
+        <option value="" disabled selected>Select Category</option>
+        <option>Prime Location</option>
+        <option>Developing Area</option>
+        <option>Upcoming Hotspot</option>
+        <option>Outskirts</option>
+      </select>
+
+      <label>Nearby Facilities</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" value="School / College" name="nearbyFacilities[]">School / College</label>
+        <label><input type="checkbox" value="Hospital / Clinic" name="nearbyFacilities[]">Hospital / Clinic</label>
+        <label><input type="checkbox" value="Market / Mall" name="nearbyFacilities[]">Market / Mall</label>
+        <label><input type="checkbox" value="Public Transport" name="nearbyFacilities[]">Public Transport</label>
+        <label><input type="checkbox" value="Metro / Highway" name="nearbyFacilities[]">Metro / Highway</label>
+        <label><input type="checkbox" value="Park / Green" name="nearbyFacilities[]">Park / Green</label>
+        <label><input type="checkbox" value="Bank / ATM" name="nearbyFacilities[]">Bank / ATM</label>
+        <label><input type="checkbox" value="Religious Site" name="nearbyFacilities[]">Religious Site</label>
       </div>
 
-      <!-- Property Specifications Section -->
-      <div class="form-section">
-        <h2>2. Plot & Property Specifications</h2>
-        <label for="projectName">Project / Plot Name *</label>
-        <input type="text" id="projectName" name="projectName" required>
+      <label>Community Features</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" value="Gated Community" name="communityFeatures[]">Gated Community</label>
+        <label><input type="checkbox" value="24×7 Security" name="communityFeatures[]">24×7 Security</label>
+        <label><input type="checkbox" value="Power & Water" name="communityFeatures[]">Power & Water</label>
+        <label><input type="checkbox" value="Wide Roads" name="communityFeatures[]">Wide Roads</label>
+        <label><input type="checkbox" value="Drainage" name="communityFeatures[]">Drainage</label>
+        <label><input type="checkbox" value="Street Lights" name="communityFeatures[]">Street Lights</label>
+        <label><input type="checkbox" value="Park / Club" name="communityFeatures[]">Park / Club</label>
+        <label><input type="checkbox" value="Internet" name="communityFeatures[]">Internet</label>
+      </div>
+    </div>
 
-        <label for="projectType">Project Type *</label>
-        <select id="projectType" name="projectType" required>
-          <option value="" disabled selected>Select Type</option>
-          <option>Residential</option>
-          <option>Commercial</option>
-          <option>Industrial</option>
-          <option>Farmhouse</option>
-          <option>Agricultural Land</option>
-          <option>Mixed-use</option>
-        </select>
+    <!-- Section 4 -->
+    <div class="card">
+      <h2>4. Pricing & Payment Terms</h2>
 
-        <label for="plotSize">Plot Size *</label>
-        <input type="text" id="plotSize" name="plotSize" required>
+      <label>Price per Sq Yard / Sq Ft *</label>
+      <input type="text" id="pricePerUnit" name="pricePerUnit" required>
 
-        <label for="totalArea">Total Project Area</label>
-        <input type="text" id="totalArea" name="totalArea">
+      <label>Total Project Price</label>
+      <input type="text" id="totalProjectPrice" name="totalProjectPrice">
 
-        <label for="address">Exact Location / Address *</label>
-        <textarea id="address" name="address" rows="2" required></textarea>
+      <label>Booking Amount</label>
+      <input type="text" id="bookingAmount" name="bookingAmount">
 
-        <label for="landmarks">Nearby Landmarks</label>
-        <input type="text" id="landmarks" name="landmarks">
+      <label>Price Negotiable? *</label>
+      <select id="priceNegotiable" name="priceNegotiable" required>
+        <option value="" disabled selected>Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
 
-        <label for="availableUnits">Available Plot Units</label>
-        <input type="text" id="availableUnits" name="availableUnits">
+      <label>Payment Plans Available</label>
+      <select id="paymentPlans" name="paymentPlans">
+        <option value="" disabled selected>Select Plan</option>
+        <option>Full Payment</option>
+        <option>EMI</option>
+        <option>Installments</option>
+        <option>Loan Facility</option>
+      </select>
+
+      <label>Agent Commission Structure</label>
+      <input type="text" id="agentCommission" name="agentCommission">
+    </div>
+
+    <!-- Section 5 -->
+    <div class="card">
+      <h2>5. Legal Status & Documentation</h2>
+
+      <label>Ownership Type *</label>
+      <select id="ownershipType" name="ownershipType" required>
+        <option value="" disabled selected>Select Type</option>
+        <option>Freehold</option>
+        <option>Leasehold</option>
+        <option>Group Housing</option>
+      </select>
+
+      <label>RERA Registered? *</label>
+      <select id="reraRegistered" name="reraRegistered" required>
+        <option value="" disabled selected>Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Approval Authority</label>
+      <input type="text" id="approvalAuthority" name="approvalAuthority">
+
+      <label>Registration Number</label>
+      <input type="text" id="registrationNumber" name="registrationNumber">
+
+      <label>Pending Dues or Disputes?</label>
+      <select id="pendingDues" name="pendingDues">
+        <option value="" disabled selected>Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="card">
+      <h2>6. Marketing Strategy & Positioning</h2>
+
+      <label>Ideal Buyer Profile *</label>
+      <select id="idealBuyerProfile" name="idealBuyerProfile" required>
+        <option value="" disabled selected>Select Profile</option>
+        <option>Families</option>
+        <option>Investors</option>
+        <option>Builders</option>
+        <option>NRIs</option>
+        <option>Retired</option>
+        <option>First-time Buyers</option>
+      </select>
+
+      <label>Pricing Strategy *</label>
+      <select id="pricingStrategy" name="pricingStrategy" required>
+        <option value="" disabled selected>Select Strategy</option>
+        <option>Premium (High Demand)</option>
+        <option>Mid-range (Competitive)</option>
+        <option>Budget (Mass Appeal)</option>
+      </select>
+
+      <label>AI Communication Tone *</label>
+      <select id="aiTone" name="aiTone" required>
+        <option value="" disabled selected>Select Tone</option>
+        <option>Professional & Polite</option>
+        <option>Friendly & Warm</option>
+        <option>Confident & Persuasive</option>
+        <option>Calm & Reassuring</option>
+      </select>
+
+      <label>Top 3 USPs</label>
+      <input type="text" id="usps" name="usps">
+
+      <label>One-liner Sales Pitch</label>
+      <input type="text" id="salesPitch" name="salesPitch">
+
+      <label>Current Marketing Channels</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" value="Facebook" name="marketingChannels[]">Facebook</label>
+        <label><input type="checkbox" value="WhatsApp" name="marketingChannels[]">WhatsApp</label>
+        <label><input type="checkbox" value="Calls" name="marketingChannels[]">Calls</label>
+        <label><input type="checkbox" value="Brokers" name="marketingChannels[]">Brokers</label>
+        <label><input type="checkbox" value="Print Ads" name="marketingChannels[]">Print Ads</label>
+        <label><input type="checkbox" value="Instagram" name="marketingChannels[]">Instagram</label>
       </div>
 
-      <!-- Location & Community Features Section -->
-      <div class="form-section">
-        <h2>3. Location & Community Features</h2>
-        <label for="distanceCity">Distance from City Centre</label>
-        <input type="text" id="distanceCity" name="distanceCity">
+      <label>Special Instructions</label>
+      <textarea id="specialInstructions" name="specialInstructions" rows="2"></textarea>
+    </div>
 
-        <label for="localityCategory">Locality Category *</label>
-        <select id="localityCategory" name="localityCategory" required>
-          <option value="" disabled selected>Select Category</option>
-          <option>Prime Location</option>
-          <option>Developing Area</option>
-          <option>Upcoming Hotspot</option>
-          <option>Outskirts</option>
-        </select>
+    <button type="submit" class="btn-submit">Submit Listing</button>
 
-        <label>Nearby Facilities (tick all that apply)</label>
-        <div>
-          <input type="checkbox" id="school" name="nearbyFacilities[]" value="School / College">
-          <label for="school">School / College</label><br>
-          <input type="checkbox" id="hospital" name="nearbyFacilities[]" value="Hospital / Clinic">
-          <label for="hospital">Hospital / Clinic</label><br>
-          <input type="checkbox" id="market" name="nearbyFacilities[]" value="Market / Mall">
-          <label for="market">Market / Mall</label><br>
-          <input type="checkbox" id="publicTransport" name="nearbyFacilities[]" value="Public Transport">
-          <label for="publicTransport">Public Transport</label><br>
-          <input type="checkbox" id="metro" name="nearbyFacilities[]" value="Metro / Highway">
-          <label for="metro">Metro / Highway</label><br>
-          <input type="checkbox" id="park" name="nearbyFacilities[]" value="Park / Green">
-          <label for="park">Park / Green</label><br>
-          <input type="checkbox" id="bank" name="nearbyFacilities[]" value="Bank / ATM">
-          <label for="bank">Bank / ATM</label><br>
-          <input type="checkbox" id="religious" name="nearbyFacilities[]" value="Religious Site">
-          <label for="religious">Religious Site</label><br>
-        </div>
+  </form>
+</div>
 
-        <label>Community Features (tick all that apply)</label>
-        <div>
-          <input type="checkbox" id="gatedCommunity" name="communityFeatures[]" value="Gated Community">
-          <label for="gatedCommunity">Gated Community</label><br>
-          <input type="checkbox" id="security247" name="communityFeatures[]" value="24×7 Security">
-          <label for="security247">24×7 Security</label><br>
-          <input type="checkbox" id="powerWater" name="communityFeatures[]" value="Power & Water">
-          <label for="powerWater">Power & Water</label><br>
-          <input type="checkbox" id="wideRoads" name="communityFeatures[]" value="Wide Roads">
-          <label for="wideRoads">Wide Roads</label><br>
-          <input type="checkbox" id="drainage" name="communityFeatures[]" value="Drainage">
-          <label for="drainage">Drainage</label><br>
-          <input type="checkbox" id="streetLights" name="communityFeatures[]" value="Street Lights">
-          <label for="streetLights">Street Lights</label><br>
-          <input type="checkbox" id="parkClub" name="communityFeatures[]" value="Park / Club">
-          <label for="parkClub">Park / Club</label><br>
-          <input type="checkbox" id="internet" name="communityFeatures[]" value="Internet">
-          <label for="internet">Internet</label><br>
-        </div>
-      </div>
-
-      <!-- Pricing & Payment Terms Section -->
-      <div class="form-section">
-        <h2>4. Pricing & Payment Terms</h2>
-        <label for="pricePerUnit">Price per Sq Yard / Sq Ft *</label>
-        <input type="text" id="pricePerUnit" name="pricePerUnit" required>
-
-        <label for="totalProjectPrice">Total Project Price</label>
-        <input type="text" id="totalProjectPrice" name="totalProjectPrice">
-
-        <label for="bookingAmount">Booking Amount</label>
-        <input type="text" id="bookingAmount" name="bookingAmount">
-
-        <label>Price Negotiable? *</label>
-        <select id="priceNegotiable" name="priceNegotiable" required>
-          <option value="" disabled selected>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-
-        <label>Payment Plans Available</label>
-        <select id="paymentPlans" name="paymentPlans">
-          <option value="" disabled selected>Select Plan</option>
-          <option>Full Payment</option>
-          <option>EMI</option>
-          <option>Installments</option>
-          <option>Loan Facility</option>
-        </select>
-
-        <label for="agentCommission">Agent Commission Structure</label>
-        <input type="text" id="agentCommission" name="agentCommission">
-      </div>
-
-      <!-- Legal Status & Documentation Section -->
-      <div class="form-section">
-        <h2>5. Legal Status & Documentation</h2>
-        <label for="ownershipType">Ownership Type *</label>
-        <select id="ownershipType" name="ownershipType" required>
-          <option value="" disabled selected>Select Type</option>
-          <option>Freehold</option>
-          <option>Leasehold</option>
-          <option>Group Housing</option>
-        </select>
-
-        <label>RERA Registered? *</label>
-        <select id="reraRegistered" name="reraRegistered" required>
-          <option value="" disabled selected>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-
-        <label for="approvalAuthority">Approval Authority</label>
-        <input type="text" id="approvalAuthority" name="approvalAuthority">
-
-        <label for="registrationNumber">Registration Number</label>
-        <input type="text" id="registrationNumber" name="registrationNumber">
-
-        <label>Pending Dues or Disputes?</label>
-        <select id="pendingDues" name="pendingDues">
-          <option value="" disabled selected>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-
-        <p class="note">Accurate legal information lets AARIA match your project with buyers confidently and quickly.</p>
-      </div>
-
-      <!-- Marketing Strategy & Positioning Section -->
-      <div class="form-section">
-        <h2>6. Marketing Strategy & Positioning</h2>
-        <label for="idealBuyerProfile">Ideal Buyer Profile *</label>
-        <select id="idealBuyerProfile" name="idealBuyerProfile" required>
-          <option value="" disabled selected>Select Profile</option>
-          <option>Families</option>
-          <option>Investors</option>
-          <option>Builders</option>
-          <option>NRIs</option>
-          <option>Retired</option>
-          <option>First-time Buyers</option>
-        </select>
-
-        <label for="pricingStrategy">Pricing Strategy *</label>
-        <select id="pricingStrategy" name="pricingStrategy" required>
-          <option value="" disabled selected>Select Strategy</option>
-          <option>Premium (High Demand)</option>
-          <option>Mid-range (Competitive)</option>
-          <option>Budget (Mass Appeal)</option>
-        </select>
-
-        <label for="aiTone">AI Communication Tone *</label>
-        <select id="aiTone" name="aiTone" required>
-          <option value="" disabled selected>Select Tone</option>
-          <option>Professional & Polite</option>
-          <option>Friendly & Warm</option>
-          <option>Confident & Persuasive</option>
-          <option>Calm & Reassuring</option>
-        </select>
-
-        <label for="usps">Top 3 Unique Selling Points (USPs)</label>
-        <input type="text" id="usps" name="usps">
-
-        <label for="salesPitch">One-liner Sales Pitch</label>
-        <input type="text" id="salesPitch" name="salesPitch">
-
-        <label>Current Marketing Channels</label>
-        <div>
-          <input type="checkbox" id="facebook" name="marketingChannels[]" value="Facebook">
-          <label for="facebook">Facebook</label><br>
-          <input type="checkbox" id="whatsapp" name="marketingChannels[]" value="WhatsApp">
-          <label for="whatsapp">WhatsApp</label><br>
-          <input type="checkbox" id="calls" name="marketingChannels[]" value="Calls">
-          <label for="calls">Calls</label><br>
-          <input type="checkbox" id="brokers" name="marketingChannels[]" value="Brokers">
-          <label for="brokers">Brokers</label><br>
-          <input type="checkbox" id="printAds" name="marketingChannels[]" value="Print Ads">
-          <label for="printAds">Print Ads</label><br>
-          <input type="checkbox" id="instagram" name="marketingChannels[]" value="Instagram">
-          <label for="instagram">Instagram</label><br>
-        </div>
-
-        <label for="specialInstructions">Special Instructions for AARIA</label>
-        <textarea id="specialInstructions" name="specialInstructions" rows="2"></textarea>
-
-        <p class="note">AARIA will use this data to craft personalised campaigns, identify high-quality leads and automate follow-ups 24×7.</p>
-      </div>
-
-      <button type="submit" class="btn-submit">Submit Listing</button>
-
-      <p class="note" style="margin-top:20px;">Need help? Reach out to our support team – we’re here to ensure your property listing gets the premium exposure it deserves.</p>
-    </form>
-  </div>
 </body>
 </html>
