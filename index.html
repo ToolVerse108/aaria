@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AARIA - Your Personal AI Real Estate Consultant | Find Your Dream Property</title>
-    <meta name="description" content="Meet Aaria - Your trusted AI companion for finding the perfect property. Free consultation, expert guidance, zero pressure.">
+    <title>AARIA - Your Personal AI Real Estate Consultant | Find Your Perfect Property</title>
+    <meta name="description" content="Meet Aaria — Your Personal AI Real Estate Consultant. She analyzes the Kanpur market, filters the noise, compares properties, and guides you to the right investment — with zero pressure and complete transparency.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -1071,6 +1071,124 @@
 .green-btn:hover {
     background: #149d82;
 }
+/* OVERLAY */
+.aaria-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  animation: fadeIn 0.3s ease;
+}
+
+/* POPUP */
+.aaria-modal {
+  width: 92%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  position: relative;
+  animation: slideUp 0.35s ease;
+  font-family: "Inter", sans-serif;
+}
+
+/* TITLES */
+.aaria-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1E1E1E;
+  margin-bottom: 6px;
+}
+
+.aaria-sub {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 22px;
+}
+
+/* FIELDS */
+.aaria-field {
+  margin-bottom: 14px;
+}
+
+.aaria-field label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.aaria-field input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #dadada;
+  border-radius: 12px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.aaria-field input:focus {
+  border-color: #3C6EFD;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(60,110,253,0.15);
+}
+
+/* MORE DETAILS */
+.aaria-more-toggle {
+  font-size: 14px;
+  color: #3C6EFD;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.aaria-more.hidden {
+  display: none;
+}
+
+/* BUTTON */
+.aaria-submit {
+  width: 100%;
+  background: #3C6EFD;
+  color: #fff;
+  padding: 13px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.aaria-submit:hover {
+  background: #3157db;
+}
+
+/* CLOSE BUTTON */
+.aaria-close {
+  position: absolute;
+  top: 12px; right: 18px;
+  font-size: 26px;
+  color: #777;
+  cursor: pointer;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
 
 
     </style>
@@ -1107,19 +1225,15 @@
                     <span>100% Free AI Property Consultation</span>
                 </div>
                 <h1>
-                    Find Your Dream Property<br>
+                    Find Your Perfect Property<br>
                     with <span class="hero-highlight">Aaria</span>
                 </h1>
-                <p class="hero-subtitle">
-                    Your personal AI real estate consultant who understands your needs, filters the noise, and helps you make confident property decisions. Zero pressure, just expert guidance.
+                <p class="hero-subtitle"> Your personal AI real estate consultant — giving you clear, unbiased guidance, comparing the best options, and helping you make confident decisions without pressure.
                 </p>
                 <div class="cta-group">
                     <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20find%20a%20property" class="btn btn-primary">
                         💬 Chat with Aaria Free
-                    </a>
-                    <a href="#how-it-works" class="btn btn-secondary">
-                        See How It Works
-                    </a>
+                    <button class="cta-secondary" onclick="openAariaPopup()">📞 Let Aaria Call You</button>
                 </div>
                 <div class="trust-badges">
                     <div class="trust-badge">
@@ -1508,6 +1622,88 @@
                 imageObserver.observe(img);
             });
         }
+        <script>
+// Open Popup
+function openAariaPopup() {
+  document.getElementById("aCallPopup").style.display = "flex";
+}
+
+// Close Popup
+function closeAariaPopup() {
+  document.getElementById("aCallPopup").style.display = "none";
+}
+
+// Toggle More Info
+function toggleMore() {
+  document.getElementById("aMoreDetails").classList.toggle("hidden");
+}
+
+// Submit Form → Google Sheet
+document.getElementById("aCallForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  fetch("https://script.google.com/macros/s/AKfycby943bmzlRfAdYY3N6MvuCa2MjAHGDaultwZQxPOoFQ23mjFVL-YhT9UmdyPM_dehmCnQ/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+    closeAariaPopup();
+    alert("Aaria will call you shortly!");
+    
+    // OPTIONAL: Trigger your ElevenLabs call backend
+    // triggerAariaCall(formData.get("name"), formData.get("phone"));
+  })
+  .catch(err => alert("Error submitting form."));
+});
+</script>
+
     </script>
+    <!-- AARIA CALL POPUP ALIGNED -->
+<div id="aCallPopup" class="aaria-overlay">
+  <div class="aaria-modal">
+
+    <h2 class="aaria-title">Aaria will call you shortly</h2>
+    <p class="aaria-sub">Enter your details to get a free AI voice consultation.</p>
+
+    <form id="aCallForm">
+
+      <div class="aaria-field">
+        <label>Your Name</label>
+        <input type="text" name="name" required placeholder="Enter your name">
+      </div>
+
+      <div class="aaria-field">
+        <label>Your Phone Number</label>
+        <input type="tel" name="phone" required placeholder="9876543210">
+      </div>
+
+      <div class="aaria-more-toggle" onclick="toggleMore()">
+        + More details (optional)
+      </div>
+
+      <div id="aMoreDetails" class="aaria-more hidden">
+
+        <div class="aaria-field">
+          <label>Budget</label>
+          <input type="text" name="budget" placeholder="e.g., 20–40 Lakhs">
+        </div>
+
+        <div class="aaria-field">
+          <label>Location Preference</label>
+          <input type="text" name="location" placeholder="e.g., Kalyanpur, Swaroop Nagar">
+        </div>
+
+      </div>
+
+      <button type="submit" class="aaria-submit">Let Aaria Call You</button>
+
+    </form>
+
+    <div class="aaria-close" onclick="closeAariaPopup()">×</div>
+  </div>
+</div>
+
 </body>
 </html>
