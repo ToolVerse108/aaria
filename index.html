@@ -1627,6 +1627,79 @@
                 imageObserver.observe(img);
             });
         }
+        /** OPEN POPUP **/
+function openAariaPopup() {
+  document.getElementById("aariaCallPopup").style.display = "flex";
+}
+
+/** CLOSE POPUP **/
+function closeAariaCallPopup() {
+  document.getElementById("aariaCallPopup").style.display = "none";
+}
+
+/** TOGGLE MORE DETAILS **/
+function toggleAariaMore() {
+  const box = document.getElementById("aariaMore");
+  box.classList.toggle("hidden");
+}
+
+/** FORM SUBMIT → GOOGLE SHEETS + TRIGGER CALL **/
+document.getElementById("aariaCallForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  fetch("YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL", {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+    alert("Aaria will call you shortly.");
+    closeAariaCallPopup();
+  })
+  .catch(() => {
+    alert("Something went wrong. Please try again.");
+  });
+});
+
     </script>
-   </body>
+<!-- AARIA CALL POPUP -->
+<div id="aariaCallPopup" class="aaria-overlay">
+  <div class="aaria-modal">
+    <div class="aaria-close" onclick="closeAariaCallPopup()">×</div>
+
+    <h2 class="aaria-title">Aaria will call you shortly</h2>
+    <p class="aaria-sub">Enter your details and Aaria will initiate your free AI voice consultation.</p>
+
+    <form id="aariaCallForm">
+      <div class="aaria-field">
+        <label>Your Name</label>
+        <input type="text" name="name" required placeholder="Enter your name">
+      </div>
+
+      <div class="aaria-field">
+        <label>Your Phone Number</label>
+        <input type="tel" name="phone" required placeholder="Enter your phone number">
+      </div>
+
+      <div class="aaria-more-toggle" onclick="toggleAariaMore()">More details ▾</div>
+
+      <div id="aariaMore" class="aaria-more hidden">
+        <div class="aaria-field">
+          <label>Budget (Optional)</label>
+          <input type="text" name="budget" placeholder="Ex: ₹20–30L">
+        </div>
+
+        <div class="aaria-field">
+          <label>Preferred Location</label>
+          <input type="text" name="location" placeholder="Ex: Kalyanpur, Naubasta">
+        </div>
+      </div>
+
+      <button type="submit" class="aaria-submit">Let Aaria Call You</button>
+    </form>
+  </div>
+</div>
+
+</body>
 </html>
