@@ -160,22 +160,21 @@
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            background: radial-gradient(ellipse at 30% 40%, rgba(14, 158, 110, 0.05) 0%, transparent 60%),
-                        radial-gradient(ellipse at 70% 60%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
-                        linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-            padding: max(110px, 18vh) 0 max(60px, 10vh);
-        }
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #ffffff; /* Clean Apple style */
+    padding: 140px 20px 120px;
+}
 
-        .hero-content {
-            max-width: 100%;
-            text-align: center;
-            animation: fadeInUp 0.8s ease;
-        }
+
+        .hero-content h1 {
+    font-size: clamp(2.8rem, 9vw, 4.8rem);
+    font-weight: 700; /* Apple uses lighter weight */
+    margin-bottom: 16px;
+}
 
         .hero-badge {
             display: inline-flex;
@@ -222,87 +221,25 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(1rem, 3vw, 1.25rem);
-            color: var(--text-light);
-            margin-bottom: max(30px, 5vh);
-            line-height: 1.7;
-            max-width: 680px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 0.8s ease 0.3s both;
-            font-weight: 400;
-        }
-
+    font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+    font-weight: 400;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto 35px;
+}
         .cta-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            animation: fadeInUp 0.8s ease 0.5s both;
-            margin-bottom: max(35px, 6vh);
-        }
-
-        .btn {
-            padding: clamp(13px, 2.8vw, 17px) clamp(28px, 5vw, 42px);
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: clamp(0.95rem, 2.2vw, 1.05rem);
-            text-decoration: none;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-align: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-        }
+    gap: 14px;
+}
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
-            color: white;
-            box-shadow: 0 8px 25px rgba(14, 158, 110, 0.35);
-            position: relative;
-            overflow: hidden;
-        }
+    background: #0071e3;
+    border-radius: 50px;
+}
 
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: left 0.6s ease;
-        }
+.btn-secondary {
+    border-radius: 50px;
+}
 
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(14, 158, 110, 0.45);
-        }
-
-        .btn-primary:active {
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: var(--emerald);
-            border: 2px solid var(--emerald);
-            box-shadow: 0 4px 15px rgba(14, 158, 110, 0.15);
-        }
-
-        .btn-secondary:hover {
-            background: var(--emerald);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(14, 158, 110, 0.3);
-        }
 
         .trust-badges {
             display: flex;
@@ -1220,15 +1157,9 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="sparkle">✨</span>
-                    <span>100% Free AI Property Consultation</span>
-                </div>
-                <h1>
-                    Find Your Perfect Property<br>
-                    with <span class="hero-highlight">Aaria</span>
-                </h1>
-                <p class="hero-subtitle">Your Trusted Property Guardian. Every property verified. Every decision protected.
+                <img src="aarialogo.png" style="width:120px; margin-bottom:20px;">
+                <h1>Your Property. Perfectly Guarded.</h1>
+                <p class="hero-subtitle">Aaria helps you verify, decide, and buy the right property with complete peace of mind.
                 </p>
                 <div class="cta-group">
                     <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20find%20a%20property" 
@@ -1239,21 +1170,6 @@
                         📞 Let Aaria Call You
                     </button>
 
-                </div>
-                <div class="trust-badges">
-                    <div class="trust-badge">
-                        <span class="icon">✓</span>
-                        <span>100% Free</span>
-                    </div>
-                    <div class="trust-badge">
-                        <span class="icon">✓</span>
-                        <span>No Hidden Charges</span>
-                    </div>
-                    <div class="trust-badge">
-                        <span class="icon">✓</span>
-                        <span>Zero Pressure</span>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
