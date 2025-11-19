@@ -172,15 +172,15 @@
 }
 
 .hero-logo {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   display: flex;
   justify-content: center;
 }
 
 .hero-logo-img {
-  width: 110px;
+  width: 180px;
   height: auto;
-  opacity: 0.95;
+  opacity: 1.35;
 }
 
 .hero h1 {
@@ -241,6 +241,12 @@
   background: #0e9e6e;
   color: white;
 }
+        /* Reduce CTA buttons to 75% */
+.cta-group {
+  transform: scale(0.75);
+  transform-origin: center;
+}
+
         /* Stats Bar */
 .stats-bar {
             background: white;
@@ -1114,23 +1120,18 @@
                 <div class="nav-logo">
                     <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
                 </div>
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <div class="nav-icons">
-                    <span><a class="icon-circle-btn" onclick="openAariaPopup()">
-                            ☎️
-                        </a></span>
-                    <span>🔍</span>
-                </div>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#why-aaria">Why Aaria</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#testimonials">Reviews</a></li>
-                </ul>
-            </div>
+               <div class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<ul class="nav-links" id="navLinks">
+    <li><a href="javascript:void(0)" onclick="openAariaPopup()">☎️ Call Aaria</a></li>
+    <li><a href="#why-aaria">Why Aaria</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+</ul>
         </div>
     </nav>
 
