@@ -158,89 +158,57 @@
             display: none;
         }
 
-        /* Hero Section */
-        .hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: radial-gradient(ellipse at 30% 40%, rgba(14, 158, 110, 0.05) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 60%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
-              linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-  padding: max(110px, 18vh) 0 max(60px, 10vh);
-}
+ <!-- Navigation -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-content">
+      <div class="nav-logo">
+        <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
+      </div>
 
-.hero-logo {
-  margin-bottom: 28px;
-  display: flex;
-  justify-content: center;
-}
+      <ul class="nav-links" id="navLinks">
+        <li>
+          <a href="#" onclick="openAariaPopup()">☎️ Talk to Aaria</a>
+        </li>
+        <li>
+          <a href="./aariaassets">Aaria Assets</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-.hero-logo-img {
-  width: 220px;
-  height: auto;
-  opacity: 0.95;
-}
 
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 9vw, 5rem);
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-.hero h1111888777 {
-      font-size: 40px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-        .hero h108 {
-      font-size: 16px;
-      font-weight: 400;
-      margin-bottom: 30px;
-    }
-.hero-subtitle {
-  font-size: clamp(1rem, 3vw, 1.25rem);
-  max-width: 680px;
-  margin: 0 auto 30px;
-  line-height: 1.7;
-}
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
 
-/* CTA Buttons */
-.cta-group {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+      <!-- AARIA LOGO -->
+      <div class="hero-logo">
+        <img src="aarialogo1.png" alt="Aaria Logo" class="hero-logo-img">
+      </div>
 
-.btn {
-  padding: 14px 32px;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
-  cursor: pointer;
-  text-decoration: none;
-  border: none;
-}
+      <!-- Heading -->
+      <h1>Your Property. Perfectly Guarded.</h1>
 
-.btn-primary {
-  background: linear-gradient(135deg, #0e9e6e 0%, #0a7050 100%);
-  color: white;
-  box-shadow: 0 8px 25px rgba(14, 158, 110, 0.35);
-}
+      <!-- Subtitle -->
+      <p class="hero-subtitle">
+        Aaria helps you verify, decide, and buy the right property with complete peace of mind.
+      </p>
 
-.btn-secondary {
-  background: white;
-  border: 2px solid #0e9e6e;
-  color: #0e9e6e;
-}
+      <!-- CTA Buttons -->
+      <div class="cta-group">
+        <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20find%20a%20property" 
+           class="btn btn-primary">
+          💬 Start Safe Guidance
+        </a>
+      </div>
 
-.btn-secondary:hover {
-  background: #0e9e6e;
-  color: white;
-}
+    </div>
+  </div>
+</section>
+
         /* Stats Bar */
 .stats-bar {
             background: white;
