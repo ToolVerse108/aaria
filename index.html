@@ -242,19 +242,38 @@
   background: #0e9e6e;
   color: white;
 }
-        .stat-item {
-    background: #ffffff;
-    padding: 24px 10px;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-    transition: 0.3s ease;
+        /* Stats Bar */
+.stats-bar {
+    background: #f9fafb;
+    padding: 60px 0;
 }
 
-.stat-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 35px;
+    text-align: center;
+    align-items: center;
 }
 
+.stat-item {
+    padding: 20px 10px;
+}
+
+.stat-number {
+    display: block;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--emerald);
+    margin-bottom: 6px;
+}
+
+.stat-label {
+    font-size: clamp(0.9rem, 2vw, 1.05rem);
+    color: #666;
+    font-weight: 500;
+    line-height: 1.4;
+}
 
         /* Sections */
         .section {
