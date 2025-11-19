@@ -158,28 +158,6 @@
             display: none;
         }
 
- <!-- Navigation -->
-<nav id="navbar">
-  <div class="container">
-    <div class="nav-content">
-      <div class="nav-logo">
-        <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
-      </div>
-
-      <ul class="nav-links" id="navLinks">
-        <li>
-  <a href="#" onclick="openAariaPopup()">☎️ Talk to Aaria</a>
-</li>
-
-<li>
-  <a href="./aariaassets">Aaria Assets</a>
-</li>
-
-      </ul>
-    </div>
-  </div>
-</nav>
-
         /* Hero Section */
         .hero {
   min-height: 100vh;
@@ -192,14 +170,15 @@
               linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
   padding: max(110px, 18vh) 0 max(60px, 10vh);
 }
-        
+
 .hero-logo {
   margin-bottom: 28px;
   display: flex;
   justify-content: center;
 }
-        .hero-logo-img {
-  width: 220px;
+
+.hero-logo-img {
+  width: 110px;
   height: auto;
   opacity: 0.95;
 }
@@ -227,14 +206,16 @@
   margin: 0 auto 30px;
   line-height: 1.7;
 }
-        /* CTA Buttons */
+
+/* CTA Buttons */
 .cta-group {
   display: flex;
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
-        .btn {
+
+.btn {
   padding: 14px 32px;
   border-radius: 50px;
   font-weight: 700;
@@ -243,21 +224,23 @@
   text-decoration: none;
   border: none;
 }
-        .btn-primary {
+
+.btn-primary {
   background: linear-gradient(135deg, #0e9e6e 0%, #0a7050 100%);
   color: white;
   box-shadow: 0 8px 25px rgba(14, 158, 110, 0.35);
 }
-        .btn-secondary {
+
+.btn-secondary {
   background: white;
   border: 2px solid #0e9e6e;
   color: #0e9e6e;
 }
-        .btn-secondary:hover {
+
+.btn-secondary:hover {
   background: #0e9e6e;
   color: white;
 }
-
         /* Stats Bar */
 .stats-bar {
             background: white;
@@ -1131,10 +1114,21 @@
                 <div class="nav-logo">
                     <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
                 </div>
+                <div class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-icons">
+                    <span><a class="icon-circle-btn" onclick="openAariaPopup()">
+                            ☎️
+                        </a></span>
+                    <span>🔍</span>
+                </div>
                 <ul class="nav-links" id="navLinks">
-                   <li><a href="./aariaassets"onclick="openAariaPopup()">☎️Talk to Aaria</a>
-                    <li>
-                    <li><a href="./aariaassets">Aaria Assets</a></li>
+                    <li><a href="#why-aaria">Why Aaria</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Reviews</a></li>
                 </ul>
             </div>
         </div>
