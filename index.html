@@ -52,56 +52,286 @@
             width: 100%;
         }
 
-            /* NAVBAR */
-    .nav {
-      width: 100%;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #ffffff;
-      border-bottom: 1px solid #eee;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-    .nav img {
-      height: 32px;
-    }
-    .nav-icons {
-      display: flex;
-      gap: 18px;
-      font-size: 20px;
-    }
-    /* HERO */
-    .hero {
-      text-align: center;
-      padding: 80px 20px 60px;
-    }
-    .hero img {
-      width: 160px;
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-size: 40px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .hero p {
-      font-size: 18px;
-      font-weight: 400;
-      margin-bottom: 30px;
-    }
-    .btn-primary {
-      background: #0071e3;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 50px;
-      font-size: 17px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-    }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 12px 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98);
+            border-bottom: 1px solid rgba(14, 158, 110, 0.08);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.03);
+        }
+
+        nav.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2.5px;
+            background: var(--emerald);
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: clamp(18px, 3vw, 35px);
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--emerald);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--emerald);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
+            color: white !important;
+            padding: 8px 20px !important;
+            border-radius: 50px;
+            font-size: clamp(0.85rem, 1.8vw, 0.9rem) !important;
+            box-shadow: 0 4px 15px rgba(14, 158, 110, 0.25);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14, 158, 110, 0.35);
+        }
+
+        .nav-cta::after {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 30% 40%, rgba(14, 158, 110, 0.05) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 60%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
+                        linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            padding: max(110px, 18vh) 0 max(60px, 10vh);
+        }
+
+        .hero-content {
+            max-width: 100%;
+            text-align: center;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: rgba(14, 158, 110, 0.08);
+            border: 1.5px solid rgba(14, 158, 110, 0.2);
+            border-radius: 50px;
+            color: var(--emerald-dark);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            font-weight: 700;
+            margin-bottom: max(20px, 3vh);
+            animation: fadeInUp 0.8s ease 0.1s both;
+        }
+
+        .hero-badge .sparkle {
+            font-size: 1.1em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 9vw, 5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: max(20px, 3vh);
+            color: var(--dark);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-highlight {
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: var(--text-light);
+            margin-bottom: max(30px, 5vh);
+            line-height: 1.7;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease 0.3s both;
+            font-weight: 400;
+        }
+
+        .cta-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease 0.5s both;
+            margin-bottom: max(35px, 6vh);
+        }
+
+        .btn {
+            padding: clamp(13px, 2.8vw, 17px) clamp(28px, 5vw, 42px);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+            text-decoration: none;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(14, 158, 110, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(14, 158, 110, 0.45);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--emerald);
+            border: 2px solid var(--emerald);
+            box-shadow: 0 4px 15px rgba(14, 158, 110, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: var(--emerald);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(14, 158, 110, 0.3);
+        }
+
+        .trust-badges {
+            display: flex;
+            gap: clamp(18px, 4vw, 35px);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: max(30px, 5vh);
+            animation: fadeInUp 0.8s ease 0.7s both;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            font-weight: 600;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 50px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .trust-badge .icon {
+            color: var(--emerald);
+            font-size: 1.15em;
+            font-weight: 900;
+        }
+
         /* Stats Bar */
         .stats-bar {
             background: white;
@@ -516,8 +746,8 @@
 
         /* Footer */
         footer {
-            background: var(--dark);
-            color: white;
+            background: linear-gradient(135deg, #0C3C44, #1E6F5C);
+            color: #fff;
             padding: max(50px, 9vh) 0 max(25px, 4vh);
         }
 
@@ -990,19 +1220,40 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <img src="aarialogo.png" style="width:120px; margin-bottom:20px;">
-                <h1>Your Property. Perfectly Guarded.</h1>
-                <p class="hero-subtitle">Aaria helps you verify, decide, and buy the right property with complete peace of mind.
+                <div class="hero-badge">
+                    <span class="sparkle">✨</span>
+                    <span>100% Free AI Property Consultation</span>
+                </div>
+                <h1>
+                    Find Your Perfect Property<br>
+                    with <span class="hero-highlight">Aaria</span>
+                </h1>
+                <p class="hero-subtitle">Your Trusted Property Guardian. Every property verified. Every decision protected.
                 </p>
                 <div class="cta-group">
                     <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20find%20a%20property" 
                         class="btn btn-primary">
-                        💬 Chat with Aaria
+                        💬 Start Safe Guidance
                     </a>
                     <button class="btn btn-secondary" onclick="openAariaPopup()">
-                        📞 Let Aaria Call You
+                        📞 Request Guardian Call
                     </button>
 
+                </div>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <span class="icon">✓</span>
+                        <span>100% Free</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="icon">✓</span>
+                        <span>No Hidden Charges</span>
+                    </div>
+                    <div class="trust-badge">
+                        <span class="icon">✓</span>
+                        <span>Zero Pressure</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1051,28 +1302,28 @@
             <div class="benefits-grid">
                 <div class="benefit-card fade-in">
                     <span class="benefit-icon">🎯</span>
-                    <h3>Truly Understands You</h3>
-                    <p>Tell Aaria your budget, lifestyle, and dreams. She remembers everything and finds properties that genuinely match your vision.</p>
+                    <h3>Clarity That Cuts Through Confusion.</h3>
+                    <p>Aaria breaks down legal terms, documents, circle rates, and pricing into simple, human explanations you can actually trust.</p>
                 </div>
                 <div class="benefit-card fade-in">
                     <span class="benefit-icon">🔍</span>
-                    <h3>Filters Out the Noise</h3>
-                    <p>No more scrolling through hundreds of irrelevant listings. Aaria shows you only properties that actually fit your requirements.</p>
+                    <h3>Every Risk Filtered</h3>
+                    <p>Disputes, fraud-prone plots, overpriced listings, ownership issues — Aaria blocks the danger so you only deal with what’s clean and safe.</p>
                 </div>
                 <div class="benefit-card fade-in">
                     <span class="benefit-icon">💰</span>
-                    <h3>Completely Free Forever</h3>
-                    <p>Zero consultation fees. No commissions from you. No surprises. Aaria is your trusted advisor at absolutely no cost.</p>
+                    <h3>Safe Deals, Confident Decisions.</h3>
+                    <p>Aaria shields you from traps, fake urgency, and bad actors — ensuring your journey to ownership is transparent, stress-free, and grounded in truth.</p>
                 </div>
                 <div class="benefit-card fade-in">
                     <span class="benefit-icon">⚡</span>
-                    <h3>Responds in Seconds</h3>
+                    <h3>24/7 Guidance With a Human Heart.</h3>
                     <p>Questions at 2 AM? Aaria is always awake. Get instant property details, market insights, and answers anytime, anywhere.</p>
                 </div>
                 <div class="benefit-card fade-in">
                     <span class="benefit-icon">🤝</span>
-                    <h3>Zero Pressure Zone</h3>
-                    <p>Unlike pushy agents, Aaria never rushes you. Take your time, ask questions, compare options. Buy when YOU'RE ready.</p>
+                    <h3>Zero Bias. Pure Protection.</h3>
+                    <p>Aaria does not sell, push, or promote any property. Every decision is guided only by what keeps you safe.</p>
                 </div>
                 <div class="benefit-card fade-in">
                     <span class="benefit-icon">📊</span>
@@ -1090,21 +1341,21 @@
                 How <span class="gradient-text">Aaria</span> Helps You
             </h2>
             <p class="section-subtitle fade-in">
-                Finding your perfect property is simpler than ordering food online
+                Keeping You Safe, Clear, and Confident in Every Move.
             </p>
             <div class="steps-container">
                 <div class="step-item fade-in">
                     <div class="step-number">1</div>
                     <div class="step-content">
-                        <h3>Tell Aaria What You Want</h3>
-                        <p>Share your budget, preferred locations, property type, size, and any special needs. Chat naturally — Aaria understands conversational language perfectly.</p>
+                        <h3>Share Your Story With Aaria</h3>
+                        <p>Share your journey, challenges and any special needs. — Aaria understands You, Guard You Solve it with you.</p>
                     </div>
                 </div>
                 <div class="step-item fade-in">
                     <div class="step-number">2</div>
                     <div class="step-content">
-                        <h3>Get Perfect Property Matches</h3>
-                        <p>Within minutes, Aaria analyzes thousands of listings and sends you only the best matches — complete with photos, pricing, location maps, and detailed info via WhatsApp.</p>
+                        <h3>Aaria Shields You at every Stages</h3>
+                        <p>Aaria prepares you for safe visits, warns you of red flags, and ensures you never fall for pressure tactics or hidden traps. Your confidence becomes unshakeable.</p>
                     </div>
                 </div>
                 <div class="step-item fade-in">
@@ -1117,8 +1368,8 @@
                 <div class="step-item fade-in">
                     <div class="step-number">4</div>
                     <div class="step-content">
-                        <h3>Visit & Close the Deal</h3>
-                        <p>Ready to see a property? Aaria arranges site visits with our expert team who guide you through negotiations, paperwork, and ensure a smooth, transparent purchase.</p>
+                        <h3>Aaria Verifies Any Plot You Choose</h3>
+                        <p>You bring the property. Aaria checks its history, documents, safety, legality, and future risk — giving you a clean, unbiased safety assessment.</p>
                     </div>
                 </div>
             </div>
@@ -1129,10 +1380,10 @@
     <section class="section testimonials" id="testimonials">
         <div class="container">
             <h2 class="section-title fade-in">
-                Real Stories from <span class="gradient-text">Real Buyers</span>
+                Real Stories from <span class="gradient-text">Protected Buyers</span>
             </h2>
             <p class="section-subtitle fade-in">
-                Join 1000+ happy property owners who found their dream homes with Aaria
+                Real People. Real Protection. Real Peace of Mind.
             </p>
             <div class="testimonial-grid">
                 <div class="testimonial-card fade-in">
@@ -1145,14 +1396,14 @@
                         <span class="star">★</span>
                     </div>
                     <p class="testimonial-text">
-                        "I was tired of agents showing me overpriced plots. Aaria understood my ₹15L budget perfectly and found me a plot in a developing area. Best investment decision ever!"
+                        “I was tired of brokers pushing overpriced plots. Aaria explained the real circle rate, highlighted hidden risks, and helped me choose safely within my ₹15L budget. I finally felt in control.”
                     </p>
                     <div class="testimonial-author">
                         <div class="author-avatar">R</div>
                         <div class="author-info">
                             <h4>Rajesh Kumar</h4>
                             <p>Software Engineer, Kanpur</p>
-                            <span class="verified-badge">✓ Verified Buyer</span>
+                            <span class="verified-badge">✓ Verified Aaria-Guided Buyer</span>
                         </div>
                     </div>
                 </div>
@@ -1166,14 +1417,14 @@
                         <span class="star">★</span>
                     </div>
                     <p class="testimonial-text">
-                        "As an NRI, buying property in India was scary. Aaria sent me videos, documents, even virtual tours at midnight Dubai time. Made everything transparent and easy."
+                        “As an NRI, buying land in India felt risky. Aaria verified documents, shared clear videos, and guided me on every legal step — even late at night Dubai time. I felt protected throughout.”
                     </p>
                     <div class="testimonial-author">
                         <div class="author-avatar">P</div>
                         <div class="author-info">
                             <h4>Priya Sharma</h4>
                             <p>Marketing Manager, Dubai</p>
-                            <span class="verified-badge">✓ Verified Buyer</span>
+                            <span class="verified-badge">✓ Verified Aaria-Assisted Buyer</span>
                         </div>
                     </div>
                 </div>
@@ -1187,14 +1438,14 @@
                         <span class="star">★</span>
                     </div>
                     <p class="testimonial-text">
-                        "No fake urgency, no pressure tactics. Aaria gave me market data, price comparisons, and let me decide. Took 3 months to choose, and she was patient throughout!"
+                        “No pressure, no urgency tricks. Aaria gave me honest data, safety checks, and time to think. I took 3 months to decide — she stayed patient, protective, and unbiased the entire way.”
                     </p>
                     <div class="testimonial-author">
                         <div class="author-avatar">A</div>
                         <div class="author-info">
                             <h4>Amit Verma</h4>
                             <p>Business Owner, Lucknow</p>
-                            <span class="verified-badge">✓ Verified Buyer</span>
+                            <span class="verified-badge">✓ Verified Aaria-Guided Buyer</span>
                         </div>
                     </div>
                 </div>
@@ -1214,13 +1465,12 @@
                     <div class="cta-buttons">
                         <a href="https://wa.me/919876543210?text=Hi%20Aaria%2C%20I%20want%20to%20buy%20a%20property" 
                             class="cta-btn white-btn">
-                            💬 Start Free Consultation
+                           💬 Start Safe Guidance
                         </a>
                         
-                        <a href="tel:919876543210" 
-                            class="cta-btn green-btn">
-                            📞 Call Aaria
-                        </a>
+                        <button class="btn btn-secondary" onclick="openAariaPopup()">
+                        📞 Request Guardian Call
+                    </button>
                     </div>
                 </div>
                 <div class="cta-features">
@@ -1248,33 +1498,23 @@
                 <div class="footer-brand">
                     <div class="nav-logo">
                         <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
-                    </div>
-                    <p class="footer-tagline">Your Trusted AI Property Consultant</p>
+                            </div>
+                    <p class="footer-tagline">Your Trusted Property Guardian</p>
                     <p class="footer-description">
-                        Making property buying simple, transparent, and stress-free for every Indian family.
+                        Kanpur, Uttar Pradesh
                     </p>
-                </div>
-                <div class="footer-section">
-                    <h4>For Buyers</h4>
-                    <a href="#why-aaria">Why Choose Aaria</a>
-                    <a href="#how-it-works">How Aaria Works</a>
-                    <a href="#testimonials">Success Stories</a>
-                    <a href="#get-started">Get Started Now</a>
+                    <p><a href="./privacy.html">Privacy Policy</a> | <a href="./contact.html">Contact</a></p>
+                            <p>© 2025 Aaria Realty</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
+                        <div class="footer-section">
+                    <h4>Quick Access</h4>
                     <a href="./aariacalculator.html">ROI Calculator</a>
                     <a href="./investmentguide.html">Investment Guide</a>
                     <a href="./listing.html">Property Profile</a>                    
                     <a href="./faq.html">FAQs</a>
                 </div>
-                <div class="footer-section">
-                    <h4>Contact Us</h4>
-                    <a href="https://wa.me/+916386845350">WhatsApp Chat</a>
-                    <a href="tel:+910804780070">Call: +91 0804780070</a>
-                    <a href="#">4E/228 Awas Vikas naubasta Kanpur Nagar, Uttar Pradesh</a>
-                </div>
-            </div>
 </footer>
 
 
