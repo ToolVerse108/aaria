@@ -1064,82 +1064,113 @@
   from { transform: translateY(15px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-        /* MOBILE FOOTER — OVERHAUL */
-@media (max-width: 768px) {
+/* NEW MOBILE-FIRST FOOTER */
+.a-footer-mobile-enhanced {
+  background: linear-gradient(135deg, #0f3d3e, #0a5c47);
+  color: #e8f6ef;
+  text-align: center;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+}
 
-    .a-footer {
-        background: linear-gradient(135deg, #0f3d3e, #0a5c47);
-        padding: 40px 20px;
-        color: #e8f6ef;
-        text-align: center;
-    }
+/* Logo */
+.a-footer-mobile-logo {
+  width: 70px;
+  margin-bottom: 14px;
+}
 
-    /* TOP SECTION: LOGO + TAGLINES */
-    .footer-mobile-top {
-        margin-bottom: 25px;
-    }
+/* Text top section */
+.a-footer-main {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
 
-    .footer-mobile-logo {
-        width: 75px;
-        margin-bottom: 12px;
-    }
+.a-footer-sub {
+  font-size: 13px;
+  color: #c6ffe0;
+  margin-bottom: 6px;
+}
 
-    .footer-mobile-title {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 6px;
-    }
+.a-footer-loc {
+  font-size: 14px;
+  color: #d3f8e9;
+  margin-bottom: 22px;
+}
 
-    .footer-mobile-sub {
-        font-size: 13px;
-        color: #c6ffe0;
-    }
+/* Columns section */
+.a-footer-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  text-align: left;
+}
 
-    .footer-mobile-loc {
-        font-size: 14px;
-        margin-top: 8px;
-        color: #d3f8e9;
-    }
+.a-footer-col {
+  flex: 1;
+}
 
-    /* SECTIONS: TOOLS (LEFT) + QUICK ACCESS (RIGHT) */
-    .footer-mobile-sections {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 25px;
-        text-align: left;
-    }
+.a-footer-heading {
+  color: #ffdd57;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
 
-    .footer-mobile-col h4 {
-        color: #ffdd57;
-        margin-bottom: 10px;
-        font-size: 15px;
-        font-weight: 700;
-    }
+.a-footer-links {
+  list-style: none;
+  padding: 0;
+}
 
-    .footer-mobile-col ul {
-        list-style: none;
-        padding: 0;
-    }
+.a-footer-links li {
+  margin: 6px 0;
+}
 
-    .footer-mobile-col li a {
-        display: block;
-        font-size: 13px;
-        color: #d2f7ea;
-        margin-bottom: 8px;
-        text-decoration: none;
-    }
+.a-footer-links a {
+  color: #d2f7ea;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.2s;
+}
 
-    /* BOTTOM SECTION */
-    .footer-mobile-bottom {
-        margin-top: 25px;
-        font-size: 13px;
-    }
+.a-footer-links a:hover {
+  color: white;
+  padding-left: 4px;
+}
 
-    .footer-mobile-bottom a {
-        color: #ffdd57;
-        text-decoration: none;
-        font-weight: 600;
-    }
+/* Bottom Legal Section */
+.a-footer-bottom {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #c3e5da;
+}
+
+.a-footer-bottom a {
+  color: #ffdd57;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.a-footer-bottom a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Stacking */
+@media (max-width: 680px) {
+
+  .a-footer-columns {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .a-footer-col {
+    margin-bottom: 20px;
+  }
+
+  .a-footer-heading {
+    text-align: center;
+  }
 }
 
     </style>
@@ -1426,53 +1457,54 @@
             </div>
         </div>
     </section>
+<footer class="a-footer-mobile-enhanced">
 
-<footer class="a-footer">
+  <!-- Top Brand Section -->
+  <div class="a-footer-top">
+    <img src="aarialogo1.png" alt="Aaria Logo" class="a-footer-mobile-logo">
 
-  <div class="footer-mobile-top">
-      <img src="aarialogo1.png" class="footer-mobile-logo" alt="Aaria Logo">
-
-      <h3 class="footer-mobile-title">Your Trusted Property Guardian</h3>
-      <p class="footer-mobile-sub">Calm Mind. Smart Buyers.</p>
-      <p class="footer-mobile-loc">📍 Kanpur, Uttar Pradesh</p>
+    <h3 class="a-footer-main">AARIA — Your Trusted Property Guardian</h3>
+    <p class="a-footer-sub">Clarity. Safety. Smarter Decisions.</p>
+    <p class="a-footer-loc">📍 Kanpur, Uttar Pradesh</p>
   </div>
 
-  <div class="footer-mobile-sections">
+  <!-- Two Columns (Mobile Stacked) -->
+  <div class="a-footer-columns">
 
-      <!-- Guardian Tools -->
-      <div class="footer-mobile-col">
-          <h4>Guardian Tools</h4>
-          <ul>
-              <li><a href="#">Plot Safety Scanner</a></li>
-              <li><a href="#">Price Fairness Checker</a></li>
-              <li><a href="#">Location Growth Engine</a></li>
-              <li><a href="#">ROI Master Calculator</a></li>
-              <li><a href="#">Plot Geometry Optimizer</a></li>
-              <li><a href="#">JourneyGuide for Plots</a></li>
-          </ul>
-      </div>
+    <div class="a-footer-col">
+      <h4 class="a-footer-heading">Guardian Tools</h4>
+      <ul class="a-footer-links">
+        <li><a href="#">Plot Safety Scanner</a></li>
+        <li><a href="#">Price Fairness Checker</a></li>
+        <li><a href="#">Location Growth Engine</a></li>
+        <li><a href="#">ROI Master Calculator</a></li>
+        <li><a href="#">Plot Geometry Optimizer</a></li>
+        <li><a href="#">JourneyGuide for Plots</a></li>
+      </ul>
+    </div>
 
-      <!-- Quick Access -->
-      <div class="footer-mobile-col">
-          <h4>Quick Access</h4>
-          <ul>
-              <li><a href="#">ROI Calculator</a></li>
-              <li><a href="#">Investment Guide</a></li>
-              <li><a href="#">Property Profile</a></li>
-              <li><a href="#">FAQs</a></li>
-              <li><a href="#">Get Assistance</a></li>
-              <li><a href="#">List Your Property</a></li>
-          </ul>
-      </div>
+    <div class="a-footer-col">
+      <h4 class="a-footer-heading">Quick Access</h4>
+      <ul class="a-footer-links">
+        <li><a href="#">ROI Calculator</a></li>
+        <li><a href="#">Investment Guide</a></li>
+        <li><a href="#">Property Profile</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Get Assistance</a></li>
+        <li><a href="#">List Your Property</a></li>
+      </ul>
+    </div>
 
   </div>
 
-  <div class="footer-mobile-bottom">
-      <p><a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
-      <p>© 2025 Aaria Realty</p>
+  <!-- Bottom Legal -->
+  <div class="a-footer-bottom">
+    <p><a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
+    <p>© 2025 Aaria Realty</p>
   </div>
 
 </footer>
+
 
     <script>
         // Navbar scroll effect
