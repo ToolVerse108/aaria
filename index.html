@@ -658,152 +658,113 @@
             font-size: 1.2em;
         }
 
-        /* Footer */
-        footer {
-            background: linear-gradient(135deg, #0C3C44, #1E6F5C);
-            color: #fff;
-            padding: max(50px, 9vh) 0 max(25px, 4vh);
-        }
-
-        .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 15px;
-    margin-bottom: max(35px, 6vh);
+    /* Footer Base */
+.a-footer {
+  background: linear-gradient(135deg, #0f3d3e, #0a5c47);
+  color: #e8f6ef;
+  padding: 60px 20px;
+  font-family: "Inter", sans-serif;
 }
 
-.footer-brand {
-    grid-column: 1 / -1;
-    margin-bottom: 15px;
+.a-footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
 }
 
-.footer-section {
-    padding: 0 5px;
+/* Columns */
+.a-footer-col {
+  flex: 1;
+  min-width: 250px;
 }
 
-@media (min-width: 768px) {
-    .footer-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: max(28px, 5vw);
-    }
-    
-    .footer-brand {
-        grid-column: span 2;
-        margin-bottom: 0;
-    }
-    
-    .footer-section {
-        padding: 0;
-    }
+/* Logo */
+.a-footer-logo {
+  width: 70px;
+  margin-bottom: 15px;
 }
 
-        .footer-logo {
-            font-size: clamp(1.8rem, 4.5vw, 2.3rem);
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, var(--emerald) 0%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
-        }
+/* Titles & Headings */
+.a-footer-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
 
-        .footer-tagline {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: clamp(0.95rem, 2.3vw, 1.08rem);
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
+.a-footer-tag {
+  color: #c6ffe0;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 
-        .footer-description {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: clamp(0.85rem, 2vw, 0.92rem);
-            line-height: 1.6;
-            max-width: 350px;
-        }
+.a-footer-loc {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
 
-        .footer-section h4 {
-            margin-bottom: 18px;
-            color: var(--gold);
-            font-size: clamp(1.05rem, 2.6vw, 1.15rem);
-            font-weight: 700;
-        }
+.a-footer-desc {
+  font-size: 14px;
+  color: #d9f7e7;
+  margin-bottom: 20px;
+  max-width: 250px;
+}
 
-        .footer-section a {
-            display: block;
-            color: rgba(255, 255, 255, 0.65);
-            text-decoration: none;
-            margin-bottom: 11px;
-            transition: all 0.3s ease;
-            font-size: clamp(0.87rem, 2.1vw, 0.95rem);
-        }
+/* Links */
+.a-footer-heading {
+  color: #ffdd57;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
 
-        .footer-section a:hover {
-            color: var(--emerald-light);
-            padding-left: 6px;
-        }
+.a-footer-links {
+  list-style: none;
+  padding: 0;
+}
 
-        .seller-cta-footer {
-            margin-top: max(30px, 5vh);
-            padding-top: max(30px, 5vh);
-            border-top: 2px solid rgba(212, 175, 55, 0.2);
-            text-align: center;
-            background: rgba(212, 175, 55, 0.05);
-            padding: max(28px, 5vh) max(20px, 4vw);
-            border-radius: 15px;
-            margin-bottom: max(30px, 5vh);
-        }
+.a-footer-links li {
+  margin: 8px 0;
+}
 
-        .seller-cta-footer p {
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 18px;
-            font-size: clamp(0.95rem, 2.3vw, 1.05rem);
-            font-weight: 600;
-        }
+.a-footer-links a {
+  color: #d2f7ea;
+  text-decoration: none;
+  transition: 0.2s;
+}
 
-        .btn-seller {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 35px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-            color: var(--dark);
-            border: none;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.35s ease;
-            font-size: clamp(0.95rem, 2.3vw, 1.02rem);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
-        }
+.a-footer-links a:hover {
+  color: #ffffff;
+  padding-left: 4px;
+}
 
-        .btn-seller:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-        }
+/* Copyright */
+.a-footer-copy {
+  font-size: 13px;
+  margin-top: 15px;
+  color: #c3e5da;
+}
 
-        .footer-bottom {
-            padding-top: max(28px, 5vh);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            color: rgba(255, 255, 255, 0.45);
-            font-size: clamp(0.82rem, 1.9vw, 0.9rem);
-        }
+.a-footer-copy a {
+  color: #ffdd57;
+  text-decoration: none;
+  font-weight: 600;
+}
 
-        .footer-bottom p {
-            margin-bottom: 8px;
-        }
+.a-footer-copy a:hover {
+  text-decoration: underline;
+}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+/* Responsive */
+@media (max-width: 768px) {
+  .a-footer-container {
+    flex-direction: column;
+    text-align: left;
+  }
+}
+
 
         /* Mobile Menu */
         @media (max-width: 768px) {
@@ -1391,31 +1352,55 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="nav-logo">
-                        <img src="aarialogo.png" alt="AARIA Logo" class="logo-img">
-                            </div>
-                    <p class="footer-tagline">Your Trusted Property Guardian</p>
-                    <p class="footer-description">
-                        Kanpur, Uttar Pradesh
-                    </p>
-                    <p><a href="./privacy.html">Privacy Policy</a> | <a href="./contact.html">Contact</a></p>
-                            <p>© 2025 Aaria Realty</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                        <div class="footer-section">
-                    <h4>Quick Access</h4>
-                    <a href="./aariacalculator.html">ROI Calculator</a>
-                    <a href="./investmentguide.html">Investment Guide</a>
-                    <a href="./listing.html">Property Profile</a>                    
-                    <a href="./faq.html">FAQs</a>
-                </div>
-</footer>
+    <footer class="a-footer">
+  <div class="a-footer-container">
 
+    <!-- Left Section -->
+    <div class="a-footer-col">
+      <img src="your-logo.png" alt="Aaria Logo" class="a-footer-logo">
+
+      <h3 class="a-footer-title">AARIA — Your Trusted Property Guardian</h3>
+      <p class="a-footer-tag">Clarity. Safety. Smarter Decisions.</p>
+
+      <p class="a-footer-loc">📍 Kanpur, Uttar Pradesh</p>
+      <p class="a-footer-desc">
+        Serving plot buyers with verified insights, safe guidance, and AI-powered intelligence.
+      </p>
+
+      <p class="a-footer-copy">
+        © 2025 Aaria Realty  
+        <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Contact</a>
+      </p>
+    </div>
+
+    <!-- Middle Section -->
+    <div class="a-footer-col">
+      <h4 class="a-footer-heading">Guardian Tools</h4>
+      <ul class="a-footer-links">
+        <li><a href="#">Plot Safety Scanner</a></li>
+        <li><a href="#">Price Fairness Checker</a></li>
+        <li><a href="#">Location Growth Engine</a></li>
+        <li><a href="#">ROI Master Calculator</a></li>
+        <li><a href="#">Plot Geometry Optimizer</a></li>
+        <li><a href="#">JourneyGuide for Plots</a></li>
+      </ul>
+    </div>
+
+    <!-- Right Section -->
+    <div class="a-footer-col">
+      <h4 class="a-footer-heading">Quick Access</h4>
+      <ul class="a-footer-links">
+        <li><a href="#">ROI Calculator</a></li>
+        <li><a href="#">Investment Guide</a></li>
+        <li><a href="#">Property Profile</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Get Assistance</a></li>
+        <li><a href="#">List Your Property</a></li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
 
     <script>
         // Navbar scroll effect
