@@ -1064,6 +1064,84 @@
   from { transform: translateY(15px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+        /* MOBILE FOOTER — OVERHAUL */
+@media (max-width: 768px) {
+
+    .a-footer {
+        background: linear-gradient(135deg, #0f3d3e, #0a5c47);
+        padding: 40px 20px;
+        color: #e8f6ef;
+        text-align: center;
+    }
+
+    /* TOP SECTION: LOGO + TAGLINES */
+    .footer-mobile-top {
+        margin-bottom: 25px;
+    }
+
+    .footer-mobile-logo {
+        width: 75px;
+        margin-bottom: 12px;
+    }
+
+    .footer-mobile-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .footer-mobile-sub {
+        font-size: 13px;
+        color: #c6ffe0;
+    }
+
+    .footer-mobile-loc {
+        font-size: 14px;
+        margin-top: 8px;
+        color: #d3f8e9;
+    }
+
+    /* SECTIONS: TOOLS (LEFT) + QUICK ACCESS (RIGHT) */
+    .footer-mobile-sections {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+        text-align: left;
+    }
+
+    .footer-mobile-col h4 {
+        color: #ffdd57;
+        margin-bottom: 10px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .footer-mobile-col ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-mobile-col li a {
+        display: block;
+        font-size: 13px;
+        color: #d2f7ea;
+        margin-bottom: 8px;
+        text-decoration: none;
+    }
+
+    /* BOTTOM SECTION */
+    .footer-mobile-bottom {
+        margin-top: 25px;
+        font-size: 13px;
+    }
+
+    .footer-mobile-bottom a {
+        color: #ffdd57;
+        text-decoration: none;
+        font-weight: 600;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -1349,55 +1427,51 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="a-footer">
-  <div class="a-footer-container">
+<footer class="a-footer">
 
-    <!-- Left Section -->
-    <div class="a-footer-col">
-      <img src="aarialogo1.png" alt="Aaria Logo" class="a-footer-logo">
+  <div class="footer-mobile-top">
+      <img src="aarialogo1.png" class="footer-mobile-logo" alt="Aaria Logo">
 
-      <h3 class="a-footer-title">Your Trusted Property Guardian</h3>
-      <p class="a-footer-tag">Calm Mind. Smart Buyers.</p>
+      <h3 class="footer-mobile-title">Your Trusted Property Guardian</h3>
+      <p class="footer-mobile-sub">Calm Mind. Smart Buyers.</p>
+      <p class="footer-mobile-loc">📍 Kanpur, Uttar Pradesh</p>
+  </div>
 
-      <p class="a-footer-loc">📍 Kanpur, Uttar Pradesh</p>
-      <p class="a-footer-desc">
-        Serving plot buyers with verified insights, safe guidance, and AI-powered intelligence.
-      </p>
+  <div class="footer-mobile-sections">
 
-      <p class="a-footer-copy">
-        © 2025 Aaria Realty  
-        <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Contact</a>
-      </p>
-    </div>
+      <!-- Guardian Tools -->
+      <div class="footer-mobile-col">
+          <h4>Guardian Tools</h4>
+          <ul>
+              <li><a href="#">Plot Safety Scanner</a></li>
+              <li><a href="#">Price Fairness Checker</a></li>
+              <li><a href="#">Location Growth Engine</a></li>
+              <li><a href="#">ROI Master Calculator</a></li>
+              <li><a href="#">Plot Geometry Optimizer</a></li>
+              <li><a href="#">JourneyGuide for Plots</a></li>
+          </ul>
+      </div>
 
-    <!-- Middle Section -->
-    <div class="a-footer-col">
-      <h4 class="a-footer-heading">Guardian Tools</h4>
-      <ul class="a-footer-links">
-        <li><a href="#">Plot Safety Scanner</a></li>
-        <li><a href="#">Price Fairness Checker</a></li>
-        <li><a href="#">Location Growth Engine</a></li>
-        <li><a href="#">ROI Master Calculator</a></li>
-        <li><a href="#">Plot Geometry Optimizer</a></li>
-        <li><a href="#">JourneyGuide for Plots</a></li>
-      </ul>
-    </div>
-
-    <!-- Right Section -->
-    <div class="a-footer-col">
-      <h4 class="a-footer-heading">Quick Access</h4>
-      <ul class="a-footer-links">
-        <li><a href="#">ROI Calculator</a></li>
-        <li><a href="#">Investment Guide</a></li>
-        <li><a href="#">Property Profile</a></li>
-        <li><a href="#">FAQs</a></li>
-        <li><a href="#">Get Assistance</a></li>
-        <li><a href="#">List Your Property</a></li>
-      </ul>
-    </div>
+      <!-- Quick Access -->
+      <div class="footer-mobile-col">
+          <h4>Quick Access</h4>
+          <ul>
+              <li><a href="#">ROI Calculator</a></li>
+              <li><a href="#">Investment Guide</a></li>
+              <li><a href="#">Property Profile</a></li>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Get Assistance</a></li>
+              <li><a href="#">List Your Property</a></li>
+          </ul>
+      </div>
 
   </div>
+
+  <div class="footer-mobile-bottom">
+      <p><a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
+      <p>© 2025 Aaria Realty</p>
+  </div>
+
 </footer>
 
     <script>
